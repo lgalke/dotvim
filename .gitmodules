@@ -89,7 +89,7 @@
 	path = pack/extra/opt/syntastic
 	url = https://github.com/vim-syntastic/syntastic.git
 [submodule "pack/start/opt/vim-pathogen"]
-	path = pack/start/opt/vim-pathogen
+	path = pack/core/opt/vim-pathogen
 	url = https://github.com/tpope/vim-pathogen.git
 [submodule "pack/extra/start/vimtex"]
 	path = pack/extra/start/vimtex
