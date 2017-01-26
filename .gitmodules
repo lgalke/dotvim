@@ -97,3 +97,18 @@
 [submodule "pack/testing/start/auto-pairs"]
 	path = pack/testing/start/auto-pairs
 	url = https://github.com/jiangmiao/auto-pairs.git
+[submodule "pack/extra/opt/ultisnips"]
+	path = pack/extra/opt/ultisnips
+	url = https://github.com/SirVer/ultisnips.git
+[submodule "pack/extra/opt/vim-snippets"]
+	path = pack/extra/opt/vim-snippets
+	url = https://github.com/honza/vim-snippets.git
+[submodule "pack/community/start/rainbow_parentheses.vim"]
+	path = pack/community/start/rainbow_parentheses.vim
+	url = https://github.com/kien/rainbow_parentheses.vim.git
+[submodule "pack/community/start/tagbar"]
+	path = pack/community/start/tagbar
+	url = https://github.com/majutsushi/tagbar.git
+[submodule "pack/testing/opt/jedi-vim"]
+	path = pack/testing/opt/jedi-vim
+	url = https://github.com/davidhalter/jedi-vim.git

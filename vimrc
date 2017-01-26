@@ -179,7 +179,7 @@ augroup veight_flagship
   autocmd User Flags call Hoist("window", +10, {"hl": ['WarningMsg','StatusLineNC']}, 'SyntasticStatuslineFlag')
   autocmd User Flags call Hoist("window", -10, hl_as_usual, "%{tagbar#currenttag('[%s]', '')}")
   autocmd User Flags call Hoist("buffer", -10, hl_as_usual, "[%{&formatoptions}]")
-  autocmd User Flags call Hoist("buffer", 0, hl_as_usual, '%{g:asyncrun_status}')
+  " autocmd User Flags call Hoist("buffer", 0, hl_as_usual, '%{g:asyncrun_status}')
   autocmd User Flags call Hoist("global", 0, hl_as_usual, "[%{&cpoptions}]")
 augroup END
 " }}}
@@ -217,10 +217,6 @@ let g:pymode_rope_complete_on_dot = 0 " leave this to completion engine
 " }}}
 " pep8 indent {{{
 let g:python_pep8_indent_multiline_string = 1
-" }}}
-" Dispatch {{{
-nnoremap <leader>m :Make<cr>
-nnoremap <leader>d :Dispatch<cr>
 " }}}
 " Ragtag {{{
 let g:ragtag_global_maps = 1
@@ -400,7 +396,7 @@ if has('packages')
   endif
   " endif
   if s:python_version == 2
-    packadd jedi-vim
+    " packadd jedi-vim
   endif
   if has('syntax') && has('eval')
     packadd matchit
@@ -429,7 +425,7 @@ silent! colo gruvbox
 
 if has("autocmd")
   " Must be placed after syntax on
-  augroup rainbow
+  augroup rainbow_parents
     au!
     au VimEnter * RainbowParenthesesActivate
     au Syntax * RainbowParenthesesLoadRound
