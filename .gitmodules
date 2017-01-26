@@ -1,0 +1,99 @@
+[submodule "pack/core/start/vim-abolish"]
+	path = pack/core/start/vim-abolish
+	url = https://github.com/tpope/vim-abolish.git
+[submodule "pack/core/start/vim-characterize"]
+	path = pack/core/start/vim-characterize
+	url = https://github.com/tpope/vim-characterize.git
+[submodule "pack/core/start/vim-commentary"]
+	path = pack/core/start/vim-commentary
+	url = https://github.com/tpope/vim-commentary.git
+[submodule "pack/core/start/vim-dispatch"]
+	path = pack/core/start/vim-dispatch
+	url = https://github.com/tpope/vim-dispatch.git
+[submodule "pack/core/start/vim-fugitive"]
+	path = pack/core/start/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive.git
+[submodule "pack/core/start/vim-repeat"]
+	path = pack/core/start/vim-repeat
+	url = https://github.com/tpope/vim-repeat.git
+[submodule "pack/core/start/vim-sensible"]
+	path = pack/core/start/vim-sensible
+	url = https://github.com/tpope/vim-sensible.git
+[submodule "pack/core/start/vim-sleuth"]
+	path = pack/core/start/vim-sleuth
+	url = https://github.com/tpope/vim-sleuth.git
+[submodule "pack/core/start/vim-speeddating"]
+	path = pack/core/start/vim-speeddating
+	url = https://github.com/tpope/vim-speeddating.git
+[submodule "pack/core/start/vim-surround"]
+	path = pack/core/start/vim-surround
+	url = https://github.com/tpope/vim-surround.git
+[submodule "pack/core/start/vim-unimpaired"]
+	path = pack/core/start/vim-unimpaired
+	url = https://github.com/tpope/vim-unimpaired.git
+[submodule "pack/core/start/vim-vinegar"]
+	path = pack/core/start/vim-vinegar
+	url = https://github.com/tpope/vim-vinegar.git
+[submodule "pack/core/start/ctrlp.vim"]
+	path = pack/core/start/ctrlp.vim
+	url = https://github.com/ctrlpvim/ctrlp.vim.git
+[submodule "pack/core/start/tabular"]
+	path = pack/core/start/tabular
+	url = https://github.com/godlygeek/tabular.git
+[submodule "pack/extra/start/vim-pandoc-syntax"]
+	path = pack/extra/start/vim-pandoc-syntax
+	url = https://github.com/vim-pandoc/vim-pandoc-syntax.git
+[submodule "pack/extra/start/vim-pandoc"]
+	path = pack/extra/start/vim-pandoc
+	url = https://github.com/vim-pandoc/vim-pandoc.git
+[submodule "pack/core/start/vim-sneak"]
+	path = pack/core/start/vim-sneak
+	url = https://github.com/justinmk/vim-sneak.git
+[submodule "pack/extra/start/vim-tbone"]
+	path = pack/extra/start/vim-tbone
+	url = https://github.com/tpope/vim-tbone.git
+[submodule "pack/extra/start/vim-scriptease"]
+	path = pack/extra/start/vim-scriptease
+	url = https://github.com/tpope/vim-scriptease.git
+[submodule "pack/extra/start/vim-ragtag"]
+	path = pack/extra/start/vim-ragtag
+	url = https://github.com/tpope/vim-ragtag.git
+[submodule "pack/extra/start/vim-projectionist"]
+	path = pack/extra/start/vim-projectionist
+	url = https://github.com/tpope/vim-projectionist.git
+[submodule "pack/extra/start/vim-jdaddy"]
+	path = pack/extra/start/vim-jdaddy
+	url = https://github.com/tpope/vim-jdaddy.git
+[submodule "pack/extra/start/vim-flagship"]
+	path = pack/extra/start/vim-flagship
+	url = https://github.com/tpope/vim-flagship.git
+[submodule "pack/extra/start/vim-eunuch"]
+	path = pack/extra/start/vim-eunuch
+	url = https://github.com/tpope/vim-eunuch.git
+[submodule "pack/extra/start/vim-endwise"]
+	path = pack/extra/start/vim-endwise
+	url = https://github.com/tpope/vim-endwise.git
+[submodule "pack/extra/opt/gruvbox"]
+	path = pack/extra/opt/gruvbox
+	url = https://github.com/morhetz/gruvbox.git
+[submodule "pack/community/opt/completor.vim"]
+	path = pack/community/opt/completor.vim
+	url = https://github.com/maralla/completor.vim.git
+[submodule "pack/community/start/asyncrun.vim"]
+	path = pack/community/opt/asyncrun.vim
+	url = https://github.com/skywind3000/asyncrun.vim.git
+[submodule "pack/core/start/vim-argumentative"]
+	path = pack/core/start/vim-argumentative
+	url = https://github.com/PeterRincker/vim-argumentative.git
+[submodule "pack/extra/opt/syntastic"]
+	path = pack/extra/opt/syntastic
+	url = https://github.com/vim-syntastic/syntastic.git
+[submodule "pack/start/opt/vim-pathogen"]
+	path = pack/start/opt/vim-pathogen
+	url = https://github.com/tpope/vim-pathogen.git
+[submodule "pack/extra/start/vimtex"]
+	path = pack/extra/start/vimtex
+	url = https://github.com/lervag/vimtex.git
+[submodule "pack/testing/start/auto-pairs"]
+	path = pack/testing/start/auto-pairs
+	url = https://github.com/jiangmiao/auto-pairs.git
