@@ -45,12 +45,13 @@ endif
 let g:tex_flavor = 'latex'
 
 " wild menu
-" typescript development
 set wildignore+=*/.git/*
 set wildignore+=*.js,*.map
 set wildignore+=tags,.*.un~,*.pyc
 set wildignore+=*.bbl,*.aux,*.lot,*.lof,*.bcf,*.soc,*.fdb_latexmk,*.out
 set wildmode=longest:full,full
+
+set completeopt+=longest
 
 
 " vim8 specific
