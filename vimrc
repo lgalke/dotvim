@@ -66,6 +66,10 @@ endif
 let mapleader = ","
 let maplocalleader = "\\"
 
+" zvzz
+nnoremap n nzvzz
+nnoremap N Nzvzz
+
 " movement
 map <Tab> %
 map Y y$
@@ -75,6 +79,10 @@ nnoremap L $
 noremap + :
 noremap @+ @:
 " modes
+nmap <Up> <nop>
+nmap <Down> <nop>
+nmap <Left> <nop>
+nmap <Right> <nop>
 " Convenience
 vnoremap <Space> I<Space><Esc>gv
 nnoremap <Space> za
@@ -137,7 +145,10 @@ if has("autocmd")
     " make useful dispatch
     autocmd FileType pandoc if exists(':Pandoc') | let b:dispatch=":Pandoc pdf" | endif
     autocmd FileType pandoc if exists(':TOC') | nmap <F3> :TOC<CR> | endif
-    autocmd FileType pandoc setlocal et sw=4 sts=4
+    autocmd FileType pandoc setlocal et sw=4 sts=4 mps+=`:`
+          \| let b:AutoPairs = g:AutoPairs
+          \| let b:AutoPairs['`'] = '`'
+          \| let b:AutoPairs['$'] = '$'
     autocmd FileType dot let b:dispatch="dot -Tpdf -o %:r.pdf %"
     " guess the dispatch by shebang
     autocmd BufReadPost * if getline(1) =~# '^#!' | let b:dispatch = getline(1)[2:-1] . ' %' | let b:start = b:dispatch | endif
@@ -151,8 +162,8 @@ if has("autocmd")
           \ | let b:surround_{char2nr('e')} = "\\begin{\1environment\1}\n\r\n\\end{\1\1}"
           \ | let b:surround_{char2nr('v')} = "\\verb|\r|"
           \ | let b:surround_{char2nr('V')} = "\\begin{verbatim}\n\r\n\\end{verbatim}"
-    autocmd FileType tex,mail if exists(':Thesaurus') | setlocal keywordprg=:Thesaurus | endif
     autocmd FileType tex,mail,pandoc setlocal iskeyword+=@,-,#
+          \ | if exists(':Thesaurus') | setlocal keywordprg=:Thesaurus | endif
     " autocmd FileType pandoc nnoremap <buffer> <Leader>eb 
   augroup END
 endif
@@ -309,6 +320,9 @@ let g:neocomplete#sources#omni#input_patterns.tex =
 let g:indentLine_setColors = 0 
 let g:indentLine_setConceal = 0
 " }}}
+" jedi  {{{ "
+let g:jedi#popup_on_dot = 0
+" }}} jedi  "
 " }}}
 " Section: Community {{{
 " dotoo
@@ -357,7 +371,7 @@ augroup VimCompletesMeTex
 augroup END
 " }}}
 " Completor {{{
-let g:completor_python_binary = '/usr/bin/env python3'
+" let g:completor_python_binary = '/usr/bin/env python3'
 " }}}
 " }}}
 " Section: The Packs {{{ "
@@ -368,6 +382,7 @@ runtime! ftplugin/man.vim
 set keywordprg=:Man
 
 if has('packages')
+  packadd auto-pairs
   packadd syntastic
   " chose snippet engine and completor
   " if v:version > 703 && s:python_version
@@ -396,7 +411,7 @@ if has('packages')
   endif
   " endif
   if s:python_version == 2
-    " packadd jedi-vim
+    packadd jedi-vim
   endif
   if has('syntax') && has('eval')
     packadd matchit

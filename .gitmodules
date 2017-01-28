@@ -95,7 +95,7 @@
 	path = pack/extra/start/vimtex
 	url = https://github.com/lervag/vimtex.git
 [submodule "pack/testing/start/auto-pairs"]
-	path = pack/testing/start/auto-pairs
+	path = pack/testing/opt/auto-pairs
 	url = https://github.com/jiangmiao/auto-pairs.git
 [submodule "pack/extra/opt/ultisnips"]
 	path = pack/extra/opt/ultisnips
@@ -112,3 +112,18 @@
 [submodule "pack/testing/opt/jedi-vim"]
 	path = pack/testing/opt/jedi-vim
 	url = https://github.com/davidhalter/jedi-vim.git
+[submodule "pack/extra/start/ack.vim"]
+	path = pack/extra/start/ack.vim
+	url = https://github.com/mileszs/ack.vim.git
+[submodule "pack/extra/start/SimpylFold"]
+	path = pack/extra/start/SimpylFold
+	url = https://github.com/tmhedberg/SimpylFold.git
+[submodule "pack/core/start/splitjoin.vim"]
+	path = pack/core/start/splitjoin.vim
+	url = https://github.com/AndrewRadev/splitjoin.vim.git
+[submodule "pack/extra/start/vim-python-pep8-indent"]
+	path = pack/extra/start/vim-python-pep8-indent
+	url = https://github.com/hynek/vim-python-pep8-indent.git
+[submodule "pack/commmunity/start/vim-online-thesaurus"]
+	path = pack/community/start/vim-online-thesaurus
+	url = https://github.com/beloglazov/vim-online-thesaurus.git
