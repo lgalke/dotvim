@@ -123,7 +123,7 @@
 	url = https://github.com/AndrewRadev/splitjoin.vim.git
 [submodule "pack/extra/start/vim-python-pep8-indent"]
 	path = pack/extra/start/vim-python-pep8-indent
-	url = https://github.com/hynek/vim-python-pep8-indent.git
+	url = https://github.com/Vimjas/vim-python-pep8-indent.git
 [submodule "pack/commmunity/start/vim-online-thesaurus"]
 	path = pack/community/start/vim-online-thesaurus
 	url = https://github.com/beloglazov/vim-online-thesaurus.git
