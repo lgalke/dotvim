@@ -127,3 +127,6 @@
 [submodule "pack/commmunity/start/vim-online-thesaurus"]
 	path = pack/community/start/vim-online-thesaurus
 	url = https://github.com/beloglazov/vim-online-thesaurus.git
+[submodule "pack/extra/opt/VimCompletesMe"]
+	path = pack/extra/opt/VimCompletesMe
+	url = https://github.com/ajh17/VimCompletesMe.git
