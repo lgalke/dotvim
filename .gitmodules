@@ -130,3 +130,6 @@
 [submodule "pack/extra/opt/VimCompletesMe"]
 	path = pack/extra/opt/VimCompletesMe
 	url = https://github.com/ajh17/VimCompletesMe.git
+[submodule "pack/core/start/vim-indent-object"]
+	path = pack/core/start/vim-indent-object
+	url = https://github.com/michaeljsmith/vim-indent-object.git

@@ -10,6 +10,7 @@ endif
 " echomsg 'Using python'.s:python_version
 " }}}
 " Section: Basic Options {{{
+set expandtab
 set autowrite
 set foldmethod=marker
 set showtabline=2
@@ -51,7 +52,19 @@ set wildignore+=tags,.*.un~,*.pyc
 set wildignore+=*.bbl,*.aux,*.lot,*.lof,*.bcf,*.soc,*.fdb_latexmk,*.out
 set wildmode=longest:full,full
 
+augroup line_return
+    au!
+    au BufReadPost *
+        \ if line("'\"") > 0 && line("'\"") <= line("$") |
+        \     execute 'normal! g`"zvzz' |
+        \ endif
+augroup END
+
+
+" more complex options
 set completeopt+=longest
+" see :help fo-table
+set formatoptions=rqn1j
 
 
 " vim8 specific
