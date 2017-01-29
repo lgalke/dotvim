@@ -62,7 +62,8 @@ augroup END
 
 
 " more complex options
-set completeopt+=longest
+set completeopt+=longest,menuone,noinsert,noselect
+let g:mucomplete#enable_auto_at_startup = 1
 " see :help fo-table
 set formatoptions=rqn1j
 
@@ -418,11 +419,11 @@ if has('packages')
     packadd vim-snippets
     packadd ultisnips
   endif
-  if s:python_version && has('job') && has('timers') && has('lambda')
-    packadd completor.vim
-  else
-    packadd VimCompletesMe
-  endif
+  " if s:python_version && has('job') && has('timers') && has('lambda')
+  "   packadd completor.vim
+  " else
+  "   packadd VimCompletesMe
+  " endif
   " endif
   if s:python_version == 2
     packadd jedi-vim

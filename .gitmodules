@@ -133,3 +133,6 @@
 [submodule "pack/core/start/vim-indent-object"]
 	path = pack/core/start/vim-indent-object
 	url = https://github.com/michaeljsmith/vim-indent-object.git
+[submodule "pack/testing/start/vim-mucomplete"]
+	path = pack/testing/start/vim-mucomplete
+	url = https://github.com/lifepillar/vim-mucomplete.git
