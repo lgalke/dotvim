@@ -1,9 +1,9 @@
 " Compatibility and Dynamic Python {{{
 set nocompatible
-if has('python') " if dynamic py|py3 support is enabled, this line already activates python 3.
-  let s:python_version = 2
-elseif has('python3')
+if has('python3') " if dynamic py|py3 support is enabled, this line already activates python 3.
   let s:python_version = 3
+elseif has('python')
+  let s:python_version = 2
 else
   let s:python_version = 0
 endif
@@ -170,7 +170,7 @@ if has("autocmd")
     autocmd BufReadPost * if getline(1) =~# '^#!' | let b:dispatch = getline(1)[2:-1] . ' %' | let b:start = b:dispatch | endif
     autocmd FileType html setlocal foldmethod=marker foldmarker=<div,/div> iskeyword+=-
     if exists("+omnifunc")
-      autocmd FileType * if &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
+      " autocmd FileType * if &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
     endif
     autocmd FileType tex syn sync minlines=100 maxlines=300
           \ | let b:surround_{char2nr('x')} = "\\texttt{\r}"
