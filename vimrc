@@ -230,6 +230,9 @@ let g:ctrlp_extensions = ['tag']
 " }}}
 " }}}
 " Section: Extra {{{
+" Autopairs {{{
+let g:AutoPairsMapCh = 0
+" }}}
 " ack {{{
 let g:ack_use_dispatch = 1
 " }}}
