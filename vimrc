@@ -63,7 +63,7 @@ augroup END
 
 
 " more complex options
-set completeopt+=longest,menuone,noinsert,noselect
+set completeopt+=menuone,noinsert,noselect
 let g:mucomplete#enable_auto_at_startup = 1
 " see :help fo-table
 set formatoptions=rqn1j
@@ -107,14 +107,13 @@ nnoremap <C-S> :w<cr>
 inoremap <C-X>^ <C-R>=substitute(&commentstring,' \=%s\>'," -*- ".&ft." -*- vim:set ft=".&ft." ".(&et?"et":"noet")." sw=".&sw." sts=".&sts.':','')<CR>
 
 " Forward to next marker
-inoremap <silent> <C-J> <Esc>/<++<CR>zvzzv/++>/e<CR><Esc>:nohlsearch<CR>gv<C-G>
+nnoremap <silent> <C-J> <Esc>/<++<CR>zvzzv/++>/e<CR><Esc>:nohlsearch<CR>gv<C-G>
 snoremap <silent> <C-J> <Esc>/<++<CR>zvzzv/++>/e<CR><Esc>:nohlsearch<CR>gv<C-G>
 " Going backward to next marker
 " When in insert mode, markers have been replaced already
 " When still in select mode, skip marker
-inoremap <silent> <C-K> <Esc>1?<++<CR>zvzzv/++>/e<CR><Esc>:nohlsearch<CR>gv<C-G>
+nnoremap <silent> <C-K> <Esc>1?<++<CR>zvzzv/++>/e<CR><Esc>:nohlsearch<CR>gv<C-G>
 snoremap <silent> <C-K> <Esc>2?<++<CR>zvzzv/++>/e<CR><Esc>:nohlsearch<CR>gv<C-G>
-inoremap <C-R><C-K> <C-K>
 
 " Tpope's fkeys make sense
 nmap <silent> <F6> :if &previewwindow<Bar>pclose<Bar>elseif exists(':Gstatus')<Bar>exe 'Gstatus'<Bar>else<Bar>ls<Bar>endif<CR>
@@ -347,7 +346,7 @@ let g:jedi#popup_on_dot = 0
 " dotoo
 let g:dotoo#agenda#files = ['~/.plan/*.dotoo', '~/git/vec4ir/vec4ir.dotoo']
 " pandoc
-" let g:pandoc#formatting#mode = 'ha'
+let g:pandoc#formatting#mode = 'ha'
 let g:pandoc#filetypes#pandoc_markdown = 0
 let g:pandoc#filetypes#handled         = ["extra", "pandoc", "rst", "textile"]
 let g:pandoc#modules#disabled          = ["menu"]
