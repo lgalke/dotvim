@@ -7,6 +7,7 @@ elseif has('python3')
 else
   let s:python_version = 0
 endif
+let g:UltiSnipsUsePythonVersion = s:python_version 
 " echomsg 'Using python'.s:python_version
 " }}}
 " Section: Basic Options {{{
@@ -403,32 +404,9 @@ if has('packages')
   packadd auto-pairs
   packadd syntastic
   " chose snippet engine and completor
-  " if v:version > 703 && s:python_version
-  "   packadd python-mode
-  " endif
-  " if has("lua") && v:version > 738
-  "   packadd neocomplete.vim
-  "   packadd neosnippet.vim
-  "   packadd neosnippet-snippets
-  "   packadd neco-vim
-      " neosnippet {{{
-      " let g:neosnippet#enable_snipmate_compatibility = 1
-      " imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-      " smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-      " xmap <C-k>     <Plug>(neosnippet_expand_target)
-      " }}}
-  " else
   if s:python_version
     packadd vim-snippets
     packadd ultisnips
-  endif
-  " if s:python_version && has('job') && has('timers') && has('lambda')
-  "   packadd completor.vim
-  " else
-  "   packadd VimCompletesMe
-  " endif
-  " endif
-  if s:python_version == 2
     packadd jedi-vim
   endif
   if has('syntax') && has('eval')
