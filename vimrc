@@ -25,12 +25,16 @@ set autoindent
 set smartindent
 set wrap
 set cursorline cursorcolumn
+set foldopen+=jump
+set display=lastline "give it a try
+set lazyredraw
 if has("linebreak")
   " dont break in the middle of a word
   set linebreak
   " ident line breaks
-  set breakindent
-  let &showbreak = "+++ "
+  if exists('+breakindent')
+    set breakindent showbreak=\ +
+  endif
 endif
 set nolist
 set number relativenumber
@@ -100,20 +104,24 @@ nmap <Down> <nop>
 nmap <Left> <nop>
 nmap <Right> <nop>
 " Convenience
-vnoremap <Space> I<Space><Esc>gv
+xnoremap <Space> I<Space><Esc>gv
 nnoremap <Space> za
 inoremap <C-C> <Esc>`^
 nnoremap <C-S> :w<cr>
+
+" thanks at the pope
 inoremap <C-X>^ <C-R>=substitute(&commentstring,' \=%s\>'," -*- ".&ft." -*- vim:set ft=".&ft." ".(&et?"et":"noet")." sw=".&sw." sts=".&sts.':','')<CR>
 
-" Forward to next marker
-nnoremap <silent> <C-J> <Esc>/<++<CR>zvzzv/++>/e<CR><Esc>:nohlsearch<CR>gv<C-G>
-snoremap <silent> <C-J> <Esc>/<++<CR>zvzzv/++>/e<CR><Esc>:nohlsearch<CR>gv<C-G>
-" Going backward to next marker
-" When in insert mode, markers have been replaced already
-" When still in select mode, skip marker
-nnoremap <silent> <C-K> <Esc>1?<++<CR>zvzzv/++>/e<CR><Esc>:nohlsearch<CR>gv<C-G>
-snoremap <silent> <C-K> <Esc>2?<++<CR>zvzzv/++>/e<CR><Esc>:nohlsearch<CR>gv<C-G>
+
+" i dont need multiple cursors
+xnoremap <C-S> :s/
+
+" Literal marker movement
+nnoremap <silent> <C-J> /\m<++.\{-}++>/<CR>zvzzgn<C-G>
+nnoremap <silent> <C-K> ?\m<++.\{-}++>?<CR>zvzzgn<C-G>
+snoremap <silent> <C-J> <Esc>/\m<++.\{-}++>/<CR>zvzzgn<C-G>
+snoremap <silent> <C-K> <Esc>?\m<++.\{-}++>?<CR>zvzzgn<C-G>
+iabbrev +++ <++ ++><Left><Left><Left><Left>
 
 " Tpope's fkeys make sense
 nmap <silent> <F6> :if &previewwindow<Bar>pclose<Bar>elseif exists(':Gstatus')<Bar>exe 'Gstatus'<Bar>else<Bar>ls<Bar>endif<CR>
@@ -160,7 +168,7 @@ if has("autocmd")
     " make useful dispatch
     autocmd FileType pandoc if exists(':Pandoc') | let b:dispatch=":Pandoc pdf" | endif
     autocmd FileType pandoc if exists(':TOC') | nmap <F3> :TOC<CR> | endif
-    autocmd FileType pandoc setlocal et sw=4 sts=4 mps+=`:`
+    autocmd FileType pandoc,markdown setlocal et sw=4 sts=2 iskeyword+=@,-,#
           \| let b:AutoPairs = g:AutoPairs
           \| let b:AutoPairs['`'] = '`'
           \| let b:AutoPairs['$'] = '$'
@@ -168,17 +176,16 @@ if has("autocmd")
     " guess the dispatch by shebang
     autocmd BufReadPost * if getline(1) =~# '^#!' | let b:dispatch = getline(1)[2:-1] . ' %' | let b:start = b:dispatch | endif
     autocmd FileType html setlocal foldmethod=marker foldmarker=<div,/div> iskeyword+=-
-    if exists("+omnifunc")
-      " autocmd FileType * if &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
-    endif
+    " if exists("+omnifunc")
+    "   autocmd FileType * if &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
+    " endif
     autocmd FileType tex syn sync minlines=100 maxlines=300
           \ | let b:surround_{char2nr('x')} = "\\texttt{\r}"
           \ | let b:surround_{char2nr('l')} = "\\\1identifier\1{\r}"
           \ | let b:surround_{char2nr('e')} = "\\begin{\1environment\1}\n\r\n\\end{\1\1}"
           \ | let b:surround_{char2nr('v')} = "\\verb|\r|"
           \ | let b:surround_{char2nr('V')} = "\\begin{verbatim}\n\r\n\\end{verbatim}"
-    autocmd FileType tex,mail,pandoc setlocal iskeyword+=@,-,#
-          \ | if exists(':Thesaurus') | setlocal keywordprg=:Thesaurus | endif
+    autocmd FileType tex,mail,pandoc if exists(':Thesaurus') | setlocal keywordprg=:Thesaurus | endif
     " autocmd FileType pandoc nnoremap <buffer> <Leader>eb 
   augroup END
 endif
@@ -197,6 +204,8 @@ set statusline+=[b%n\ %f%(\ *%{fugitive#head()}%)]
 " usual stuff
 set statusline+=\ %H%R
 set statusline+=%=
+set statusline+=%a
+set statusline+=%P
 augroup veight_flagship
   au!
   " this is necessary because (vim-signify|vim-gitgutter) somehow breaks colors
@@ -346,7 +355,7 @@ let g:jedi#popup_on_dot = 0
 " dotoo
 let g:dotoo#agenda#files = ['~/.plan/*.dotoo', '~/git/vec4ir/vec4ir.dotoo']
 " pandoc
-let g:pandoc#formatting#mode = 'ha'
+let g:pandoc#formatting#mode = 'hA'
 let g:pandoc#filetypes#pandoc_markdown = 0
 let g:pandoc#filetypes#handled         = ["extra", "pandoc", "rst", "textile"]
 let g:pandoc#modules#disabled          = ["menu"]
@@ -390,6 +399,12 @@ augroup END
 " }}}
 " Completor {{{
 " let g:completor_python_binary = '/usr/bin/env python3'
+" }}}
+" easy-align {{{
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 " }}}
 " }}}
 " Section: The Packs {{{ "

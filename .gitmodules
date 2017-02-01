@@ -1,9 +1,6 @@
 [submodule "pack/core/start/vim-abolish"]
 	path = pack/core/start/vim-abolish
 	url = https://github.com/tpope/vim-abolish.git
-[submodule "pack/core/start/vim-characterize"]
-	path = pack/core/start/vim-characterize
-	url = https://github.com/tpope/vim-characterize.git
 [submodule "pack/core/start/vim-commentary"]
 	path = pack/core/start/vim-commentary
 	url = https://github.com/tpope/vim-commentary.git
@@ -136,3 +133,9 @@
 [submodule "pack/testing/start/vim-mucomplete"]
 	path = pack/testing/start/vim-mucomplete
 	url = https://github.com/lifepillar/vim-mucomplete.git
+[submodule "pack/testing/start/vim-easy-align"]
+	path = pack/testing/start/vim-easy-align
+	url = https://github.com/junegunn/vim-easy-align.git
+[submodule "pack/community/opt/seoul256.vim"]
+	path = pack/community/opt/seoul256.vim
+	url = https://github.com/junegunn/seoul256.vim.git
