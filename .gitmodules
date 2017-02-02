@@ -91,9 +91,6 @@
 [submodule "pack/extra/start/vimtex"]
 	path = pack/extra/start/vimtex
 	url = https://github.com/lervag/vimtex.git
-[submodule "pack/testing/start/auto-pairs"]
-	path = pack/testing/opt/auto-pairs
-	url = https://github.com/jiangmiao/auto-pairs.git
 [submodule "pack/extra/opt/ultisnips"]
 	path = pack/extra/opt/ultisnips
 	url = https://github.com/SirVer/ultisnips.git

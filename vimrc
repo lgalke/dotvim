@@ -122,6 +122,7 @@ nnoremap <silent> <C-K> ?\m<++.\{-}++>?<CR>zvzzgn<C-G>
 snoremap <silent> <C-J> <Esc>/\m<++.\{-}++>/<CR>zvzzgn<C-G>
 snoremap <silent> <C-K> <Esc>?\m<++.\{-}++>?<CR>zvzzgn<C-G>
 iabbrev +++ <++ ++><Left><Left><Left><Left>
+let g:surround_{char2nr('m')} = "<++\r++>"
 
 " Tpope's fkeys make sense
 nmap <silent> <F6> :if &previewwindow<Bar>pclose<Bar>elseif exists(':Gstatus')<Bar>exe 'Gstatus'<Bar>else<Bar>ls<Bar>endif<CR>
@@ -316,9 +317,8 @@ nnoremap <leader>e :Errors<CR>
 let g:UltiSnipsSnippetsDir = "~/.vim/UltiSnips"
 let g:UltiSnipsListSnippets = "<c-r><c-r><Tab>"
 let g:UltiSnipsExpandTrigger = "<Tab>"
-let g:UltiSnipsJumpForwardTrigger = "<c-j>"
-let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
-inoremap <c-x><c-k> <c-x><c-k>
+let g:UltiSnipsJumpForwardTrigger = "<c-f>"
+let g:UltiSnipsJumpBackwardTrigger = "<c-b>"
 " }}}
 " neocomplete {{{
 " let g:neocomplete#enable_at_startup = 1
@@ -415,7 +415,6 @@ runtime! ftplugin/man.vim
 set keywordprg=:Man
 
 if has('packages')
-  packadd auto-pairs
   packadd syntastic
   " chose snippet engine and completor
   if s:python_version
