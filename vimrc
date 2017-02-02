@@ -421,6 +421,10 @@ if has('packages')
     packadd vim-snippets
     packadd ultisnips
     packadd jedi-vim
+    augroup jedi_omnifunc
+      au!
+      au FileType python setlocal omnifunc=jedi#completions
+    augroup END
   endif
   if has('syntax') && has('eval')
     packadd matchit
