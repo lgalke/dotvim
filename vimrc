@@ -13,6 +13,7 @@ let g:UltiSnipsUsePythonVersion = s:python_version
 " Section: Basic Options {{{
 set expandtab
 set autowrite
+set noshowmode
 set foldmethod=marker
 set showtabline=2
 set guioptions-=e "recommended by flagship
@@ -78,6 +79,19 @@ if v:version >= 800
   set signcolumn=yes
 endif
 " }}}
+" statusline {{{
+" this is hacky to fix with to 2
+set statusline=%#SignColumn#%-2.2(%M\ %)%*
+set statusline+=%#CursorLineNr#%4.4(%c%)%*
+" buffer number and modified
+set statusline+=[b%n\ %f%(\ *%{fugitive#head()}%)]
+" file
+" usual stuff
+set statusline+=\ %H%R
+set statusline+=%=
+set statusline+=%a
+set statusline+=%P
+" }}}
  " Section: Maps {{{
 if has('conceal')
   set conceallevel=2 concealcursor=
@@ -117,10 +131,10 @@ inoremap <C-X>^ <C-R>=substitute(&commentstring,' \=%s\>'," -*- ".&ft." -*- vim:
 xnoremap <C-S> :s/
 
 " Literal marker movement
-nnoremap <silent> <C-J> /\m<++.\{-}++>/<CR>zvzzgn<C-G>
-nnoremap <silent> <C-K> ?\m<++.\{-}++>?<CR>zvzzgn<C-G>
-snoremap <silent> <C-J> <Esc>/\m<++.\{-}++>/<CR>zvzzgn<C-G>
-snoremap <silent> <C-K> <Esc>?\m<++.\{-}++>?<CR>zvzzgn<C-G>
+inoremap <silent> <C-F> <Esc>/\m<++.\{-}++>/<CR>zvzzgn<C-G>
+inoremap <silent> <C-B> <Esc>?\m<++.\{-}++>?<CR>zvzzgn<C-G>
+snoremap <silent> <C-F> <Esc>/\m<++.\{-}++>/<CR>zvzzgn<C-G>
+snoremap <silent> <C-B> <Esc>2?\m<++.\{-}++>?<CR>zvzzgn<C-G>
 iabbrev +++ <++ ++><Left><Left><Left><Left>
 let g:surround_{char2nr('m')} = "<++\r++>"
 
@@ -170,12 +184,10 @@ if has("autocmd")
     autocmd FileType pandoc if exists(':Pandoc') | let b:dispatch=":Pandoc pdf" | endif
     autocmd FileType pandoc if exists(':TOC') | nmap <F3> :TOC<CR> | endif
     autocmd FileType pandoc,markdown setlocal et sw=4 sts=2 iskeyword+=@,-,#
-          \| let b:AutoPairs = g:AutoPairs
-          \| let b:AutoPairs['`'] = '`'
-          \| let b:AutoPairs['$'] = '$'
-    autocmd FileType dot let b:dispatch="dot -Tpdf -o %:r.pdf %"
+    autocmd FileType dot let b:dispatch="dot -Tpdf -o %:r.pdf %"  | setlocal commentstring=//%s
     " guess the dispatch by shebang
     autocmd BufReadPost * if getline(1) =~# '^#!' | let b:dispatch = getline(1)[2:-1] . ' %' | let b:start = b:dispatch | endif
+
     autocmd FileType html setlocal foldmethod=marker foldmarker=<div,/div> iskeyword+=-
     " if exists("+omnifunc")
     "   autocmd FileType * if &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
@@ -188,71 +200,27 @@ if has("autocmd")
           \ | let b:surround_{char2nr('V')} = "\\begin{verbatim}\n\r\n\\end{verbatim}"
     autocmd FileType tex,mail,pandoc if exists(':Thesaurus') | setlocal keywordprg=:Thesaurus | endif
     " autocmd FileType pandoc nnoremap <buffer> <Leader>eb 
+    autocmd FileType python setlocal textwidth=79 colorcolumn=+1 softtabstop=4 shiftwidth=4 expandtab
+    let hl_as_usual = {"hl": ['Statusline', 'StatusLineNC']}
+    autocmd User Flags call Hoist("window", +10, {"hl": ['WarningMsg','StatusLineNC']}, 'SyntasticStatuslineFlag')
+    autocmd User Flags call Hoist("window", -10, hl_as_usual, "%{tagbar#currenttag('[%s]', '')}")
+    autocmd User Flags call Hoist("buffer", -10, hl_as_usual, "[%{&formatoptions}]")
+    " autocmd User Flags call Hoist("buffer", 0, hl_as_usual, '%{g:asyncrun_status}')
+    autocmd User Flags call Hoist("global", 0, hl_as_usual, "[%{&cpoptions}]")
+    " this is necessary because (vim-signify|vim-gitgutter) somehow breaks colors
+    " autocmd User Flags call Hoist("buffer", -10, hl_as_usual, function('fugitive#statusline'))
   augroup END
 endif
 " }}}
-" Section: Core {{{
+" Section: Plugins {{{
 " Markdown {{{
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 " }}}
-" Flagship {{{
-" this is hacky to fix with to 2
-set statusline=%#SignColumn#%-2.2(%M\ %)%*
-set statusline+=%#CursorLineNr#%4.4(%c%)%*
-" buffer number and modified
-set statusline+=[b%n\ %f%(\ *%{fugitive#head()}%)]
-" file
-" usual stuff
-set statusline+=\ %H%R
-set statusline+=%=
-set statusline+=%a
-set statusline+=%P
-augroup veight_flagship
-  au!
-  " this is necessary because (vim-signify|vim-gitgutter) somehow breaks colors
-  let hl_as_usual = {"hl": ['Statusline', 'StatusLineNC']}
-  " autocmd User Flags call Hoist("buffer", -10, hl_as_usual, function('fugitive#statusline'))
-  autocmd User Flags call Hoist("window", +10, {"hl": ['WarningMsg','StatusLineNC']}, 'SyntasticStatuslineFlag')
-  autocmd User Flags call Hoist("window", -10, hl_as_usual, "%{tagbar#currenttag('[%s]', '')}")
-  autocmd User Flags call Hoist("buffer", -10, hl_as_usual, "[%{&formatoptions}]")
-  " autocmd User Flags call Hoist("buffer", 0, hl_as_usual, '%{g:asyncrun_status}')
-  autocmd User Flags call Hoist("global", 0, hl_as_usual, "[%{&cpoptions}]")
-augroup END
-" }}}
-" Fugitive {{{
-nmap <leader>gs :Gstatus<cr>
-nmap <leader>gw :Gwrite<cr>
-nmap <leader>gc :Gcommit<cr>
-nmap <leader>gp :Gpush<cr>
-nmap <leader>gf :Gfetch<cr>
-nmap <leader>gm :Gmerge<cr>
-" }}}
-" Tabular {{{
-nnoremap <leader>t= :Tabularize /=/<CR>
-nnoremap <leader>t& :Tabularize /&/<CR>
-nnoremap <leader>t# :Tabularize /#/<CR>
-" }}}
-" CtrlP {{{
-let g:ctrlp_map = '<leader>,'
-nnoremap <leader>. :CtrlPTag<cr>
-nnoremap <leader>b :CtrlPBuffer<cr>
-let g:ctrlp_extensions = ['tag']
-" }}}
-" }}}
-" Section: Extra {{{
 " Autopairs {{{
 let g:AutoPairsMapCh = 0
 " }}}
 " ack {{{
 let g:ack_use_dispatch = 1
-" }}}
-" XPTemplate {{{
-let g:xptemplate_vars="$author=Lukas\ Galke&$email=vim@lpag.de"
-" }}}
-" PyMode {{{
-let g:pymode_python = 'python3'
-let g:pymode_lint_unmodified = 1
-let g:pymode_rope_complete_on_dot = 0 " leave this to completion engine
 " }}}
 " pep8 indent {{{
 let g:python_pep8_indent_multiline_string = 1
@@ -294,22 +262,23 @@ let g:loc_list_height                    = 5
 let g:syntastic_aggregate_errors         = 1
 let g:syntastic_id_checkers              = 1
 let g:syntastic_auto_loc_list            = 0
-let g:tsuquyomi_disable_quickfix = 1
-let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
-" invoke error loc list manually
-nmap <silent> <leader>e :Errors<CR>
+let g:tsuquyomi_disable_quickfix         = 1
+let g:syntastic_typescript_checkers      = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
 " tex checker
-let g:syntastic_tex_checkers = ["chktex", "lacheck"]
+let g:syntastic_tex_checkers             = ["chktex", "lacheck"]
 " 1: Cmd terminated with space
 " 8: Wrong type of dashes
 " 36: spaces around braces
-let g:syntastic_tex_chktex_args = "-n1 -n8 -n36"
+let g:syntastic_tex_chktex_args          = "-n1 -n8 -n36"
 " python checker
-let g:syntastic_python_checkers = ['python', 'flake8']
-let g:syntastic_python_python_exec = '/usr/bin/python3'
-let g:syntastic_python_flake8_exec = '/usr/bin/python3'
+let g:syntastic_python_checkers          = ['flake8']
+" let g:syntastic_python_checkers          = []
+let g:syntastic_python_python_exec       = '/usr/bin/python3'
+" let g:syntastic_python_flake8_exec       = '/usr/bin/python3'
 " E402 : module level import not at top of file
-let g:syntastic_python_flake8_args = '-m flake8 --ignore=E501,E203,E402'
+" let g:syntastic_python_flake8_args       = '-m flake8 --ignore=E501,E203,E402'
+" let g:syntastic_python_flake8_args       = '-m flake8'
+
 
 nnoremap <leader>e :Errors<CR>
 " }}}
@@ -348,32 +317,27 @@ let g:indentLine_setColors = 0
 let g:indentLine_setConceal = 0
 " }}}
 " jedi  {{{ "
-let g:jedi#popup_on_dot = 0
+let g:jedi#popup_on_dot = 1
+let g:jedi#show_call_signatures = 2
 " }}} jedi  "
-" }}}
-" Section: Community {{{
-" dotoo
-let g:dotoo#agenda#files = ['~/.plan/*.dotoo', '~/git/vec4ir/vec4ir.dotoo']
-" pandoc
-let g:pandoc#formatting#mode = 'hA'
+" pandoc {{{
+let g:pandoc#formatting#mode = 's'
 let g:pandoc#filetypes#pandoc_markdown = 0
 let g:pandoc#filetypes#handled         = ["extra", "pandoc", "rst", "textile"]
 let g:pandoc#modules#disabled          = ["menu"]
 let g:pandoc#syntax#conceal#urls       = 1
 let g:pandoc#completion#bib#mode       = 'citeproc'
 " let g:pandoc#biblio#bibs               = ["~/git/vec4ir/masters/masters.bib"]
+" }}}
 " table mode (pandoc table compatible) {{{
-let g:table_mode_corner                = '+'
-let g:table_mode_seperator             = '|'
-let g:table_mode_fillchar              = '-'
-nmap <leader>,tr :TablemodeRealign<cr>
+" let g:table_mode_corner                = '+'
+" let g:table_mode_seperator             = '|'
+" let g:table_mode_fillchar              = '-'
+" nmap <leader>,tr :TablemodeRealign<cr>
 " }}}
-" }}}
-" Section: Testing {{{
-" Async {{{ "
+" Ack {{{ "
 nnoremap <leader>a :Ack!<space>
-nnoremap & :AsyncRun<space>
-" }}} Async "
+" }}} Ack "
 " Signify {{{
 let g:signify_vcs_list = [ 'git' ]
 let g:signify_line_highlight = 0
@@ -381,30 +345,19 @@ let g:signify_line_highlight = 0
 " TagBar {{{
 nmap <F2> :TagbarToggle<CR>
 " }}}
-" VimCompletesMe + vimtex {{{
-augroup VimCompletesMeTex
-  autocmd!
-  autocmd FileType tex let b:vcm_omni_pattern =
-        \ '\v\\%('
-        \ . '\a*cite\a*%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
-        \ . '|\a*ref%(\s*\{[^}]*|range\s*\{[^,}]*%(}\{)?)'
-        \ . '|hyperref\s*\[[^]]*'
-        \ . '|includegraphics\*?%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
-        \ . '|%(include%(only)?|input)\s*\{[^}]*'
-        \ . '|\a*(gls|Gls|GLS)(pl)?\a*%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
-        \ . '|includepdf%(\s*\[[^]]*\])?\s*\{[^}]*'
-        \ . '|includestandalone%(\s*\[[^]]*\])?\s*\{[^}]*'
-        \ . ')'
-augroup END
-" }}}
-" Completor {{{
-" let g:completor_python_binary = '/usr/bin/env python3'
-" }}}
 " easy-align {{{
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
+vmap <Enter> <Plug>(EasyAlign)
+" }}}
+" Angular and Typescript {{{
+" whos using it
+let g:typescript_compiler_binary = 'tsc'
+let g:typescript_compiler_options = ''
+autocmd QuickFixCmdPost [^l]* nested cwindow
+autocmd QuickFixCmdPost    l* nested lwindow
 " }}}
 " }}}
 " Section: The Packs {{{ "
@@ -456,5 +409,8 @@ if has("autocmd")
     au Syntax * RainbowParenthesesLoadSquare
     au Syntax * RainbowParenthesesLoadBraces
     au Syntax * RainbowParenthesesLoadChevrons
+  augroup END
+  augroup custom_syntax
+    autocmd Syntax python syn match Error /\s\+$/
   augroup END
 endif

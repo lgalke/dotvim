@@ -136,3 +136,36 @@
 [submodule "pack/community/opt/seoul256.vim"]
 	path = pack/community/opt/seoul256.vim
 	url = https://github.com/junegunn/seoul256.vim.git
+[submodule "pack/community/start/goyo.vim"]
+	path = pack/community/start/goyo.vim
+	url = https://github.com/junegunn/goyo.vim.git
+[submodule "pack/community/start/limelight.vim"]
+	path = pack/community/start/limelight.vim
+	url = https://github.com/junegunn/limelight.vim.git
+[submodule "pack/extra/start/typescript-vim"]
+	path = pack/extra/start/typescript-vim
+	url = https://github.com/leafgarland/typescript-vim.git
+[submodule "pack/extra/start/vim-js-pretty-template"]
+	path = pack/extra/start/vim-js-pretty-template
+	url = https://github.com/Quramy/vim-js-pretty-template.git
+[submodule "pack/extra/start/tsuquyomi"]
+	path = pack/extra/start/tsuquyomi
+	url = https://github.com/Quramy/tsuquyomi.git
+[submodule "pack/extra/opt/vimproc.vim"]
+	path = pack/extra/start/vimproc.vim
+	url = https://github.com/Shougo/vimproc.vim.git
+[submodule "pack/extra/start/angular-cli.vim"]
+	path = pack/extra/start/angular-cli.vim
+	url = https://github.com/bdauria/angular-cli.vim.git
+[submodule "pack/community/start/vim-css-color"]
+	path = pack/community/start/vim-css-color
+	url = https://github.com/ap/vim-css-color.git
+[submodule "pack/extra/start/vim-flake8"]
+	path = pack/extra/start/vim-flake8
+	url = https://github.com/nvie/vim-flake8.git
+[submodule "pack/core/start/FastFold"]
+	path = pack/core/start/FastFold
+	url = https://github.com/Konfekt/FastFold.git
+[submodule "pack/community/start/vim-signify"]
+	path = pack/community/start/vim-signify
+	url = https://github.com/mhinz/vim-signify.git
