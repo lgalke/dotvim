@@ -160,9 +160,6 @@
 [submodule "pack/community/start/vim-css-color"]
 	path = pack/community/start/vim-css-color
 	url = https://github.com/ap/vim-css-color.git
-[submodule "pack/extra/start/vim-flake8"]
-	path = pack/extra/start/vim-flake8
-	url = https://github.com/nvie/vim-flake8.git
 [submodule "pack/core/start/FastFold"]
 	path = pack/core/start/FastFold
 	url = https://github.com/Konfekt/FastFold.git
