@@ -157,3 +157,6 @@
 [submodule "pack/core/start/vim-liquid"]
 	path = pack/core/start/vim-liquid
 	url = https://github.com/tpope/vim-liquid.git
+[submodule "pack/extra/opt/badwolf"]
+	path = pack/extra/opt/badwolf
+	url = https://github.com/sjl/badwolf.git

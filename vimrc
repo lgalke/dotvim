@@ -25,6 +25,7 @@ set autoindent
 set splitright
 set smartindent
 set wrap
+set scrolloff=5
 set cursorline cursorcolumn
 set foldopen+=jump
 set display=lastline "give it a try
@@ -191,24 +192,6 @@ onoremap ilc :<c-u>normal! f<Bar>hvT<Bar><cr>
 " command! -complete=packadd -nargs=1 Packadd packadd <args> | write | edit %
 command! -bar -bang -complete=packadd -nargs=1 Packadd packadd<bang> <args> | doautoall BufRead
 command! -bar -nargs=0 Helptags silent! helptags ALL
-
-if exists(":Goyo") && exists(":LimeLight")
-  command Focus Goyo | LimeLight!!
-endif
-
-function! s:Tags() abort
-  silent let l:dir = system("git rev-parse --show-toplevel")
-  if v:shell_error
-    let tagsfile = "./tags"
-  else
-    let tagsfile = substitute(l:dir, "\n","","") . '/tags'
-  endif
-  let cmd = ['ctags', '-R', '-f', tagsfile]
-  echom "Generating tags in: " . tagsfile
-  let job = job_start(cmd)
-endfunction
-
-command! -bar -nargs=0 Tags call <SID>Tags()
 " }}}
 " Section: Autocmds {{{
 if has("autocmd")
@@ -241,7 +224,7 @@ if has("autocmd")
     " autocmd FileType pandoc nnoremap <buffer> <Leader>eb 
     autocmd FileType python setlocal textwidth=79 colorcolumn=+1 softtabstop=4 shiftwidth=4 expandtab
     let hl_as_usual = {"hl": ['Statusline', 'StatusLineNC']}
-    autocmd User Flags call Hoist("window", +10, {"hl": ['WarningMsg','StatusLineNC']}, 'SyntasticStatuslineFlag')
+    autocmd User Flags call Hoist("window", +10, {"hl": 'WarningMsg'}, 'SyntasticStatuslineFlag')
     autocmd User Flags call Hoist("window", -10, hl_as_usual, "%{tagbar#currenttag('[%s]', '')}")
     autocmd User Flags call Hoist("buffer", -10, hl_as_usual, "[%{&formatoptions}]")
     " autocmd User Flags call Hoist("buffer", 0, hl_as_usual, '%{g:asyncrun_status}')
@@ -363,6 +346,43 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 vmap <Enter> <Plug>(EasyAlign)
+" }}}
+" Goyo and Limelight {{{
+
+let g:limelight_conceal_ctermfg = 240
+
+function! s:goyo_enter()
+  silent !tmux set status off
+  silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
+  set noshowmode
+  set noshowcmd
+  set scrolloff=999
+  " packadd seoul256.vim
+  " color seoul256-light
+  Limelight
+  " ...
+  set nocursorcolumn nocursorline
+  set background=light
+endfunction
+
+function! s:goyo_leave()
+  silent !tmux set status on
+  silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
+  set showmode
+  set showcmd
+  set scrolloff=5
+  Limelight!
+  " ...
+  set background=dark
+  set cursorcolumn cursorline
+endfunction
+
+augroup GoLime
+  au!
+  autocmd! User GoyoEnter nested call <SID>goyo_enter()
+  autocmd! User GoyoLeave nested call <SID>goyo_leave()
+augroup END
+
 " }}}
 " Angular and Typescript {{{
 " whos using it
