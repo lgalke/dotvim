@@ -201,9 +201,10 @@ function! s:Tags() abort
   if v:shell_error
     let tagsfile = "./tags"
   else
-    let tagsfile = l:dir . "/.git/tags"
+    let tagsfile = substitute(l:dir, "\n","","") . '/tags'
   endif
   let cmd = ['ctags', '-R', '-f', tagsfile]
+  echom "Generating tags in: " . tagsfile
   let job = job_start(cmd)
 endfunction
 
