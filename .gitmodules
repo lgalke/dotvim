@@ -91,9 +91,6 @@
 [submodule "pack/extra/start/vimtex"]
 	path = pack/extra/start/vimtex
 	url = https://github.com/lervag/vimtex.git
-[submodule "pack/extra/opt/ultisnips"]
-	path = pack/extra/opt/ultisnips
-	url = https://github.com/SirVer/ultisnips.git
 [submodule "pack/extra/opt/vim-snippets"]
 	path = pack/extra/opt/vim-snippets
 	url = https://github.com/honza/vim-snippets.git
@@ -118,18 +115,9 @@
 [submodule "pack/extra/start/vim-python-pep8-indent"]
 	path = pack/extra/start/vim-python-pep8-indent
 	url = https://github.com/Vimjas/vim-python-pep8-indent.git
-[submodule "pack/commmunity/start/vim-online-thesaurus"]
-	path = pack/community/start/vim-online-thesaurus
-	url = https://github.com/beloglazov/vim-online-thesaurus.git
-[submodule "pack/extra/opt/VimCompletesMe"]
-	path = pack/extra/opt/VimCompletesMe
-	url = https://github.com/ajh17/VimCompletesMe.git
 [submodule "pack/core/start/vim-indent-object"]
 	path = pack/core/start/vim-indent-object
 	url = https://github.com/michaeljsmith/vim-indent-object.git
-[submodule "pack/testing/start/vim-mucomplete"]
-	path = pack/testing/start/vim-mucomplete
-	url = https://github.com/lifepillar/vim-mucomplete.git
 [submodule "pack/testing/start/vim-easy-align"]
 	path = pack/testing/start/vim-easy-align
 	url = https://github.com/junegunn/vim-easy-align.git
@@ -166,3 +154,9 @@
 [submodule "pack/community/start/vim-signify"]
 	path = pack/community/start/vim-signify
 	url = https://github.com/mhinz/vim-signify.git
+[submodule "pack/testing/start/lgalke-cucumbertables"]
+	path = pack/testing/start/lgalke-cucumbertables
+	url = https://gist.github.com/lgalke/afb651ec29770ad64f14afc365450c47
+[submodule "pack/core/start/vim-liquid"]
+	path = pack/core/start/vim-liquid
+	url = https://github.com/tpope/vim-liquid.git

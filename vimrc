@@ -13,16 +13,16 @@ let g:UltiSnipsUsePythonVersion = s:python_version
 " Section: Basic Options {{{
 set expandtab
 set autowrite
-set noshowmode
+set showmode
 set foldmethod=marker
 set showtabline=2
 set guioptions-=e "recommended by flagship
-set ignorecase
-set smartcase
+set ignorecase smartcase
 set shiftround
-set showcmd
+set showcmd ruler laststatus=2
 set showmatch
 set autoindent
+set splitright
 set smartindent
 set wrap
 set cursorline cursorcolumn
@@ -44,14 +44,16 @@ set listchars=eol:¶,tab:¦-,trail:±,extends:»,precedes:«,nbsp:¬
 " better default comment string for a lot of configuratoin files
 set commentstring=#\ %s
 set noruler
-set dictionary+=/usr/share/dict/words
+set dictionary+=/usr/share/dict/words thesaurus+=$HOME/pg10681.txt
 " %=%-14.(%l,%c%V%)\ %P
 if has('persistent_undo')
   set undofile	" keep an undo file (undo changes after closing)
 endif
 let g:tex_flavor = 'latex'
+let g:is_bash = 1
 
 " wild menu
+set wildmenu
 set wildignore+=*/.git/*
 set wildignore+=*.js,*.map
 set wildignore+=tags,.*.un~,*.pyc
@@ -68,6 +70,7 @@ augroup END
 
 
 " more complex options
+set complete-=i
 set completeopt+=menuone,noinsert,noselect
 let g:mucomplete#enable_auto_at_startup = 1
 " see :help fo-table
@@ -78,6 +81,12 @@ set formatoptions=rqn1j
 if v:version >= 800
   set signcolumn=yes
 endif
+
+" Plugin Replacement
+set path+=**
+
+
+
 " }}}
 " statusline {{{
 " this is hacky to fix with to 2
@@ -92,7 +101,7 @@ set statusline+=%=
 set statusline+=%a
 set statusline+=%P
 " }}}
- " Section: Maps {{{
+" Section: Maps {{{
 if has('conceal')
   set conceallevel=2 concealcursor=
 endif
@@ -109,10 +118,9 @@ map <Tab> %
 map Y y$
 nnoremap H ^
 nnoremap L $
-" command line
-noremap + :
-noremap @+ @:
-" modes
+vmap < <gv
+vmap > >gv
+" modes no scrolling frmo some strange input pad
 nmap <Up> <nop>
 nmap <Down> <nop>
 nmap <Left> <nop>
@@ -123,7 +131,7 @@ nnoremap <Space> za
 inoremap <C-C> <Esc>`^
 nnoremap <C-S> :w<cr>
 
-" thanks at the pope
+" thanks to the pope
 inoremap <C-X>^ <C-R>=substitute(&commentstring,' \=%s\>'," -*- ".&ft." -*- vim:set ft=".&ft." ".(&et?"et":"noet")." sw=".&sw." sts=".&sts.':','')<CR>
 
 
@@ -131,12 +139,26 @@ inoremap <C-X>^ <C-R>=substitute(&commentstring,' \=%s\>'," -*- ".&ft." -*- vim:
 xnoremap <C-S> :s/
 
 " Literal marker movement
-inoremap <silent> <C-F> <Esc>/\m<++.\{-}++>/<CR>zvzzgn<C-G>
-inoremap <silent> <C-B> <Esc>?\m<++.\{-}++>?<CR>zvzzgn<C-G>
-snoremap <silent> <C-F> <Esc>/\m<++.\{-}++>/<CR>zvzzgn<C-G>
-snoremap <silent> <C-B> <Esc>2?\m<++.\{-}++>?<CR>zvzzgn<C-G>
-iabbrev +++ <++ ++><Left><Left><Left><Left>
+" nnoremap <silent> <C-F> /\m<++.\{-}++>/<CR>zvzzgn<C-G>
+" nnoremap <silent> <C-B> ?\m<++.\{-}++>?<CR>zvzzgn<C-G>
+" snoremap <silent> <C-F> <Esc>/\m<++.\{-}++>/<CR>zvzzgn<C-G>
+" snoremap <silent> <C-B> <Esc>2?\m<++.\{-}++>?<CR>zvzzgn<C-G>
+
+"
+" The following is one mapping for all: 
+" - Visual selection: :w skel/<filename> will create a grave
+" - Reanimating skeletons by :r skel/<filename>
+" - Editing a skeleton... :e skel/filename
+cabbrev skel $HOME/.vim/graveyard
+
+" After searching for the runes, you can replace as follows
+" navigate through them via n/N as usual, if u want to replace something just
+" hit gn<c-g>
+nnoremap <leader>m =/\m<++\_.\{-}++>/<CR>
+
+" create Magic runes (or just markers)
 let g:surround_{char2nr('m')} = "<++\r++>"
+let g:surround_{char2nr('M')} = "<++\n\r\n++>"
 
 " Tpope's fkeys make sense
 nmap <silent> <F6> :if &previewwindow<Bar>pclose<Bar>elseif exists(':Gstatus')<Bar>exe 'Gstatus'<Bar>else<Bar>ls<Bar>endif<CR>
@@ -148,22 +170,38 @@ map <F10>   :Start<CR>
 " Title case
 nnoremap <Leader>tc :s/\<\(\w\)\(\w*\)\>/\u\1\L\2/g<CR>:nohlsearch<CR>
 
-
 "Quick access
 nnoremap <leader>vv :Vedit vimrc<cr>
-nnoremap <leader>vx :edit ~/.vim/ftplugin<cr>
+
+" Pythonic constructor
+nnoremap <leader>c 0f(3wyt)o<ESC>pV:s/\([a-z_]\+\),\?/self.\1 = \1<C-v><CR>/g<CR>ddV?def<CR>j
 "}}}
+" Section: Text Objects {{{ "
+" Pipe tables
+" Complements cucumbertables.vim by tpope
+inoremap <Bar>-<Bar> <Esc>kyyp:s/\v[^<Bar>]/-/g<CR>:nohlsearch<CR>j
+onoremap ic :<c-u>normal! T<Bar>vt<Bar><cr>
+onoremap ac :<c-u>normal! F<Bar>vf<Bar><cr>
+onoremap inc :<c-u>normal! f<Bar>lvt<Bar><cr>
+onoremap ilc :<c-u>normal! f<Bar>hvT<Bar><cr>
+" Latex tables
+
+" }}} Section: Text Objects "
 " Section: Commands {{{
 " command! -complete=packadd -nargs=1 Packadd packadd <args> | write | edit %
 command! -bar -bang -complete=packadd -nargs=1 Packadd packadd<bang> <args> | doautoall BufRead
 command! -bar -nargs=0 Helptags silent! helptags ALL
 
+if exists(":Goyo") && exists(":LimeLight")
+  command Focus Goyo | LimeLight!!
+endif
+
 function! s:Tags() abort
-  silent let dir = system("git rev-parse --show-toplevel")
+  silent let l:dir = system("git rev-parse --show-toplevel")
   if v:shell_error
     let tagsfile = "./tags"
   else
-    let tagsfile = dir . "/.git/tags"
+    let tagsfile = l:dir . "/.git/tags"
   endif
   let cmd = ['ctags', '-R', '-f', tagsfile]
   let job = job_start(cmd)
@@ -271,7 +309,7 @@ let g:syntastic_tex_checkers             = ["chktex", "lacheck"]
 " 36: spaces around braces
 let g:syntastic_tex_chktex_args          = "-n1 -n8 -n36"
 " python checker
-let g:syntastic_python_checkers          = ['flake8']
+let g:syntastic_python_checkers          = ['flake8', 'python']
 " let g:syntastic_python_checkers          = []
 let g:syntastic_python_python_exec       = '/usr/bin/python3'
 " let g:syntastic_python_flake8_exec       = '/usr/bin/python3'
@@ -282,36 +320,6 @@ let g:syntastic_python_python_exec       = '/usr/bin/python3'
 
 nnoremap <leader>e :Errors<CR>
 " }}}
-" UltiSnips {{{
-let g:UltiSnipsSnippetsDir = "~/.vim/UltiSnips"
-let g:UltiSnipsListSnippets = "<c-r><c-r><Tab>"
-let g:UltiSnipsExpandTrigger = "<Tab>"
-let g:UltiSnipsJumpForwardTrigger = "<c-f>"
-let g:UltiSnipsJumpBackwardTrigger = "<c-b>"
-" }}}
-" neocomplete {{{
-" let g:neocomplete#enable_at_startup = 1
-" let g:neocomplete#enable_smart_case = 1
-" inoremap <expr><Tab>  neocomplete#start_manual_complete()
-" inoremap <expr><C-g>     neocomplete#undo_completion()
-" inoremap <expr><C-l>     neocomplete#complete_common_string()
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-let g:neocomplete#sources#omni#input_patterns.tex =
-      \ '\v\\%('
-      \ . '\a*cite\a*%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
-      \ . '|\a*ref%(\s*\{[^}]*|range\s*\{[^,}]*%(}\{)?)'
-      \ . '|hyperref\s*\[[^]]*'
-      \ . '|includegraphics\*?%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
-      \ . '|%(include%(only)?|input)\s*\{[^}]*'
-      \ . '|\a*(gls|Gls|GLS)(pl)?\a*%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
-      \ . '|includepdf%(\s*\[[^]]*\])?\s*\{[^}]*'
-      \ . '|includestandalone%(\s*\[[^]]*\])?\s*\{[^}]*'
-      \ . ')'
-" let g:neocomplete#sources#omni#input_patterns.python =
-"       \ '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?'
-" }}}
 " indentline {{{
 let g:indentLine_setColors = 0 
 let g:indentLine_setConceal = 0
@@ -320,6 +328,9 @@ let g:indentLine_setConceal = 0
 let g:jedi#popup_on_dot = 1
 let g:jedi#show_call_signatures = 2
 " }}} jedi  "
+" simpyl-fold {{{
+let g:SimpylFold_docstring_preview = 1
+" }}}
 " pandoc {{{
 let g:pandoc#formatting#mode = 's'
 let g:pandoc#filetypes#pandoc_markdown = 0
@@ -356,8 +367,13 @@ vmap <Enter> <Plug>(EasyAlign)
 " whos using it
 let g:typescript_compiler_binary = 'tsc'
 let g:typescript_compiler_options = ''
-autocmd QuickFixCmdPost [^l]* nested cwindow
-autocmd QuickFixCmdPost    l* nested lwindow
+if has("autocmd")
+  augroup qfpost
+    au!
+    autocmd QuickFixCmdPost [^l]* nested cwindow
+    autocmd QuickFixCmdPost    l* nested lwindow
+  augroup END
+endif
 " }}}
 " }}}
 " Section: The Packs {{{ "
@@ -371,8 +387,6 @@ if has('packages')
   packadd syntastic
   " chose snippet engine and completor
   if s:python_version
-    packadd vim-snippets
-    packadd ultisnips
     packadd jedi-vim
     augroup jedi_omnifunc
       au!
@@ -383,12 +397,10 @@ if has('packages')
     packadd matchit
   endif
   " need to load vimtex as usual
-  packadd vim-pathogen
-  execute pathogen#infect('bundle/{}')
 else
   " BACKWARDS COMPATIBLE
   runtime pack/core/opt/vim-pathogen/autoload/pathogen.vim
-  echom "no +packages. compat mode by infecting with pathogen"
+  echom "Pathogen infection."
   execute pathogen#infect('pack/core/start/{}' , 'pack/extra/start/{}' , 'pack/community/start/{}' , 'pack/testing/start/{}')
   " execute pathogen#infect('pack/core/opt/{}'   , 'pack/extra/opt/{}'   , 'pack/community/opt/{}'   , 'pack/testing/opt/{}')
 endif
