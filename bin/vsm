@@ -1,0 +1,133 @@
+#!/bin/sh
+
+ProgName=$(basename $0)
+
+VSM_HOME=$HOME/.vim/pack
+
+maybe_create() {
+    repo=$1
+    if [[ -d $repo ]]; then
+        # Exists and is a repo, ok
+        return 0
+    elif [[ ! -e $repo ]]; then
+        # Does not exist at all, create?
+        echo "Should I create $repo for you? [y/N]"
+        read create_ok
+        if [[ "$create_ok" =~ y ]]; then
+            mkdir -vp "$repo"
+            return 0
+        fi
+    else
+        # Does exist as something else, better leave it as is ...
+        echo "Your repo spec is something strange, exitting."
+    fi
+    return 1
+}
+
+validate_repo() {
+    finalspec=$(basename $1)
+    case $finalspec in
+        start | opt)
+            return 0
+            ;;
+        *)
+            echo "Final component of repo $1 does not end in {start,opt}"
+            return 1
+            ;;
+    esac
+}
+  
+sub_help(){
+    echo "Usage: $ProgName <subcommand> [options]"
+    echo "Example: $ProgName install extra/opt junegunn/vim-emoji"
+    echo "Example: $ProgName remove extra/opt vim-emoji"
+    echo "Subcommands:"
+    echo "    list   List all submodules"
+    echo "    install REPO MAINTAINER/IDENTIFIER        Install submodule with github spec MAINTAINER/INDENTIFER in repo"
+    echo "    update                                    Updates all submodules"
+    echo "    remove  REPO IDENTIFIER [IDENTIFIER ...]   Removes submodule with IDENTIFIER in REPO"
+    echo "    move SRC DST IDENTIFIER [IDENTIFIER ...]  Moves IDENTIFIER from SRC repo to DST repo"
+    echo ""
+    echo "For help with each subcommand run:"
+    echo "$ProgName <subcommand> -h|--help"
+    echo ""
+}
+  
+sub_install(){
+    if [ $# -lt 2 ]
+    then
+        echo "Usage: vsm remove <repo/{start,opt}> identifier [identifier] ..."
+        exit 1
+    fi
+    repo="$VSM_HOME/$1"
+    (validate_repo $repo && maybe_create $repo) || return 1
+    shift
+    for identifier in $@; do
+        if [[ $identifier =~ ^http.* ]]
+        then
+            target=$identifier
+        else
+            target="https://github.com/$identifier.git"
+        fi
+        echo "[vsm] Installing $target in $repo"
+        git -C "$repo" submodule add --force "$target"
+    done
+}
+  
+sub_update(){
+    git -C "$VSM_HOME" submodule update --remote
+}
+
+sub_remove(){
+    if [ $# -lt 2 ]
+    then
+        echo "Usage: vsm remove <repo/{start,opt}> identifier [identifier] ..."
+        exit 1
+    fi
+    # we need to check arg number
+    repo="$VSM_HOME/$1"
+    shift
+    for identifier in $@; do
+            echo "[vsm] removing $identifer in $repo"
+            git -C "$repo" rm "$identifier"
+    done
+}
+
+sub_move(){
+    src="$VSM_HOME/$1"
+    dst="$VSM_HOME/$2"
+    validate_repo $dst && maybe_create $dst || return 1
+    if [ ! -d $src ]; then
+        echo "Source repo does not exist"
+        exit 1
+    fi
+    shift 2
+    for identifier in "$@"; do
+            git -C "$src" mv "$identifier" "$dst"
+    done
+}
+
+sub_list(){
+    if [ $# -eq 0 ]
+    then
+        git -C "$VSM_HOME" submodule
+    else
+        git -C "$VSM_HOME" submodule | egrep "$@"
+    fi
+}
+  
+subcommand=$1
+case $subcommand in
+    "" | "-h" | "--help")
+        sub_help
+        ;;
+    *)
+        shift
+        sub_${subcommand} $@
+        if [ $? = 127 ]; then
+            echo "Error: '$subcommand' is not a known subcommand." >&2
+            echo "       Run '$ProgName --help' for a list of known subcommands." >&2
+            exit 1
+        fi
+        ;;
+esac
