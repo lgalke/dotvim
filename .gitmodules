@@ -160,3 +160,6 @@
 [submodule "pack/extra/opt/badwolf"]
 	path = pack/extra/opt/badwolf
 	url = https://github.com/sjl/badwolf.git
+[submodule "pack/testing/start/delimitMate"]
+	path = pack/testing/start/delimitMate
+	url = https://github.com/Raimondi/delimitMate.git

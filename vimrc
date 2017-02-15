@@ -45,7 +45,7 @@ set listchars=eol:¶,tab:¦-,trail:±,extends:»,precedes:«,nbsp:¬
 " better default comment string for a lot of configuratoin files
 set commentstring=#\ %s
 set noruler
-set dictionary+=/usr/share/dict/words thesaurus+=$HOME/pg10681.txt
+set dictionary+=/usr/share/dict/words
 " %=%-14.(%l,%c%V%)\ %P
 if has('persistent_undo')
   set undofile	" keep an undo file (undo changes after closing)
@@ -58,7 +58,7 @@ set wildmenu
 set wildignore+=*/.git/*
 set wildignore+=*.js,*.map
 set wildignore+=tags,.*.un~,*.pyc
-set wildignore+=*.bbl,*.aux,*.lot,*.lof,*.bcf,*.soc,*.fdb_latexmk,*.out
+set wildignore+=*.bbl,*.aux,*.lot,*.lof,*.bcf,*.soc,*.fdb_latexmk,*.out,*.pdf
 set wildmode=longest:full,full
 
 augroup line_return
@@ -91,7 +91,7 @@ set path+=**
 " }}}
 " statusline {{{
 " this is hacky to fix with to 2
-set statusline=%#SignColumn#%-2.2(%M\ %)%*
+set statusline=%#WarningMsg#%-2.2(%M\ %)%*
 set statusline+=%#CursorLineNr#%4.4(%c%)%*
 " buffer number and modified
 set statusline+=[b%n\ %f%(\ *%{fugitive#head()}%)]
@@ -100,7 +100,7 @@ set statusline+=[b%n\ %f%(\ *%{fugitive#head()}%)]
 set statusline+=\ %H%R
 set statusline+=%=
 set statusline+=%a
-set statusline+=%P
+set statusline+=\ @\ %P
 " }}}
 " Section: Maps {{{
 if has('conceal')
@@ -155,7 +155,7 @@ cabbrev skel $HOME/.vim/graveyard
 " After searching for the runes, you can replace as follows
 " navigate through them via n/N as usual, if u want to replace something just
 " hit gn<c-g>
-nnoremap <leader>m =/\m<++\_.\{-}++>/<CR>
+nnoremap <leader>m /\m<++\_.\{-}++>/<CR>
 
 " create Magic runes (or just markers)
 let g:surround_{char2nr('m')} = "<++\r++>"
@@ -261,6 +261,7 @@ let g:vimtex_view_general_viewer = 'okular'
 let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
 let g:vimtex_view_general_options_latexmk = '--unique'
 
+let g:vimtex_complete_recursive_bib = 1
 let g:vimtex_fold_enabled = 1
 let g:vimtex_fold_preamble = 1
 let g:vimtex_fold_comments = 1
@@ -307,6 +308,9 @@ nnoremap <leader>e :Errors<CR>
 " indentline {{{
 let g:indentLine_setColors = 0 
 let g:indentLine_setConceal = 0
+" }}}
+" delimitmate {{{
+let delimitMate_expand_cr = 1
 " }}}
 " jedi  {{{ "
 let g:jedi#popup_on_dot = 1
