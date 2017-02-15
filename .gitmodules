@@ -163,3 +163,6 @@
 [submodule "pack/testing/start/delimitMate"]
 	path = pack/testing/start/delimitMate
 	url = https://github.com/Raimondi/delimitMate.git
+[submodule "pack/extra/start/FastFold"]
+	path = pack/extra/start/FastFold
+	url = https://github.com/Konfekt/FastFold.git
