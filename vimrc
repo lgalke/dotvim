@@ -29,6 +29,7 @@ set scrolloff=5
 set cursorline cursorcolumn
 set foldopen+=jump
 set display=lastline "give it a try
+set noshowmode
 set lazyredraw
 if has("linebreak")
   " dont break in the middle of a word
@@ -161,12 +162,21 @@ nnoremap <leader>m /\m<++\_.\{-}++>/<CR>
 let g:surround_{char2nr('m')} = "<++\r++>"
 let g:surround_{char2nr('M')} = "<++\n\r\n++>"
 
-" Tpope's fkeys make sense
+" F keys {{{
+nmap <F2> :20Lex<CR>
+nmap <F3> :if exists(':TagbarToggle')<Bar>:TagbarToggle<Bar>endif<CR>
+augroup f4_key
+  au!
+  au User VimtexEventInitPost nmap <buffer> <F4> <plug>(vimtex-toc-toggl)
+  au FileType pandoc if exists(':TOC') | nmap <buffer> <F4> :TOC<CR> | endif
+augroup END
+" Tpope's fkeys are cool
 nmap <silent> <F6> :if &previewwindow<Bar>pclose<Bar>elseif exists(':Gstatus')<Bar>exe 'Gstatus'<Bar>else<Bar>ls<Bar>endif<CR>
 nmap <silent> <F7> :if exists(':Lcd')<Bar>exe 'Lcd'<Bar>elseif exists(':Cd')<Bar>exe 'Cd'<Bar>else<Bar>lcd %:h<Bar>endif<CR>
 map <F8>    :Make<CR>
 map <F9>    :Dispatch<CR>
 map <F10>   :Start<CR>
+" }}}
 
 " Title case
 nnoremap <Leader>tc :s/\<\(\w\)\(\w*\)\>/\u\1\L\2/g<CR>:nohlsearch<CR>
@@ -181,11 +191,17 @@ nnoremap <leader>c 0f(3wyt)o<ESC>pV:s/\([a-z_]\+\),\?/self.\1 = \1<C-v><CR>/g<CR
 " Pipe tables
 " Complements cucumbertables.vim by tpope
 inoremap <Bar>-<Bar> <Esc>kyyp:s/\v[^<Bar>]/-/g<CR>:nohlsearch<CR>j
-onoremap ic :<c-u>normal! T<Bar>vt<Bar><cr>
-onoremap ac :<c-u>normal! F<Bar>vf<Bar><cr>
-onoremap inc :<c-u>normal! f<Bar>lvt<Bar><cr>
-onoremap ilc :<c-u>normal! f<Bar>hvT<Bar><cr>
-" Latex tables
+
+" test object for table cells
+onoremap i<Bar> :<c-u>normal! T<Bar>vt<Bar><cr>
+onoremap a<Bar> :<c-u>normal! F<Bar>vf<Bar><cr>
+
+" motion for table cells, yes it keeps highlight :)
+" positive formulation: Automatically detects when user is moving inside
+" a bar table and highlights delimiters.
+nnoremap <Bar> /<Bar><CR>
+
+" |asdf|asdf|sadf asdf
 
 " }}} Section: Text Objects "
 " Section: Commands {{{
@@ -204,7 +220,6 @@ if has("autocmd")
     autocmd FileType mail setlocal formatoptions+=aw
     " make useful dispatch
     autocmd FileType pandoc if exists(':Pandoc') | let b:dispatch=":Pandoc pdf" | endif
-    autocmd FileType pandoc if exists(':TOC') | nmap <F3> :TOC<CR> | endif
     autocmd FileType pandoc,markdown setlocal et sw=4 sts=2 iskeyword+=@,-,#
     autocmd FileType dot let b:dispatch="dot -Tpdf -o %:r.pdf %"  | setlocal commentstring=//%s
     " guess the dispatch by shebang
@@ -270,10 +285,6 @@ let g:vimtex_indent_bib_enabled = 1
 let g:vimtex_format_enabled = 1 " this did not work well, recheck if fixed
 
 let g:vimtex_disable_version_warning = 1 " avoid checking manually latexmk, bibtex and stuff
-augroup vimtex_mappings
-  au!
-  au User VimtexEventInitPost nmap <F3> <plug>(vimtex-toc-toggle)
-augroup END
 " }}}
 " Syntastic {{{
 let g:syntastic_check_on_open            = 1
@@ -294,12 +305,13 @@ let g:syntastic_tex_checkers             = ["chktex", "lacheck"]
 " 36: spaces around braces
 let g:syntastic_tex_chktex_args          = "-n1 -n8 -n36"
 " python checker
-let g:syntastic_python_checkers          = ['flake8', 'python']
+let g:syntastic_python_checkers          = ['python', 'flake8']
 " let g:syntastic_python_checkers          = []
 let g:syntastic_python_python_exec       = '/usr/bin/python3'
 " let g:syntastic_python_flake8_exec       = '/usr/bin/python3'
 " E402 : module level import not at top of file
-" let g:syntastic_python_flake8_args       = '-m flake8 --ignore=E501,E203,E402'
+" E501, E203
+let g:syntastic_python_flake8_args       = '--ignore=E402'
 " let g:syntastic_python_flake8_args       = '-m flake8'
 
 
@@ -342,7 +354,6 @@ let g:signify_vcs_list = [ 'git' ]
 let g:signify_line_highlight = 0
 " }}}
 " TagBar {{{
-nmap <F2> :TagbarToggle<CR>
 " }}}
 " easy-align {{{
 " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -411,13 +422,13 @@ set keywordprg=:Man
 if has('packages')
   packadd syntastic
   " chose snippet engine and completor
-  if s:python_version
-    packadd jedi-vim
-    augroup jedi_omnifunc
-      au!
-      au FileType python setlocal omnifunc=jedi#completions
-    augroup END
-  endif
+  " if s:python_version
+    " packadd jedi-vim
+    " augroup jedi_omnifunc
+    "   au!
+    "   au FileType python setlocal omnifunc=jedi#completions
+    " augroup END
+  " endif
   if has('syntax') && has('eval')
     packadd matchit
   endif

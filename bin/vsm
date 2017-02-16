@@ -89,7 +89,7 @@ sub_remove(){
     shift
     for identifier in $@; do
             echo "[vsm] removing $identifer in $repo"
-            git -C "$repo" rm "$identifier"
+            git -C "$repo" rm -f "$identifier"
     done
 }
 

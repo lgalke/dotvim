@@ -97,9 +97,6 @@
 [submodule "pack/community/start/tagbar"]
 	path = pack/community/start/tagbar
 	url = https://github.com/majutsushi/tagbar.git
-[submodule "pack/testing/opt/jedi-vim"]
-	path = pack/testing/opt/jedi-vim
-	url = https://github.com/davidhalter/jedi-vim.git
 [submodule "pack/extra/start/ack.vim"]
 	path = pack/extra/start/ack.vim
 	url = https://github.com/mileszs/ack.vim.git
@@ -115,9 +112,6 @@
 [submodule "pack/core/start/vim-indent-object"]
 	path = pack/core/start/vim-indent-object
 	url = https://github.com/michaeljsmith/vim-indent-object.git
-[submodule "pack/testing/start/vim-easy-align"]
-	path = pack/testing/start/vim-easy-align
-	url = https://github.com/junegunn/vim-easy-align.git
 [submodule "pack/community/opt/seoul256.vim"]
 	path = pack/community/opt/seoul256.vim
 	url = https://github.com/junegunn/seoul256.vim.git
