@@ -51,8 +51,7 @@ set dictionary+=/usr/share/dict/words
 if has('persistent_undo')
   set undofile	" keep an undo file (undo changes after closing)
 endif
-let g:tex_flavor = 'latex'
-let g:is_bash = 1
+set hlsearch incsearch
 
 " wild menu
 set wildmenu
@@ -61,6 +60,9 @@ set wildignore+=*.js,*.map
 set wildignore+=tags,.*.un~,*.pyc
 set wildignore+=*.bbl,*.aux,*.lot,*.lof,*.bcf,*.soc,*.fdb_latexmk,*.out,*.pdf
 set wildmode=longest:full,full
+
+let g:tex_flavor = 'latex'
+let g:is_bash = 1
 
 augroup line_return
     au!
@@ -90,7 +92,7 @@ set path+=**
 
 
 " }}}
-" statusline {{{
+" Section: Statusline {{{
 " this is hacky to fix with to 2
 set statusline=%#WarningMsg#%-2.2(%M\ %)%*
 set statusline+=%#CursorLineNr#%4.4(%c%)%*
@@ -102,6 +104,17 @@ set statusline+=\ %H%R
 set statusline+=%=
 set statusline+=%a
 set statusline+=\ @\ %P
+let s:hl_as_usual = {"hl": ['Statusline', 'StatusLineNC']}
+augroup my_flagship
+  au!
+  autocmd User Flags call Hoist("window", +10, {"hl": 'WarningMsg'}, 'SyntasticStatuslineFlag')
+  autocmd User Flags call Hoist("window", -10, s:hl_as_usual, "%{tagbar#currenttag('[%s]', '')}")
+  autocmd User Flags call Hoist("buffer", -10, s:hl_as_usual, "[%{&formatoptions}]")
+  " autocmd User Flags call Hoist("buffer", 0, hl_as_usual, '%{g:asyncrun_status}')
+  autocmd User Flags call Hoist("global", 0, s:hl_as_usual, "[%{&cpoptions}]")
+  " this is necessary because (vim-signify|vim-gitgutter) somehow breaks colors
+  " autocmd User Flags call Hoist("buffer", -10, hl_as_usual, function('fugitive#statusline'))
+augroup END
 " }}}
 " Section: Maps {{{
 if has('conceal')
@@ -153,9 +166,9 @@ xnoremap <C-S> :s/
 " - Editing a skeleton... :e skel/filename
 cabbrev skel $HOME/.vim/graveyard
 
-" After searching for the runes, you can replace as follows
-" navigate through them via n/N as usual, if u want to replace something just
-" hit gn<c-g>
+" After searching for the rune markers, you can replace as follows:
+" navigate through them via n/N as usual,
+" if u want to replace something just hit gn<c-g>
 nnoremap <leader>m /\m<++\_.\{-}++>/<CR>
 
 " create Magic runes (or just markers)
@@ -238,14 +251,6 @@ if has("autocmd")
     autocmd FileType tex,mail,pandoc if exists(':Thesaurus') | setlocal keywordprg=:Thesaurus | endif
     " autocmd FileType pandoc nnoremap <buffer> <Leader>eb 
     autocmd FileType python setlocal textwidth=79 colorcolumn=+1 softtabstop=4 shiftwidth=4 expandtab
-    let hl_as_usual = {"hl": ['Statusline', 'StatusLineNC']}
-    autocmd User Flags call Hoist("window", +10, {"hl": 'WarningMsg'}, 'SyntasticStatuslineFlag')
-    autocmd User Flags call Hoist("window", -10, hl_as_usual, "%{tagbar#currenttag('[%s]', '')}")
-    autocmd User Flags call Hoist("buffer", -10, hl_as_usual, "[%{&formatoptions}]")
-    " autocmd User Flags call Hoist("buffer", 0, hl_as_usual, '%{g:asyncrun_status}')
-    autocmd User Flags call Hoist("global", 0, hl_as_usual, "[%{&cpoptions}]")
-    " this is necessary because (vim-signify|vim-gitgutter) somehow breaks colors
-    " autocmd User Flags call Hoist("buffer", -10, hl_as_usual, function('fugitive#statusline'))
   augroup END
 endif
 " }}}
