@@ -133,15 +133,9 @@
 [submodule "pack/community/start/vim-css-color"]
 	path = pack/community/start/vim-css-color
 	url = https://github.com/ap/vim-css-color.git
-[submodule "pack/core/start/FastFold"]
-	path = pack/core/start/FastFold
-	url = https://github.com/Konfekt/FastFold.git
 [submodule "pack/community/start/vim-signify"]
 	path = pack/community/start/vim-signify
 	url = https://github.com/mhinz/vim-signify.git
-[submodule "pack/testing/start/lgalke-cucumbertables"]
-	path = pack/testing/start/lgalke-cucumbertables
-	url = https://gist.github.com/lgalke/afb651ec29770ad64f14afc365450c47
 [submodule "pack/core/start/vim-liquid"]
 	path = pack/core/start/vim-liquid
 	url = https://github.com/tpope/vim-liquid.git
@@ -154,3 +148,12 @@
 [submodule "pack/extra/start/FastFold"]
 	path = pack/extra/start/FastFold
 	url = https://github.com/Konfekt/FastFold.git
+[submodule "pack/core/opt/vim-vividchalk"]
+	path = pack/core/opt/vim-vividchalk
+	url = https://github.com/tpope/vim-vividchalk.git
+[submodule "pack/extra/start/vim-tmux"]
+	path = pack/extra/start/vim-tmux
+	url = https://github.com/tmux-plugins/vim-tmux.git
+[submodule "pack/core/start/vim-haystack"]
+	path = pack/core/start/vim-haystack
+	url = https://github.com/tpope/vim-haystack.git

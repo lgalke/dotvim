@@ -1,9 +1,9 @@
 " Compatibility and Dynamic Python {{{
 set nocompatible
-if has('python3') " if dynamic py|py3 support is enabled, this line already activates python 3.
-  let s:python_version = 3
-elseif has('python')
+if has('python') " if dynamic py|py3 support is enabled, this line already activates python 3.
   let s:python_version = 2
+elseif has('python3')
+  let s:python_version = 3
 else
   let s:python_version = 0
 endif
@@ -133,15 +133,16 @@ map <Tab> %
 map Y y$
 nnoremap H ^
 nnoremap L $
-vmap < <gv
-vmap > >gv
+
+xnoremap <Space> I<Space><Esc>gv
+xmap < <gv
+xmap > >gv
 " modes no scrolling frmo some strange input pad
 nmap <Up> <nop>
 nmap <Down> <nop>
 nmap <Left> <nop>
 nmap <Right> <nop>
 " Convenience
-xnoremap <Space> I<Space><Esc>gv
 nnoremap <Space> za
 inoremap <C-C> <Esc>`^
 nnoremap <C-S> :w<cr>
@@ -153,12 +154,20 @@ inoremap <C-X>^ <C-R>=substitute(&commentstring,' \=%s\>'," -*- ".&ft." -*- vim:
 " i dont need multiple cursors
 xnoremap <C-S> :s/
 
-" Literal marker movement
-" nnoremap <silent> <C-F> /\m<++.\{-}++>/<CR>zvzzgn<C-G>
-" nnoremap <silent> <C-B> ?\m<++.\{-}++>?<CR>zvzzgn<C-G>
-" snoremap <silent> <C-F> <Esc>/\m<++.\{-}++>/<CR>zvzzgn<C-G>
-" snoremap <silent> <C-B> <Esc>2?\m<++.\{-}++>?<CR>zvzzgn<C-G>
 
+" Tpope's align gist
+inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+
+function! s:align()
+  let p = '^\s*|\s.*\s|\s*$'
+  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+    Tabularize/|/l1
+    normal! 0
+    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+  endif
+endfunction
 "
 " The following is one mapping for all: 
 " - Visual selection: :w skel/<filename> will create a grave
@@ -168,10 +177,6 @@ cabbrev skel $HOME/.vim/graveyard
 
 " After searching for the rune markers, you can replace as follows:
 " navigate through them via n/N as usual,
-" if u want to replace something just hit gn<c-g>
-nnoremap <leader>m /\m<++\_.\{-}++>/<CR>
-
-" create Magic runes (or just markers)
 let g:surround_{char2nr('m')} = "<++\r++>"
 let g:surround_{char2nr('M')} = "<++\n\r\n++>"
 
@@ -180,7 +185,7 @@ nmap <F2> :20Lex<CR>
 nmap <F3> :if exists(':TagbarToggle')<Bar>:TagbarToggle<Bar>endif<CR>
 augroup f4_key
   au!
-  au User VimtexEventInitPost nmap <buffer> <F4> <plug>(vimtex-toc-toggl)
+  au User VimtexEventInitPost nmap <buffer> <F4> <plug>(vimtex-toc-toggle)
   au FileType pandoc if exists(':TOC') | nmap <buffer> <F4> :TOC<CR> | endif
 augroup END
 " Tpope's fkeys are cool
@@ -203,7 +208,7 @@ nnoremap <leader>c 0f(3wyt)o<ESC>pV:s/\([a-z_]\+\),\?/self.\1 = \1<C-v><CR>/g<CR
 " Section: Text Objects {{{ "
 " Pipe tables
 " Complements cucumbertables.vim by tpope
-inoremap <Bar>-<Bar> <Esc>kyyp:s/\v[^<Bar>]/-/g<CR>:nohlsearch<CR>j
+" inoremap <Bar>-<Bar> <Esc>kyyp:s/\v[^<Bar>]/-/g<CR>:nohlsearch<CR>j
 
 " test object for table cells
 onoremap i<Bar> :<c-u>normal! T<Bar>vt<Bar><cr>
@@ -244,7 +249,7 @@ if has("autocmd")
     " endif
     autocmd FileType tex syn sync minlines=100 maxlines=300
           \ | let b:surround_{char2nr('x')} = "\\texttt{\r}"
-          \ | let b:surround_{char2nr('l')} = "\\\1identifier\1{\r}"
+          \ | let b:surround_{char2nr('c')} = "\\\1identifier\1{\r}"
           \ | let b:surround_{char2nr('e')} = "\\begin{\1environment\1}\n\r\n\\end{\1\1}"
           \ | let b:surround_{char2nr('v')} = "\\verb|\r|"
           \ | let b:surround_{char2nr('V')} = "\\begin{verbatim}\n\r\n\\end{verbatim}"
@@ -272,10 +277,11 @@ let g:ragtag_global_maps = 1
 " }}}
 " Vimtex {{{
 let g:vimtex_latexmk_continuous = 0
-let g:vimtex_latexmk_background = 1
+let g:vimtex_latexmk_background = 0
 let g:vimtex_latexmk_callback = 0
 
-" let g:vimtex_imaps_leader = '`'
+nmap <C-\> <plug>(vimtex-cmd-create)
+imap <C-\> <plug>(vimtex-cmd-create)
 
 let g:vimtex_view_general_viewer = 'okular'
 let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
@@ -330,8 +336,10 @@ let g:indentLine_setConceal = 0
 let delimitMate_expand_cr = 1
 " }}}
 " jedi  {{{ "
-let g:jedi#popup_on_dot = 1
-let g:jedi#show_call_signatures = 2
+let g:jedi#popup_on_dot         = 0
+let g:jedi#smart_auto_mappings  = 0
+let g:jedi#show_call_signatures = 1
+let g:jedi#force_py_version     = s:python_version
 " }}} jedi  "
 " simpyl-fold {{{
 let g:SimpylFold_docstring_preview = 1
@@ -426,14 +434,6 @@ set keywordprg=:Man
 
 if has('packages')
   packadd syntastic
-  " chose snippet engine and completor
-  " if s:python_version
-    " packadd jedi-vim
-    " augroup jedi_omnifunc
-    "   au!
-    "   au FileType python setlocal omnifunc=jedi#completions
-    " augroup END
-  " endif
   if has('syntax') && has('eval')
     packadd matchit
   endif
@@ -455,9 +455,9 @@ endif
 
 syntax on
 set background=dark
-silent! colo gruvbox
+silent! colo vividchalk
 
-if has("autocmd")
+  if has("autocmd")
   " Must be placed after syntax on
   augroup rainbow_parents
     au!
@@ -465,9 +465,6 @@ if has("autocmd")
     au Syntax * RainbowParenthesesLoadRound
     au Syntax * RainbowParenthesesLoadSquare
     au Syntax * RainbowParenthesesLoadBraces
-    au Syntax * RainbowParenthesesLoadChevrons
-  augroup END
-  augroup custom_syntax
-    autocmd Syntax python syn match Error /\s\+$/
+    " au Syntax * RainbowParenthesesLoadChevrons
   augroup END
 endif
