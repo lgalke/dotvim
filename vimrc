@@ -1,4 +1,4 @@
-" Compatibility and Dynamic Python {{{
+" Preamble: Compatibility and Dynamic Python {{{
 set nocompatible
 if has('python3') " if dynamic py|py3 support is enabled, this line already activates python 3.
   let s:python_version = 3
@@ -7,53 +7,75 @@ elseif has('python')
 else
   let s:python_version = 0
 endif
-let g:UltiSnipsUsePythonVersion = s:python_version 
+" Store currently active python version for rest of script
 " echomsg 'Using python'.s:python_version
 " }}}
 " Section: Basic Options {{{
-set expandtab
+" Behavior {{{
 set autowrite
-set foldmethod=marker
-set showtabline=2
-set guioptions-=e "recommended by flagship
 set ignorecase smartcase
-set shiftround
+set foldopen+=jump
+set backspace=2
+if has('persistent_undo')
+  set undofile	" keep an undo file (undo changes after closing)
+endif
+" }}}
+" Interface {{{
 set showcmd ruler laststatus=2
-set showmatch
-set autoindent
-set splitright
-set smartindent
-set wrap
-set scrolloff=5
-
-" interface
+set showtabline=2
 set nocursorline nocursorcolumn
 set nonumber norelativenumber
+set showmatch
+set scrolloff=5
 set hlsearch incsearch
-
-set display=lastline "give it a try
+set visualbell
+set guioptions-=e "recommended by flagship
+set splitright
+" vim8 specific
+if v:version >= 800
+  set signcolumn=no
+endif
+if has('conceal')
+  set conceallevel=2 concealcursor=
+endif
+" }}}
+" Indent {{{
+set expandtab
+set shiftround
+set autoindent
+set smartindent
+" }}}
+" Lists {{{
+set nolist
+set listchars=eol:¶,tab:¦-,trail:±,extends:»,precedes:«,nbsp:~
+" }}}
+" Wrap {{{
+set wrap
 if has("linebreak")
   " dont break in the middle of a word
   set linebreak
-  " ident line breaks
+  " indent line breaks
   if exists('+breakindent')
     set breakindent showbreak=\ +
   endif
 endif
-set nolist
-set visualbell
-set listchars=eol:¶,tab:¦-,trail:±,extends:»,precedes:«,nbsp:~
-" better default comment string for a lot of configuratoin files
+" }}}
+" Defaults (may be changed on ft) {{{
+set foldmethod=marker
 set commentstring=#\ %s
+set formatoptions=rqn1j
+" Provides :Man
+runtime! ftplugin/man.vim
+set keywordprg=:Man
+" }}}
+" Completion {{{
 set dictionary+=/usr/share/dict/words
 set thesaurus+=$HOME/.vim/thesaurus/words.txt
-" %=%-14.(%l,%c%V%)\ %P
-if has('persistent_undo')
-  set undofile	" keep an undo file (undo changes after closing)
-endif
-
-set foldopen+=jump
-" wild menu
+set complete-=i
+set complete+=d
+set completeopt+=menuone,noinsert,noselect,longest
+" }}}
+" Going Wild {{{
 set wildmenu
 set wildignore+=*/.git/*
 set wildignore+=*.js,*.map
@@ -61,10 +83,8 @@ set wildignore+=tags,.*.un~,*.pyc
 set wildignore+=*.bbl,*.aux,*.lot,*.lof,*.bcf,*.soc,*.fdb_latexmk,*.out,*.pdf
 set wildmode=longest:full,full
 set wildcharm=<C-z>
-
-let g:tex_flavor = 'latex'
-let g:is_bash = 1
-
+" }}}
+" Proper Line Return {{{
 augroup line_return
     au!
     au BufReadPost *
@@ -72,31 +92,15 @@ augroup line_return
         \     execute 'normal! g`"zvzz' |
         \ endif
 augroup END
-
-
-" more complex options
-set complete-=i
-set complete+=d
-set completeopt+=menuone,noinsert,noselect,longest
-let g:mucomplete#enable_auto_at_startup = 1
-" see :help fo-table
-set formatoptions=rqn1j
-
-
-" vim8 specific
-if v:version >= 800
-  set signcolumn=no
-endif
-
-" Plugin Replacement
+" }}}
+" Native global options {{{
+let g:tex_flavor = 'latex'
+let g:is_bash = 1
+" }}}
+" File Movement {{{
 set path+=.
 set path+=./**
-if has('conceal')
-  set conceallevel=2 concealcursor=
-endif
-
-
-
+" }}}
 " }}}
 " Section: Statusline {{{
 " this is hacky to fix with to 2
@@ -110,11 +114,11 @@ endif
 " set statusline+=%=
 " set statusline+=%a
 " set statusline+=\ @\ %P
-let s:hl_as_usual = {"hl": ['Statusline']}
+let s:hl_as_usual = {"hl": 'Statusline'}
 augroup my_flagship
   au!
   autocmd User Flags call Hoist("window", +10, {"hl": 'WarningMsg'}, 'SyntasticStatuslineFlag')
-  autocmd User Flags call Hoist("window", -10, "%{tagbar#currenttag('[%s]', '')}")
+  autocmd User Flags call Hoist("window", -10, s:hl_as_usual, "%{tagbar#currenttag('[%s]', '')}")
   autocmd User Flags call Hoist("buffer", -10, s:hl_as_usual, "[%{&formatoptions}]")
   autocmd User Flags call Hoist("buffer", -10, s:hl_as_usual, "[%{&complete}]")
   " autocmd User Flags call Hoist("buffer", 0, hl_as_usual, '%{g:asyncrun_status}')
@@ -124,35 +128,37 @@ augroup my_flagship
 augroup END
 " }}}
 " Section: The Map {{{
-
 let mapleader = ","
 let maplocalleader = "\\"
-
-" zvzz
-nnoremap n nzvzz
-nnoremap N Nzvzz
-
-" movement
+inoremap <C-C> <Esc>`^
 map <Tab> %
 map Y y$
 nnoremap H ^
 nnoremap L $
 
-xnoremap <Space> I<Space><Esc>gv
-xmap < <gv
-xmap > >gv
-" modes no scrolling frmo some strange input pad
-nmap <Up> <nop>
-nmap <Down> <nop>
-nmap <Left> <nop>
-nmap <Right> <nop>
 " Convenience
+nnoremap <Space> za
 nnoremap <C-S> :w<cr>
 " i dont need multiple cursors
 xnoremap <C-S> :s/
 
+" zvzz
+nnoremap n nzvzz
+nnoremap N Nzvzz
+
+" Visual adjustments
+xnoremap <Space> I<Space><Esc>gv
+xmap < <gv
+xmap > >gv
+
+" No accidents with the mousepad
+nmap <Up> <nop>
+nmap <Down> <nop>
+nmap <Left> <nop>
+nmap <Right> <nop>
+
+
 " quick modeline, thanks to the pope
-inoremap <C-C> <Esc>`^
 inoremap <C-X>^ <C-R>=substitute(&commentstring,' \=%s\>'," -*- ".&ft." -*- vim:set ft=".&ft." ".(&et?"et":"noet")." sw=".&sw." sts=".&sts.':','')<CR>
 
 " Tpope's align gist
@@ -172,12 +178,14 @@ endfunction
 
 " After searching for the rune markers, you can replace as follows:
 " navigate through them via n/N as usual,
+nnoremap <leader>m /<++\_.\{-}++>/<CR>
 let g:surround_{char2nr('m')} = "<++\r++>"
 let g:surround_{char2nr('M')} = "<++\n\r\n++>"
 
 " F keys {{{
 nmap <F2> :20Lex<CR>
-nmap <F3> :if exists(':TagbarToggle')<Bar>:TagbarToggle<Bar>endif<CR>
+" we could merge f3 and f4
+nmap <F3> :if exists(':TagbarToggle')<Bar>exe 'TagbarToggle'<Bar>endif<CR>
 augroup f4_key
   au!
   au User VimtexEventInitPost nmap <buffer> <F4> <plug>(vimtex-toc-toggle)
@@ -197,10 +205,8 @@ nnoremap <Leader>tc :s/\<\(\w\)\(\w*\)\>/\u\1\L\2/g<CR>:nohlsearch<CR>
 "Quick access
 nnoremap <leader>vv :Vedit vimrc<cr>
 
-" Pythonic constructor
-nnoremap <leader>c 0f(3wyt)o<ESC>pV:s/\([a-z_]\+\),\?/self.\1 = \1<C-v><CR>/g<CR>ddV?def<CR>j
 "}}}
-" Section: Text Objects {{{ "
+" Section: Text Objects {{{
 " Pipe tables
 " Complements cucumbertables.vim by tpope
 " inoremap <Bar>-<Bar> <Esc>kyyp:s/\v[^<Bar>]/-/g<CR>:nohlsearch<CR>j
@@ -208,15 +214,7 @@ nnoremap <leader>c 0f(3wyt)o<ESC>pV:s/\([a-z_]\+\),\?/self.\1 = \1<C-v><CR>/g<CR
 " test object for table cells
 onoremap i<Bar> :<c-u>normal! T<Bar>vt<Bar><cr>
 onoremap a<Bar> :<c-u>normal! F<Bar>vf<Bar><cr>
-
-" motion for table cells, yes it keeps highlight :)
-" positive formulation: Automatically detects when user is moving inside
-" a bar table and highlights delimiters.
-nnoremap <Bar> /<Bar><CR>
-
-" |asdf|asdf|sadf asdf
-
-" }}} Section: Text Objects "
+" }}} Section: Text Objects
 " Section: Abbreviations {{{ 
 if exists("*strftime")
   iabbrev :date: <c-r>=strftime("%d/%m/%y")<cr>
@@ -226,7 +224,8 @@ endif
 " - Visual selection: :w skel/<filename> will create a grave
 " - Reanimating skeletons by :r skel/<filename>
 " - Editing a skeleton... :e skel/filename
-cabbrev skel $HOME/.vim/graveyard
+cabbrev skeleton $HOME/.vim/graveyard
+iabbrev +++ <++++><Left><Left><Left>
 "}}}
 " Section: Commands {{{
 " command! -complete=packadd -nargs=1 Packadd packadd <args> | write | edit %
@@ -259,23 +258,23 @@ if has("autocmd")
     autocmd FileType tex,mail,pandoc if exists(':Thesaurus') | setlocal keywordprg=:Thesaurus | endif
     " autocmd FileType pandoc nnoremap <buffer> <Leader>eb 
     autocmd FileType python setlocal textwidth=79 colorcolumn=+1 softtabstop=4 shiftwidth=4 expandtab
+    autocmd FileType python nnoremap <leader>c 0f(3wyt)o<ESC>pV:s/\([a-z_]\+\),\?/self.\1 = \1<C-v><CR>/g<CR>ddV?def<CR>j
     autocmd FileType * if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
     autocmd FileType * if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
   augroup END
 endif
 " }}}
 " Section: Plugins {{{
-" Markdown {{{
+" Small adjustments {{{
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
-" }}}
-" ack {{{
+let g:SimpylFold_docstring_preview = 1
 let g:ack_use_dispatch = 1
-" }}}
-" pep8 indent {{{
 let g:python_pep8_indent_multiline_string = 1
-" }}}
-" Ragtag {{{
 let g:ragtag_global_maps = 1
+let g:delimitMate_expand_cr = 1
+let g:signify_vcs_list = [ 'git' ]
+let g:signify_line_highlight = 0
+let g:online_thesaurus_map_keys = 0
 " }}}
 " Vimtex {{{
 let g:vimtex_latexmk_continuous = 0
@@ -327,11 +326,8 @@ let g:syntastic_python_python_exec       = '/usr/bin/python3'
 let g:syntastic_python_flake8_args       = '--ignore=E402'
 " let g:syntastic_python_flake8_args       = '-m flake8'
 
-
+" Fill quickfix list
 nnoremap <leader>e :Errors<CR>
-" }}}
-" delimitmate {{{
-let delimitMate_expand_cr = 1
 " }}}
 " jedi  {{{ "
 let g:jedi#popup_on_dot         = 0
@@ -339,9 +335,6 @@ let g:jedi#smart_auto_mappings  = 0
 let g:jedi#show_call_signatures = 1
 let g:jedi#force_py_version     = s:python_version
 " }}} jedi  "
-" simpyl-fold {{{
-let g:SimpylFold_docstring_preview = 1
-" }}}
 " pandoc {{{
 let g:pandoc#formatting#mode = 's'
 let g:pandoc#filetypes#pandoc_markdown = 0
@@ -351,32 +344,8 @@ let g:pandoc#syntax#conceal#urls       = 1
 let g:pandoc#completion#bib#mode       = 'citeproc'
 " let g:pandoc#biblio#bibs               = ["~/git/vec4ir/masters/masters.bib"]
 " }}}
-" table mode (pandoc table compatible) {{{
-" let g:table_mode_corner                = '+'
-" let g:table_mode_seperator             = '|'
-" let g:table_mode_fillchar              = '-'
-" nmap <leader>,tr :TablemodeRealign<cr>
-" }}}
-" Ack {{{ "
-nnoremap <leader>a :Ack!<space>
-" }}} Ack "
-" Signify {{{
-let g:signify_vcs_list = [ 'git' ]
-let g:signify_line_highlight = 0
-" }}}
-" TagBar {{{
-" }}}
-" easy-align {{{
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-vmap <Enter> <Plug>(EasyAlign)
-" }}}
 " Goyo and Limelight {{{
-
 let g:limelight_conceal_ctermfg = 240
-
 function! s:goyo_enter()
   silent !tmux set status off
   silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
@@ -390,7 +359,6 @@ function! s:goyo_enter()
   set nocursorcolumn nocursorline
   set background=light
 endfunction
-
 function! s:goyo_leave()
   silent !tmux set status on
   silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
@@ -408,10 +376,8 @@ augroup GoLime
   autocmd! User GoyoEnter nested call <SID>goyo_enter()
   autocmd! User GoyoLeave nested call <SID>goyo_leave()
 augroup END
-
 " }}}
 " Angular and Typescript {{{
-" whos using it
 let g:typescript_compiler_binary = 'tsc'
 let g:typescript_compiler_options = ''
 if has("autocmd")
@@ -422,20 +388,14 @@ if has("autocmd")
   augroup END
 endif
 " }}}
-" }}}
 " Section: The Packs {{{ "
-
-" Provides :Man
-runtime! ftplugin/man.vim
-" default keyword prg, filetype specific may still be overwritten by autocmds
-set keywordprg=:Man
-
 if has('packages')
-  packadd syntastic
+  packadd! syntastic
   if has('syntax') && has('eval')
-    packadd matchit
+    packadd! matchit
+    " Remember b:match_words
+    " and help topic matchit-newlang
   endif
-  " need to load vimtex as usual
 else
   " BACKWARDS COMPATIBLE
   runtime pack/core/opt/vim-pathogen/autoload/pathogen.vim
@@ -443,14 +403,14 @@ else
   execute pathogen#infect('pack/core/start/{}' , 'pack/extra/start/{}' , 'pack/community/start/{}' , 'pack/testing/start/{}')
   " execute pathogen#infect('pack/core/opt/{}'   , 'pack/extra/opt/{}'   , 'pack/community/opt/{}'   , 'pack/testing/opt/{}')
 endif
-
-" }}} the packs "
+" }}} The Packs "
+" }}}
+" Section: Colors {{{
+syntax on
 if !exists('$TMUX') && has('termguicolors')
   " this should only be used if outside tmux
   set termguicolors
 endif
-
-syntax on
 set background=dark
 silent! colo gruvbox
   if has("autocmd")
@@ -464,3 +424,4 @@ silent! colo gruvbox
     " au Syntax * RainbowParenthesesLoadChevrons
   augroup END
 endif
+" }}}
