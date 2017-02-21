@@ -157,3 +157,9 @@
 [submodule "pack/core/start/vim-haystack"]
 	path = pack/core/start/vim-haystack
 	url = https://github.com/tpope/vim-haystack.git
+[submodule "pack/testing/start/vim-wordy"]
+	path = pack/testing/start/vim-wordy
+	url = https://github.com/reedes/vim-wordy.git
+[submodule "pack/testing/start/vim-online-thesaurus"]
+	path = pack/testing/start/vim-online-thesaurus
+	url = https://github.com/beloglazov/vim-online-thesaurus.git

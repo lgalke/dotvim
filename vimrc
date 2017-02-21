@@ -1,9 +1,9 @@
 " Compatibility and Dynamic Python {{{
 set nocompatible
-if has('python') " if dynamic py|py3 support is enabled, this line already activates python 3.
-  let s:python_version = 2
-elseif has('python3')
+if has('python3') " if dynamic py|py3 support is enabled, this line already activates python 3.
   let s:python_version = 3
+elseif has('python')
+  let s:python_version = 2
 else
   let s:python_version = 0
 endif
@@ -47,6 +47,7 @@ set listchars=eol:¶,tab:¦-,trail:±,extends:»,precedes:«,nbsp:¬
 set commentstring=#\ %s
 set noruler
 set dictionary+=/usr/share/dict/words
+set thesaurus+=$HOME/.vim/thesaurus/words.txt
 " %=%-14.(%l,%c%V%)\ %P
 if has('persistent_undo')
   set undofile	" keep an undo file (undo changes after closing)
@@ -60,6 +61,7 @@ set wildignore+=*.js,*.map
 set wildignore+=tags,.*.un~,*.pyc
 set wildignore+=*.bbl,*.aux,*.lot,*.lof,*.bcf,*.soc,*.fdb_latexmk,*.out,*.pdf
 set wildmode=longest:full,full
+set wildcharm=<C-z>
 
 let g:tex_flavor = 'latex'
 let g:is_bash = 1
@@ -75,7 +77,8 @@ augroup END
 
 " more complex options
 set complete-=i
-set completeopt+=menuone,noinsert,noselect
+set complete+=d
+set completeopt+=menuone,noinsert,noselect,longest
 let g:mucomplete#enable_auto_at_startup = 1
 " see :help fo-table
 set formatoptions=rqn1j
@@ -455,7 +458,7 @@ endif
 
 syntax on
 set background=dark
-silent! colo vividchalk
+silent! colo gruvbox
 
   if has("autocmd")
   " Must be placed after syntax on
