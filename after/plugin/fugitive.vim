@@ -1,3 +1,3 @@
-augroup fugitive_statusline
-  au!
-augroup END
+" augroup fugitive_statusline
+"   au!
+" augroup END

@@ -13,7 +13,6 @@ let g:UltiSnipsUsePythonVersion = s:python_version
 " Section: Basic Options {{{
 set expandtab
 set autowrite
-set showmode
 set foldmethod=marker
 set showtabline=2
 set guioptions-=e "recommended by flagship
@@ -26,11 +25,13 @@ set splitright
 set smartindent
 set wrap
 set scrolloff=5
-set cursorline cursorcolumn
-set foldopen+=jump
+
+" interface
+set nocursorline nocursorcolumn
+set nonumber norelativenumber
+set hlsearch incsearch
+
 set display=lastline "give it a try
-set noshowmode
-set lazyredraw
 if has("linebreak")
   " dont break in the middle of a word
   set linebreak
@@ -40,20 +41,18 @@ if has("linebreak")
   endif
 endif
 set nolist
-set number relativenumber
 set visualbell
-set listchars=eol:¶,tab:¦-,trail:±,extends:»,precedes:«,nbsp:¬
+set listchars=eol:¶,tab:¦-,trail:±,extends:»,precedes:«,nbsp:~
 " better default comment string for a lot of configuratoin files
 set commentstring=#\ %s
-set noruler
 set dictionary+=/usr/share/dict/words
 set thesaurus+=$HOME/.vim/thesaurus/words.txt
 " %=%-14.(%l,%c%V%)\ %P
 if has('persistent_undo')
   set undofile	" keep an undo file (undo changes after closing)
 endif
-set hlsearch incsearch
 
+set foldopen+=jump
 " wild menu
 set wildmenu
 set wildignore+=*/.git/*
@@ -86,43 +85,45 @@ set formatoptions=rqn1j
 
 " vim8 specific
 if v:version >= 800
-  set signcolumn=yes
+  set signcolumn=no
 endif
 
 " Plugin Replacement
-set path+=**
+set path+=.
+set path+=./**
+if has('conceal')
+  set conceallevel=2 concealcursor=
+endif
 
 
 
 " }}}
 " Section: Statusline {{{
 " this is hacky to fix with to 2
-set statusline=%#WarningMsg#%-2.2(%M\ %)%*
-set statusline+=%#CursorLineNr#%4.4(%c%)%*
-" buffer number and modified
-set statusline+=[b%n\ %f%(\ *%{fugitive#head()}%)]
-" file
-" usual stuff
-set statusline+=\ %H%R
-set statusline+=%=
-set statusline+=%a
-set statusline+=\ @\ %P
-let s:hl_as_usual = {"hl": ['Statusline', 'StatusLineNC']}
+" set statusline=%#WarningMsg#%-2.2(%M\ %)%*
+" set statusline+=%#CursorLineNr#%4.4(%c%)%*
+" " buffer number and modified
+" set statusline+=[b%n\ %f%(\ *%{fugitive#head()}%)]
+" " file
+" " usual stuff
+" set statusline+=\ %H%R
+" set statusline+=%=
+" set statusline+=%a
+" set statusline+=\ @\ %P
+let s:hl_as_usual = {"hl": ['Statusline']}
 augroup my_flagship
   au!
   autocmd User Flags call Hoist("window", +10, {"hl": 'WarningMsg'}, 'SyntasticStatuslineFlag')
-  autocmd User Flags call Hoist("window", -10, s:hl_as_usual, "%{tagbar#currenttag('[%s]', '')}")
+  autocmd User Flags call Hoist("window", -10, "%{tagbar#currenttag('[%s]', '')}")
   autocmd User Flags call Hoist("buffer", -10, s:hl_as_usual, "[%{&formatoptions}]")
+  autocmd User Flags call Hoist("buffer", -10, s:hl_as_usual, "[%{&complete}]")
   " autocmd User Flags call Hoist("buffer", 0, hl_as_usual, '%{g:asyncrun_status}')
   autocmd User Flags call Hoist("global", 0, s:hl_as_usual, "[%{&cpoptions}]")
   " this is necessary because (vim-signify|vim-gitgutter) somehow breaks colors
   " autocmd User Flags call Hoist("buffer", -10, hl_as_usual, function('fugitive#statusline'))
 augroup END
 " }}}
-" Section: Maps {{{
-if has('conceal')
-  set conceallevel=2 concealcursor=
-endif
+" Section: The Map {{{
 
 let mapleader = ","
 let maplocalleader = "\\"
@@ -146,17 +147,13 @@ nmap <Down> <nop>
 nmap <Left> <nop>
 nmap <Right> <nop>
 " Convenience
-nnoremap <Space> za
-inoremap <C-C> <Esc>`^
 nnoremap <C-S> :w<cr>
-
-" thanks to the pope
-inoremap <C-X>^ <C-R>=substitute(&commentstring,' \=%s\>'," -*- ".&ft." -*- vim:set ft=".&ft." ".(&et?"et":"noet")." sw=".&sw." sts=".&sts.':','')<CR>
-
-
 " i dont need multiple cursors
 xnoremap <C-S> :s/
 
+" quick modeline, thanks to the pope
+inoremap <C-C> <Esc>`^
+inoremap <C-X>^ <C-R>=substitute(&commentstring,' \=%s\>'," -*- ".&ft." -*- vim:set ft=".&ft." ".(&et?"et":"noet")." sw=".&sw." sts=".&sts.':','')<CR>
 
 " Tpope's align gist
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
@@ -171,12 +168,7 @@ function! s:align()
     call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
   endif
 endfunction
-"
-" The following is one mapping for all: 
-" - Visual selection: :w skel/<filename> will create a grave
-" - Reanimating skeletons by :r skel/<filename>
-" - Editing a skeleton... :e skel/filename
-cabbrev skel $HOME/.vim/graveyard
+
 
 " After searching for the rune markers, you can replace as follows:
 " navigate through them via n/N as usual,
@@ -225,6 +217,17 @@ nnoremap <Bar> /<Bar><CR>
 " |asdf|asdf|sadf asdf
 
 " }}} Section: Text Objects "
+" Section: Abbreviations {{{ 
+if exists("*strftime")
+  iabbrev :date: <c-r>=strftime("%d/%m/%y")<cr>
+  iabbrev :time: <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
+endif
+" The following is one mapping for all: 
+" - Visual selection: :w skel/<filename> will create a grave
+" - Reanimating skeletons by :r skel/<filename>
+" - Editing a skeleton... :e skel/filename
+cabbrev skel $HOME/.vim/graveyard
+"}}}
 " Section: Commands {{{
 " command! -complete=packadd -nargs=1 Packadd packadd <args> | write | edit %
 command! -bar -bang -complete=packadd -nargs=1 Packadd packadd<bang> <args> | doautoall BufRead
@@ -245,11 +248,8 @@ if has("autocmd")
     autocmd FileType dot let b:dispatch="dot -Tpdf -o %:r.pdf %"  | setlocal commentstring=//%s
     " guess the dispatch by shebang
     autocmd BufReadPost * if getline(1) =~# '^#!' | let b:dispatch = getline(1)[2:-1] . ' %' | let b:start = b:dispatch | endif
-
+    autocmd FileType perl,python,ruby       inoremap <silent> <buffer> <C-X>! #!/usr/bin/env<Space><C-R>=&ft<CR>
     autocmd FileType html setlocal foldmethod=marker foldmarker=<div,/div> iskeyword+=-
-    " if exists("+omnifunc")
-    "   autocmd FileType * if &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
-    " endif
     autocmd FileType tex syn sync minlines=100 maxlines=300
           \ | let b:surround_{char2nr('x')} = "\\texttt{\r}"
           \ | let b:surround_{char2nr('c')} = "\\\1identifier\1{\r}"
@@ -259,15 +259,14 @@ if has("autocmd")
     autocmd FileType tex,mail,pandoc if exists(':Thesaurus') | setlocal keywordprg=:Thesaurus | endif
     " autocmd FileType pandoc nnoremap <buffer> <Leader>eb 
     autocmd FileType python setlocal textwidth=79 colorcolumn=+1 softtabstop=4 shiftwidth=4 expandtab
+    autocmd FileType * if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
+    autocmd FileType * if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
   augroup END
 endif
 " }}}
 " Section: Plugins {{{
 " Markdown {{{
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
-" }}}
-" Autopairs {{{
-let g:AutoPairsMapCh = 0
 " }}}
 " ack {{{
 let g:ack_use_dispatch = 1
@@ -330,10 +329,6 @@ let g:syntastic_python_flake8_args       = '--ignore=E402'
 
 
 nnoremap <leader>e :Errors<CR>
-" }}}
-" indentline {{{
-let g:indentLine_setColors = 0 
-let g:indentLine_setConceal = 0
 " }}}
 " delimitmate {{{
 let delimitMate_expand_cr = 1
@@ -450,7 +445,6 @@ else
 endif
 
 " }}} the packs "
-
 if !exists('$TMUX') && has('termguicolors')
   " this should only be used if outside tmux
   set termguicolors
@@ -459,7 +453,6 @@ endif
 syntax on
 set background=dark
 silent! colo gruvbox
-
   if has("autocmd")
   " Must be placed after syntax on
   augroup rainbow_parents
