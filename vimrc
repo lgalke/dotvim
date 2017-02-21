@@ -126,6 +126,9 @@ endif
 
 let mapleader = ","
 let maplocalleader = "\\"
+inoremap <C-C> <Esc>`^
+
+inoremap <C-j> <Esc>o
 
 " zvzz
 nnoremap n nzvzz
@@ -147,7 +150,6 @@ nmap <Left> <nop>
 nmap <Right> <nop>
 " Convenience
 nnoremap <Space> za
-inoremap <C-C> <Esc>`^
 nnoremap <C-S> :w<cr>
 
 " thanks to the pope
