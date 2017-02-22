@@ -224,7 +224,7 @@ endif
 " - Visual selection: :w skel/<filename> will create a grave
 " - Reanimating skeletons by :r skel/<filename>
 " - Editing a skeleton... :e skel/filename
-cabbrev skeleton $HOME/.vim/graveyard
+cabbrev grv $HOME/.vim/graveyard
 iabbrev +++ <++++><Left><Left><Left>
 "}}}
 " Section: Commands {{{
