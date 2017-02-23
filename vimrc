@@ -416,17 +416,17 @@ if !exists('$TMUX') && has('termguicolors')
   " this should only be used if outside tmux
   set termguicolors
 endif
-if has("autocmd")
-  " Must be placed after syntax on
-  augroup rainbow_parents
-    au!
-    au VimEnter * RainbowParenthesesActivate
-    au Syntax * RainbowParenthesesLoadRound
-    au Syntax * RainbowParenthesesLoadSquare
-    au Syntax * RainbowParenthesesLoadBraces
-    " au Syntax * RainbowParenthesesLoadChevrons
-  augroup END
-endif
+" if has("autocmd")
+"   " Must be placed after syntax on
+"   augroup rainbow_parents
+"     au!
+"     au VimEnter * RainbowParenthesesActivate
+"     au Syntax * RainbowParenthesesLoadRound
+"     au Syntax * RainbowParenthesesLoadSquare
+"     au Syntax * RainbowParenthesesLoadBraces
+"     " au Syntax * RainbowParenthesesLoadChevrons
+"   augroup END
+" endif
 set background=dark
 silent! colo gruvbox
 " }}}
