@@ -82,9 +82,6 @@
 [submodule "pack/extra/start/vimtex"]
 	path = pack/extra/start/vimtex
 	url = https://github.com/lervag/vimtex.git
-[submodule "pack/community/start/rainbow_parentheses.vim"]
-	path = pack/community/start/rainbow_parentheses.vim
-	url = https://github.com/kien/rainbow_parentheses.vim.git
 [submodule "pack/community/start/tagbar"]
 	path = pack/community/start/tagbar
 	url = https://github.com/majutsushi/tagbar.git
@@ -166,3 +163,6 @@
 [submodule "pack/community/opt/vim-github-colorscheme"]
 	path = pack/community/opt/vim-github-colorscheme
 	url = https://github.com/endel/vim-github-colorscheme.git
+[submodule "pack/testing/start/vim-easy-align"]
+	path = pack/testing/start/vim-easy-align
+	url = https://github.com/junegunn/vim-easy-align.git

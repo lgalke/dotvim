@@ -161,19 +161,24 @@ nmap <Right> <nop>
 " quick modeline, thanks to the pope
 inoremap <C-X>^ <C-R>=substitute(&commentstring,' \=%s\>'," -*- ".&ft." -*- vim:set ft=".&ft." ".(&et?"et":"noet")." sw=".&sw." sts=".&sts.':','')<CR>
 
-" Tpope's align gist
-inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
 
-function! s:align()
-  let p = '^\s*|\s.*\s|\s*$'
-  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
-    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
-    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
-    Tabularize/|/l1
-    normal! 0
-    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
-  endif
-endfunction
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+" Tpope's align gist
+" inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+
+" function! s:align()
+"   let p = '^\s*|\s.*\s|\s*$'
+"   if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+"     let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+"     let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+"     Tabularize/|/l1
+"     normal! 0
+"     call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+"   endif
+" endfunction
 
 
 " After searching for the rune markers, you can replace as follows:
@@ -406,14 +411,12 @@ endif
 " }}} The Packs "
 " }}}
 " Section: Colors {{{
-syntax on
+syntax enable
 if !exists('$TMUX') && has('termguicolors')
   " this should only be used if outside tmux
   set termguicolors
 endif
-set background=dark
-silent! colo gruvbox
-  if has("autocmd")
+if has("autocmd")
   " Must be placed after syntax on
   augroup rainbow_parents
     au!
@@ -424,4 +427,6 @@ silent! colo gruvbox
     " au Syntax * RainbowParenthesesLoadChevrons
   augroup END
 endif
+set background=dark
+silent! colo gruvbox
 " }}}
