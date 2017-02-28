@@ -103,12 +103,6 @@
 [submodule "pack/community/opt/seoul256.vim"]
 	path = pack/community/opt/seoul256.vim
 	url = https://github.com/junegunn/seoul256.vim.git
-[submodule "pack/community/start/goyo.vim"]
-	path = pack/community/start/goyo.vim
-	url = https://github.com/junegunn/goyo.vim.git
-[submodule "pack/community/start/limelight.vim"]
-	path = pack/community/start/limelight.vim
-	url = https://github.com/junegunn/limelight.vim.git
 [submodule "pack/extra/start/typescript-vim"]
 	path = pack/extra/start/typescript-vim
 	url = https://github.com/leafgarland/typescript-vim.git
@@ -166,3 +160,12 @@
 [submodule "pack/testing/start/vim-easy-align"]
 	path = pack/testing/start/vim-easy-align
 	url = https://github.com/junegunn/vim-easy-align.git
+[submodule "pack/community/opt/vim-colors-pencil"]
+	path = pack/community/opt/vim-colors-pencil
+	url = https://github.com/reedes/vim-colors-pencil.git
+[submodule "pack/extra/opt/ale"]
+	path = pack/extra/opt/ale
+	url = https://github.com/w0rp/ale.git
+[submodule "pack/testing/start/jedi-vim"]
+	path = pack/testing/start/jedi-vim
+	url = https://github.com/davidhalter/jedi-vim.git

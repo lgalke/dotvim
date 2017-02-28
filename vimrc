@@ -1,12 +1,6 @@
+scriptencoding
 " Preamble: Compatibility and Dynamic Python {{{
-set nocompatible
-if has('python3') " if dynamic py|py3 support is enabled, this line already activates python 3.
-  let s:python_version = 3
-elseif has('python')
-  let s:python_version = 2
-else
-  let s:python_version = 0
-endif
+" set nocompatible
 " Store currently active python version for rest of script
 " echomsg 'Using python'.s:python_version
 " }}}
@@ -31,9 +25,11 @@ set hlsearch incsearch
 set visualbell
 set guioptions-=e "recommended by flagship
 set splitright
+set confirm
+set visualbell
 " vim8 specific
 if v:version >= 800
-  set signcolumn=no
+  set signcolumn=yes
 endif
 if has('conceal')
   set conceallevel=2 concealcursor=
@@ -51,7 +47,7 @@ set listchars=eol:¶,tab:¦-,trail:±,extends:»,precedes:«,nbsp:~
 " }}}
 " Wrap {{{
 set wrap
-if has("linebreak")
+if has('linebreak')
   " dont break in the middle of a word
   set linebreak
   " indent line breaks
@@ -69,18 +65,19 @@ runtime! ftplugin/man.vim
 set keywordprg=:Man
 " }}}
 " Completion {{{
+
 set dictionary+=/usr/share/dict/words
 set thesaurus+=$HOME/.vim/thesaurus/words.txt
 set complete-=i
 set complete+=d
-set completeopt+=menuone,noinsert,noselect,longest
+set completeopt+=longest
 " }}}
 " Going Wild {{{
 set wildmenu
 set wildignore+=*/.git/*
 set wildignore+=*.js,*.map
 set wildignore+=tags,.*.un~,*.pyc
-set wildignore+=*.bbl,*.aux,*.lot,*.lof,*.bcf,*.soc,*.fdb_latexmk,*.out,*.pdf
+set wildignore+=*.bbl,*.aux,*.lot,*.lof,*.bcf,*.soc,*.fdb_latexmk,*.out
 set wildmode=longest:full,full
 set wildcharm=<C-z>
 " }}}
@@ -96,10 +93,10 @@ augroup END
 " Native global options {{{
 let g:tex_flavor = 'latex'
 let g:is_bash = 1
+let g:python_highlight_all = 1
 " }}}
 " File Movement {{{
-set path+=.
-set path+=./**
+set path+=**
 " }}}
 " }}}
 " Section: Statusline {{{
@@ -114,22 +111,23 @@ set path+=./**
 " set statusline+=%=
 " set statusline+=%a
 " set statusline+=\ @\ %P
-let s:hl_as_usual = {"hl": 'Statusline'}
+let s:hl_as_usual = {'hl': 'Statusline'}
 augroup my_flagship
   au!
-  autocmd User Flags call Hoist("window", +10, {"hl": 'WarningMsg'}, 'SyntasticStatuslineFlag')
-  autocmd User Flags call Hoist("window", -10, s:hl_as_usual, "%{tagbar#currenttag('[%s]', '')}")
-  autocmd User Flags call Hoist("buffer", -10, s:hl_as_usual, "[%{&formatoptions}]")
-  autocmd User Flags call Hoist("buffer", -10, s:hl_as_usual, "[%{&complete}]")
+  autocmd User Flags call Hoist('buffer', +10, {'hl': 'WarningMsg'}, 'SyntasticStatuslineFlag')
+  autocmd User Flags call Hoist('buffer', +10, {'hl': 'WarningMsg'}, 'ALEGetStatusLine')
+  autocmd User Flags call Hoist('window', +10, s:hl_as_usual, "%{tagbar#currenttag('[%s]', '')}")
+  autocmd User Flags call Hoist('buffer', -10, s:hl_as_usual, '[%{&formatoptions}]')
+  autocmd User Flags call Hoist('buffer', -10, s:hl_as_usual, '[%{&complete}]')
   " autocmd User Flags call Hoist("buffer", 0, hl_as_usual, '%{g:asyncrun_status}')
-  autocmd User Flags call Hoist("global", 0, s:hl_as_usual, "[%{&cpoptions}]")
+  autocmd User Flags call Hoist('global', 0, "[%{&cpoptions}]")
   " this is necessary because (vim-signify|vim-gitgutter) somehow breaks colors
   " autocmd User Flags call Hoist("buffer", -10, hl_as_usual, function('fugitive#statusline'))
 augroup END
 " }}}
 " Section: The Map {{{
-let mapleader = ","
-let maplocalleader = "\\"
+let g:mapleader = ','
+let g:maplocalleader = '\\'
 inoremap <C-C> <Esc>`^
 map <Tab> %
 map Y y$
@@ -166,32 +164,12 @@ xmap ga <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
-" Tpope's align gist
-" inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
-
-" function! s:align()
-"   let p = '^\s*|\s.*\s|\s*$'
-"   if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
-"     let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
-"     let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
-"     Tabularize/|/l1
-"     normal! 0
-"     call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
-"   endif
-" endfunction
-
-
-" After searching for the rune markers, you can replace as follows:
-" navigate through them via n/N as usual,
-nnoremap <leader>m /<++\_.\{-}++>/<CR>
-let g:surround_{char2nr('m')} = "<++\r++>"
-let g:surround_{char2nr('M')} = "<++\n\r\n++>"
 
 " F keys {{{
 nmap <F2> :20Lex<CR>
 " we could merge f3 and f4
 nmap <F3> :if exists(':TagbarToggle')<Bar>exe 'TagbarToggle'<Bar>endif<CR>
-augroup f4_key
+augroup f4_map
   au!
   au User VimtexEventInitPost nmap <buffer> <F4> <plug>(vimtex-toc-toggle)
   au FileType pandoc if exists(':TOC') | nmap <buffer> <F4> :TOC<CR> | endif
@@ -220,17 +198,23 @@ nnoremap <leader>vv :Vedit vimrc<cr>
 onoremap i<Bar> :<c-u>normal! T<Bar>vt<Bar><cr>
 onoremap a<Bar> :<c-u>normal! F<Bar>vf<Bar><cr>
 " }}} Section: Text Objects
-" Section: Abbreviations {{{ 
-if exists("*strftime")
+" Section: Abbreviations and Graveyard {{{ 
+if exists('*strftime')
   iabbrev :date: <c-r>=strftime("%d/%m/%y")<cr>
   iabbrev :time: <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
 endif
 " The following is one mapping for all: 
-" - Visual selection: :w skel/<filename> will create a grave
-" - Reanimating skeletons by :r skel/<filename>
-" - Editing a skeleton... :e skel/filename
-cabbrev grv $HOME/.vim/graveyard
+" - Visual selection: :w \g/<filename> will create a grave
+" - Reanimating skeletons by :r \g/<filename>
+" - Editing a skeleton... :e \g/filename
+cabbrev \g $HOME/.vim/graveyard
 iabbrev +++ <++++><Left><Left><Left>
+" After searching for the rune markers, you can replace as follows:
+" navigate through them via n/N as usual,
+nnoremap <leader>m /<++.*++>/<CR>
+let g:surround_{char2nr('m')} = '<++\r++>'
+" ok i should not write that says proselint
+iabbrev very damn
 "}}}
 " Section: Commands {{{
 " command! -complete=packadd -nargs=1 Packadd packadd <args> | write | edit %
@@ -238,7 +222,7 @@ command! -bar -bang -complete=packadd -nargs=1 Packadd packadd<bang> <args> | do
 command! -bar -nargs=0 Helptags silent! helptags ALL
 " }}}
 " Section: Autocmds {{{
-if has("autocmd")
+if has('autocmd')
   filetype plugin indent on
   augroup veight
     au!
@@ -271,121 +255,112 @@ endif
 " }}}
 " Section: Plugins {{{
 " Small adjustments {{{
-let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
-let g:SimpylFold_docstring_preview = 1
-let g:ack_use_dispatch = 1
+
+let g:markdown_fenced_languages           = ['html', 'python', 'bash=sh']
+let g:SimpylFold_docstring_preview        = 1
+let g:ack_use_dispatch                    = 1
 let g:python_pep8_indent_multiline_string = 1
-let g:ragtag_global_maps = 1
-let g:delimitMate_expand_cr = 1
-let g:signify_vcs_list = [ 'git' ]
-let g:signify_line_highlight = 0
-let g:online_thesaurus_map_keys = 0
+let g:ragtag_global_maps                  = 1
+let g:delimitMate_expand_cr               = 1
+let g:signify_vcs_list                    = [ 'git' ]
+let g:signify_line_highlight              = 0
+let g:online_thesaurus_map_keys           = 0
+
 " }}}
 " Vimtex {{{
-let g:vimtex_latexmk_continuous = 0
-let g:vimtex_latexmk_background = 0
-let g:vimtex_latexmk_callback = 0
+if has('autocmd')
+  augroup vimtex_customization
+    au User VimtexEventInitPost 
+          \ call vimtex#imaps#add_map({'lhs' : 'bs', 'rhs' : '\boldsymbol{}<Left>'}) |
+          \ call vimtex#imaps#add_map({'lhs' : 'bb', 'rhs' : '\mathbb{}<Left>'})
+  augroup END
+endif
 
 nmap <C-\> <plug>(vimtex-cmd-create)
 imap <C-\> <plug>(vimtex-cmd-create)
 
-let g:vimtex_view_general_viewer = 'okular'
-let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
+let g:vimtex_latexmk_continuous           = 0
+let g:vimtex_latexmk_background           = 0
+let g:vimtex_latexmk_callback             = 0
+let g:vimtex_view_general_viewer          = 'okular'
+let g:vimtex_view_general_options         = '--unique file:@pdf\#src:@line@tex'
 let g:vimtex_view_general_options_latexmk = '--unique'
-
-let g:vimtex_complete_recursive_bib = 1
-let g:vimtex_fold_enabled = 1
-let g:vimtex_fold_preamble = 1
-let g:vimtex_fold_comments = 1
-let g:vimtex_indent_enabled = 1
-let g:vimtex_indent_bib_enabled = 1
-let g:vimtex_format_enabled = 1 " this did not work well, recheck if fixed
-
-let g:vimtex_disable_version_warning = 1 " avoid checking manually latexmk, bibtex and stuff
+let g:vimtex_complete_recursive_bib       = 1
+let g:vimtex_fold_enabled                 = 1
+let g:vimtex_fold_preamble                = 1
+let g:vimtex_fold_comments                = 1
+let g:vimtex_indent_enabled               = 1
+let g:vimtex_indent_bib_enabled           = 1
+let g:vimtex_format_enabled               = 1 " this did not work well, recheck if fixed
+let g:vimtex_disable_version_warning      = 1 " avoid checking manually latexmk, bibtex and stuff
 " }}}
 " Syntastic {{{
-let g:syntastic_check_on_open            = 1
-let g:syntastic_check_on_wq              = 0
-let g:syntastic_auto_jump                = 0
+let g:syntastic_check_on_open             = 1
+let g:syntastic_check_on_wq               = 0
+let g:syntastic_auto_jump                 = 0
 " dont clutter the loc list
-let g:syntastic_always_populate_loc_list = 0
-let g:loc_list_height                    = 5
-let g:syntastic_aggregate_errors         = 1
-let g:syntastic_id_checkers              = 1
-let g:syntastic_auto_loc_list            = 0
-let g:tsuquyomi_disable_quickfix         = 1
-let g:syntastic_typescript_checkers      = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
+let g:syntastic_always_populate_loc_list  = 0
+let g:loc_list_height                     = 5
+let g:syntastic_aggregate_errors          = 1
+let g:syntastic_id_checkers               = 1
+let g:syntastic_auto_loc_list             = 0
+let g:tsuquyomi_disable_quickfix          = 1
+let g:syntastic_typescript_checkers       = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
 " tex checker
-let g:syntastic_tex_checkers             = ["chktex", "lacheck"]
+let g:syntastic_tex_checkers              = ['chktex', 'lacheck']
 " 1: Cmd terminated with space
 " 8: Wrong type of dashes
 " 36: spaces around braces
-let g:syntastic_tex_chktex_args          = "-n1 -n8 -n36"
+let g:syntastic_tex_chktex_args           = '-n1 -n8 -n36'
 " python checker
-let g:syntastic_python_checkers          = ['python', 'flake8']
+let g:syntastic_python_checkers           = ['python', 'flake8']
 " let g:syntastic_python_checkers          = []
-let g:syntastic_python_python_exec       = '/usr/bin/python3'
+let g:syntastic_python_python_exec        = '/usr/bin/python3'
 " let g:syntastic_python_flake8_exec       = '/usr/bin/python3'
 " E402 : module level import not at top of file
 " E501, E203
-let g:syntastic_python_flake8_args       = '--ignore=E402'
+let g:syntastic_python_flake8_args        = '--ignore=E402'
 " let g:syntastic_python_flake8_args       = '-m flake8'
 
 " Fill quickfix list
 nnoremap <leader>e :Errors<CR>
 " }}}
+" ALE {{{
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+let g:ale_linters = { 'python': ['flake8'] } 
+let g:ale_python_mypy_options = '--ignore-missing-imports'
+" Module import not at start of file
+let g:ale_python_flake8_args = '--ignore=E402'
+
+let g:ale_linter_aliases = {'pandoc': 'markdown'}
+" }}}
+" Wordy {{{
+nmap ]w :NextWordy<CR>
+nmap [w :PrevWordy<CR>
+" }}}
 " jedi  {{{ "
 let g:jedi#popup_on_dot         = 0
 let g:jedi#smart_auto_mappings  = 0
 let g:jedi#show_call_signatures = 1
-let g:jedi#force_py_version     = s:python_version
+" let g:jedi#force_py_version     = &pyx
 " }}} jedi  "
 " pandoc {{{
 let g:pandoc#formatting#mode = 's'
 let g:pandoc#filetypes#pandoc_markdown = 0
-let g:pandoc#filetypes#handled         = ["extra", "pandoc", "rst", "textile"]
-let g:pandoc#modules#disabled          = ["menu"]
+let g:pandoc#filetypes#handled         = ['extra', 'pandoc', 'rst', 'textile']
+let g:pandoc#modules#disabled          = ['menu']
 let g:pandoc#syntax#conceal#urls       = 1
 let g:pandoc#completion#bib#mode       = 'citeproc'
 " let g:pandoc#biblio#bibs               = ["~/git/vec4ir/masters/masters.bib"]
 " }}}
-" Goyo and Limelight {{{
-let g:limelight_conceal_ctermfg = 240
-function! s:goyo_enter()
-  silent !tmux set status off
-  silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
-  set noshowmode
-  set noshowcmd
-  set scrolloff=999
-  " packadd seoul256.vim
-  " color seoul256-light
-  Limelight
-  " ...
-  set nocursorcolumn nocursorline
-  set background=light
-endfunction
-function! s:goyo_leave()
-  silent !tmux set status on
-  silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
-  set showmode
-  set showcmd
-  set scrolloff=5
-  Limelight!
-  " ...
-  set background=dark
-  set cursorcolumn cursorline
-endfunction
-
-augroup GoLime
-  au!
-  autocmd! User GoyoEnter nested call <SID>goyo_enter()
-  autocmd! User GoyoLeave nested call <SID>goyo_leave()
-augroup END
 " }}}
 " Angular and Typescript {{{
 let g:typescript_compiler_binary = 'tsc'
 let g:typescript_compiler_options = ''
-if has("autocmd")
+if has('autocmd')
   augroup qfpost
     au!
     autocmd QuickFixCmdPost [^l]* nested cwindow
@@ -395,16 +370,20 @@ endif
 " }}}
 " Section: The Packs {{{ "
 if has('packages')
-  packadd! syntastic
+  if v:version >= 800
+    exec 'packadd! ale'
+  else
+    exec 'packadd! syntastic'
+  endif
   if has('syntax') && has('eval')
-    packadd! matchit
+    exec 'packadd! matchit'
     " Remember b:match_words
     " and help topic matchit-newlang
   endif
 else
   " BACKWARDS COMPATIBLE
   runtime pack/core/opt/vim-pathogen/autoload/pathogen.vim
-  echom "Pathogen infection."
+  echom 'Pathogen infection.'
   execute pathogen#infect('pack/core/start/{}' , 'pack/extra/start/{}' , 'pack/community/start/{}' , 'pack/testing/start/{}')
   " execute pathogen#infect('pack/core/opt/{}'   , 'pack/extra/opt/{}'   , 'pack/community/opt/{}'   , 'pack/testing/opt/{}')
 endif
@@ -416,17 +395,6 @@ if !exists('$TMUX') && has('termguicolors')
   " this should only be used if outside tmux
   set termguicolors
 endif
-" if has("autocmd")
-"   " Must be placed after syntax on
-"   augroup rainbow_parents
-"     au!
-"     au VimEnter * RainbowParenthesesActivate
-"     au Syntax * RainbowParenthesesLoadRound
-"     au Syntax * RainbowParenthesesLoadSquare
-"     au Syntax * RainbowParenthesesLoadBraces
-"     " au Syntax * RainbowParenthesesLoadChevrons
-"   augroup END
-" endif
 set background=dark
 silent! colo gruvbox
 " }}}

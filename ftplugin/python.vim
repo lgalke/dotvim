@@ -1,4 +1,3 @@
-iabbrev <buffer> if if:<Left>
 iabbrev <buffer> while while:<Left>
 " generator
 iabbrev <buffer> for) (for<Space>in<Space>)<Left><Left><Left><Left><Left>
