@@ -197,10 +197,6 @@ nnoremap <leader>vv :Vedit vimrc<cr>
 " test object for table cells
 onoremap i<Bar> :<c-u>normal! T<Bar>vt<Bar><cr>
 onoremap a<Bar> :<c-u>normal! F<Bar>vf<Bar><cr>
-
-onoremap i, :<c-u>normal! ?,\<cr>vN<CR>
-" onoremap a, :<c-u>normal! ?,v/,:noh<cr>
-
 " }}} Section: Text Objects
 " Section: Abbreviations and Graveyard {{{ 
 if exists('*strftime')
@@ -226,35 +222,40 @@ command! -bar -bang -complete=packadd -nargs=1 Packadd packadd<bang> <args> | do
 command! -bar -nargs=0 Helptags silent! helptags ALL
 " }}}
 " Section: Autocmds {{{
+
 if has('autocmd')
   filetype plugin indent on
   augroup vimrc_ex
+    
     au!
     " q enough
-    autocmd FileType help nnoremap <buffer> q :q!<cr>
+    autocmd FileType    help             nnoremap <buffer> q :q!<cr>
     " as recommended to not write ugly mails for others
-    autocmd FileType mail setlocal formatoptions+=aw
+    autocmd FileType    mail             setlocal formatoptions+=aw
     " make useful dispatch
-    autocmd FileType pandoc if exists(':Pandoc') | let b:dispatch=":Pandoc pdf" | endif
-    autocmd FileType pandoc,markdown setlocal et sw=4 sts=2 iskeyword+=@,-,#
-    autocmd FileType dot let b:dispatch="dot -Tpdf -o %:r.pdf %"  | setlocal commentstring=//%s
+    autocmd FileType    pandoc           if exists(':Pandoc') | let b:dispatch=":Pandoc pdf" | endif
+    autocmd FileType    pandoc,markdown  setlocal et sw=4 sts=2 iskeyword+=@,-,#
+    autocmd FileType    dot              let b:dispatch="dot -Tpdf -o %:r.pdf %"  | setlocal commentstring=//%s
     " guess the dispatch by shebang
-    autocmd BufReadPost * if getline(1) =~# '^#!' | let b:dispatch = getline(1)[2:-1] . ' %' | let b:start = b:dispatch | endif
-    autocmd FileType perl,python,ruby       inoremap <silent> <buffer> <C-X>! #!/usr/bin/env<Space><C-R>=&ft<CR>
-    autocmd FileType html setlocal foldmethod=marker foldmarker=<div,/div> iskeyword+=-
-    autocmd FileType tex syn sync minlines=100 maxlines=300
-          \ | let b:surround_{char2nr('x')} = "\\texttt{\r}"
-          \ | let b:surround_{char2nr('c')} = "\\\1identifier\1{\r}"
-          \ | let b:surround_{char2nr('e')} = "\\begin{\1environment\1}\n\r\n\\end{\1\1}"
-          \ | let b:surround_{char2nr('v')} = "\\verb|\r|"
-          \ | let b:surround_{char2nr('V')} = "\\begin{verbatim}\n\r\n\\end{verbatim}"
-    autocmd FileType tex,mail,pandoc if exists(':Thesaurus') | setlocal keywordprg=:Thesaurus | endif
-    autocmd FileType python setlocal textwidth=79 colorcolumn=+1 softtabstop=4 shiftwidth=4 expandtab
-    autocmd FileType python nnoremap <leader>c 0f(3wyt)o<ESC>pV:s/\([a-z_]\+\),\?/self.\1 = \1<C-v><CR>/g<CR>ddV?def<CR>j
-    autocmd FileType * if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
-    autocmd FileType * if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
+    autocmd BufReadPost *                if getline(1) =~# '^#!' | let b:dispatch = getline(1)[2:-1] . ' %' | let b:start = b:dispatch | endif
+    autocmd FileType    perl,python,ruby inoremap <silent> <buffer> <C-X>! #!/usr/bin/env<Space><C-R>=&ft<CR>
+    autocmd FileType    html             setlocal foldmethod=marker foldmarker=<div,/div> iskeyword+=-
+    autocmd FileType    tex              syn sync minlines=100 maxlines=300
+          \ |           let              b:surround_{char2nr('x')} = "\\texttt{\r}"
+          \ |           let              b:surround_{char2nr('c')} = "\\\1identifier\1{\r}"
+          \ |           let              b:surround_{char2nr('e')} = "\\begin{\1environment\1}\n\r\n\\end{\1\1}"
+          \ |           let              b:surround_{char2nr('v')} = "\\verb|\r|"
+          \ |           let              b:surround_{char2nr('V')} = "\\begin{verbatim}\n\r\n\\end{verbatim}"
+    autocmd FileType    tex,mail,pandoc  if exists(':Thesaurus') | setlocal keywordprg=:Thesaurus | endif
+    autocmd FileType    python           setlocal textwidth=79 colorcolumn=+1 softtabstop=4 shiftwidth=4 expandtab
+    autocmd FileType    python           nnoremap <leader>c 0f(3wyt)o<ESC>pV:s/\([a-z_]\+\),\?/self.\1 = \1<C-v><CR>/g<CR>ddV?def<CR>j
+    autocmd FileType    *                if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
+    autocmd FileType    *                if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
+    autocmd CursorHold  *                smile
+
   augroup END
 endif
+
 " }}}
 " Section: Plugins {{{
 " Small adjustments {{{
@@ -268,6 +269,9 @@ let g:delimitMate_expand_cr               = 1
 let g:signify_vcs_list                    = [ 'git' ]
 let g:signify_line_highlight              = 0
 let g:online_thesaurus_map_keys           = 0
+let g:ctrlp_map                           = '<Leader>o'
+let g:ctrlp_user_command                  = ['.git', 'cd %s && git ls-files']
+let g:angular_cli_use_dispatch            = 1
 
 " }}}
 " Vimtex {{{
@@ -412,5 +416,5 @@ if !exists('$TMUX') && has('termguicolors')
   set termguicolors
 endif
 set background=dark
-silent! colo gruvbox
+silent! colo afterglow
 " }}}

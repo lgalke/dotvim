@@ -169,3 +169,9 @@
 [submodule "pack/core/start/vim-argumentative"]
 	path = pack/core/start/vim-argumentative
 	url = https://github.com/PeterRincker/vim-argumentative.git
+[submodule "pack/testing/start/emmet-vim"]
+	path = pack/testing/start/emmet-vim
+	url = https://github.com/mattn/emmet-vim.git
+[submodule "pack/community/opt/vim-afterglow"]
+	path = pack/community/opt/vim-afterglow
+	url = https://github.com/danilo-augusto/vim-afterglow.git
