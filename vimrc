@@ -1,5 +1,5 @@
-scriptencoding
 " Preamble: Compatibility and Dynamic Python {{{
+scriptencoding
 " set nocompatible
 " Store currently active python version for rest of script
 " echomsg 'Using python'.s:python_version
@@ -14,19 +14,25 @@ if has('persistent_undo')
   set undofile	" keep an undo file (undo changes after closing)
 endif
 " }}}
-" Interface {{{
-set showcmd ruler laststatus=2
-set showtabline=2
-set nocursorline nocursorcolumn
-set nonumber norelativenumber
-set showmatch
-set scrolloff=5
+" Interface and Behaviour{{{
+" Searching and matching braces
 set hlsearch incsearch
+set showmatch
+" Show current command ruler
+set showcmd ruler
+" Always show status and tabline
+set laststatus=2 showtabline=2
+" But no cursor column nor line
+set nocursorline nocursorcolumn
+" And not all the numbers.
+set nonumber norelativenumber
+
 set visualbell
+set scrolloff=5
+
 set guioptions-=e "recommended by flagship
 set splitright
 set confirm
-set visualbell
 " vim8 specific
 if v:version >= 800
   set signcolumn=yes
@@ -35,7 +41,7 @@ if has('conceal')
   set conceallevel=2 concealcursor=
 endif
 " }}}
-" Indent {{{
+" Indent and Tabs{{{
 set expandtab
 set shiftround
 set autoindent
@@ -45,7 +51,7 @@ set smartindent
 set nolist
 set listchars=eol:¶,tab:¦-,trail:±,extends:»,precedes:«,nbsp:~
 " }}}
-" Wrap {{{
+" Wraps and Breaks {{{
 set wrap
 if has('linebreak')
   " dont break in the middle of a word
@@ -65,7 +71,6 @@ runtime! ftplugin/man.vim
 set keywordprg=:Man
 " }}}
 " Completion {{{
-
 set dictionary+=/usr/share/dict/words
 set thesaurus+=$HOME/.vim/thesaurus/words.txt
 set complete-=i
@@ -77,7 +82,7 @@ set wildmenu
 set wildignore+=*/.git/*
 set wildignore+=*.js,*.map
 set wildignore+=tags,.*.un~,*.pyc
-set wildignore+=*.bbl,*.aux,*.lot,*.lof,*.bcf,*.soc,*.fdb_latexmk,*.out
+" set wildignore+=*.bbl,*.aux,*.lot,*.lof,*.bcf,*.soc,*.fdb_latexmk,*.out
 set wildmode=longest:full,full
 set wildcharm=<C-z>
 " }}}
@@ -126,26 +131,23 @@ augroup my_flagship
 augroup END
 " }}}
 " Section: The Map {{{
-let g:mapleader = ','
-let g:maplocalleader = '\\'
+let g:mapleader = ' '
+let g:maplocalleader = '\'
 inoremap <C-C> <Esc>`^
-map <Tab> %
+" map <Tab> %
 map Y y$
 nnoremap H ^
 nnoremap L $
 
 " Convenience
-nnoremap <Space> za
 nnoremap <C-S> :w<cr>
 " i dont need multiple cursors
 xnoremap <C-S> :s/
-
 " zvzz
-nnoremap n nzvzz
-nnoremap N Nzvzz
+" nnoremap n nzvzz
+" nnoremap N Nzvzz
 
 " Visual adjustments
-xnoremap <Space> I<Space><Esc>gv
 xmap < <gv
 xmap > >gv
 
@@ -159,27 +161,26 @@ nmap <Right> <nop>
 " quick modeline, thanks to the pope
 inoremap <C-X>^ <C-R>=substitute(&commentstring,' \=%s\>'," -*- ".&ft." -*- vim:set ft=".&ft." ".(&et?"et":"noet")." sw=".&sw." sts=".&sts.':','')<CR>
 
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
 
 " F keys {{{
-nmap <F2> :20Lex<CR>
+nmap    <F2>     :20Lex<CR>
 " we could merge f3 and f4
-nmap <F3> :if exists(':TagbarToggle')<Bar>exe 'TagbarToggle'<Bar>endif<CR>
-augroup f4_map
-  au!
-  au User VimtexEventInitPost nmap <buffer> <F4> <plug>(vimtex-toc-toggle)
-  au FileType pandoc if exists(':TOC') | nmap <buffer> <F4> :TOC<CR> | endif
-augroup END
+nmap    <F3>     :if exists(':TagbarToggle')<Bar>exe 'TagbarToggle'<Bar>endif<CR>
+
+if has('autocmd')
+  augroup f4_map
+    au!
+    au    User     VimtexEventInitPost nmap <buffer> <F4> <plug>(vimtex-toc-toggle)
+    au    FileType pandoc              if exists(':TOC') | nmap <buffer> <F4> :TOC<CR> | endif
+  augroup END
+endif
+
 " Tpope's fkeys are cool
-nmap <silent> <F6> :if &previewwindow<Bar>pclose<Bar>elseif exists(':Gstatus')<Bar>exe 'Gstatus'<Bar>else<Bar>ls<Bar>endif<CR>
-nmap <silent> <F7> :if exists(':Lcd')<Bar>exe 'Lcd'<Bar>elseif exists(':Cd')<Bar>exe 'Cd'<Bar>else<Bar>lcd %:h<Bar>endif<CR>
-map <F8>    :Make<CR>
-map <F9>    :Dispatch<CR>
-map <F10>   :Start<CR>
+nmap    <F6>  :if &previewwindow<Bar>pclose<Bar>elseif exists(':Gstatus')<Bar>exe 'Gstatus'<Bar>else<Bar>ls<Bar>endif<CR>
+nmap    <F7>  :if exists(':Lcd')<Bar>exe 'Lcd'<Bar>elseif exists(':Cd')<Bar>exe 'Cd'<Bar>else<Bar>lcd %:h<Bar>endif<CR>
+map     <F8>  :Make<CR>
+map     <F9>  :Dispatch<CR>
+map     <F10> :Start<CR>
 " }}}
 
 " Title case
@@ -187,7 +188,6 @@ nnoremap <Leader>tc :s/\<\(\w\)\(\w*\)\>/\u\1\L\2/g<CR>:nohlsearch<CR>
 
 "Quick access
 nnoremap <leader>vv :Vedit vimrc<cr>
-
 "}}}
 " Section: Text Objects {{{
 " Pipe tables
@@ -197,6 +197,10 @@ nnoremap <leader>vv :Vedit vimrc<cr>
 " test object for table cells
 onoremap i<Bar> :<c-u>normal! T<Bar>vt<Bar><cr>
 onoremap a<Bar> :<c-u>normal! F<Bar>vf<Bar><cr>
+
+onoremap i, :<c-u>normal! ?,\<cr>vN<CR>
+" onoremap a, :<c-u>normal! ?,v/,:noh<cr>
+
 " }}} Section: Text Objects
 " Section: Abbreviations and Graveyard {{{ 
 if exists('*strftime')
@@ -224,7 +228,7 @@ command! -bar -nargs=0 Helptags silent! helptags ALL
 " Section: Autocmds {{{
 if has('autocmd')
   filetype plugin indent on
-  augroup veight
+  augroup vimrc_ex
     au!
     " q enough
     autocmd FileType help nnoremap <buffer> q :q!<cr>
@@ -245,7 +249,6 @@ if has('autocmd')
           \ | let b:surround_{char2nr('v')} = "\\verb|\r|"
           \ | let b:surround_{char2nr('V')} = "\\begin{verbatim}\n\r\n\\end{verbatim}"
     autocmd FileType tex,mail,pandoc if exists(':Thesaurus') | setlocal keywordprg=:Thesaurus | endif
-    " autocmd FileType pandoc nnoremap <buffer> <Leader>eb 
     autocmd FileType python setlocal textwidth=79 colorcolumn=+1 softtabstop=4 shiftwidth=4 expandtab
     autocmd FileType python nnoremap <leader>c 0f(3wyt)o<ESC>pV:s/\([a-z_]\+\),\?/self.\1 = \1<C-v><CR>/g<CR>ddV?def<CR>j
     autocmd FileType * if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
@@ -270,6 +273,7 @@ let g:online_thesaurus_map_keys           = 0
 " Vimtex {{{
 if has('autocmd')
   augroup vimtex_customization
+    au!
     au User VimtexEventInitPost 
           \ call vimtex#imaps#add_map({'lhs' : 'bs', 'rhs' : '\boldsymbol{}<Left>'}) |
           \ call vimtex#imaps#add_map({'lhs' : 'bb', 'rhs' : '\mathbb{}<Left>'})
@@ -325,15 +329,28 @@ let g:syntastic_python_flake8_args        = '--ignore=E402'
 " Fill quickfix list
 nnoremap <leader>e :Errors<CR>
 " }}}
+" Easy-Align {{{
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+" }}}
 " ALE {{{
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
-let g:ale_linters = { 'python': ['flake8'] } 
+let g:ale_linters = { 'python': ['flake8'], 'html' : 'HTMLHint' } 
+" python
 let g:ale_python_mypy_options = '--ignore-missing-imports'
 " Module import not at start of file
 let g:ale_python_flake8_args = '--ignore=E402'
+
+" tex
+" We drop default -I
+" n1 command terminated with space
+" n8 wrong length of dash, I KNOW IT
+let g:ale_tex_chktex_options = '-n1'
 
 let g:ale_linter_aliases = {'pandoc': 'markdown'}
 " }}}
@@ -356,7 +373,6 @@ let g:pandoc#syntax#conceal#urls       = 1
 let g:pandoc#completion#bib#mode       = 'citeproc'
 " let g:pandoc#biblio#bibs               = ["~/git/vec4ir/masters/masters.bib"]
 " }}}
-" }}}
 " Angular and Typescript {{{
 let g:typescript_compiler_binary = 'tsc'
 let g:typescript_compiler_options = ''
@@ -368,15 +384,16 @@ if has('autocmd')
   augroup END
 endif
 " }}}
+" }}}
 " Section: The Packs {{{ "
 if has('packages')
   if v:version >= 800
-    exec 'packadd! ale'
+    packadd! ale
   else
-    exec 'packadd! syntastic'
+    packadd! syntastic
   endif
   if has('syntax') && has('eval')
-    exec 'packadd! matchit'
+    packadd! matchit
     " Remember b:match_words
     " and help topic matchit-newlang
   endif
@@ -388,7 +405,6 @@ else
   " execute pathogen#infect('pack/core/opt/{}'   , 'pack/extra/opt/{}'   , 'pack/community/opt/{}'   , 'pack/testing/opt/{}')
 endif
 " }}} The Packs "
-" }}}
 " Section: Colors {{{
 syntax enable
 if !exists('$TMUX') && has('termguicolors')

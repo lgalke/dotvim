@@ -130,9 +130,6 @@
 [submodule "pack/extra/opt/badwolf"]
 	path = pack/extra/opt/badwolf
 	url = https://github.com/sjl/badwolf.git
-[submodule "pack/testing/start/delimitMate"]
-	path = pack/testing/start/delimitMate
-	url = https://github.com/Raimondi/delimitMate.git
 [submodule "pack/extra/start/FastFold"]
 	path = pack/extra/start/FastFold
 	url = https://github.com/Konfekt/FastFold.git
@@ -169,3 +166,6 @@
 [submodule "pack/testing/start/jedi-vim"]
 	path = pack/testing/start/jedi-vim
 	url = https://github.com/davidhalter/jedi-vim.git
+[submodule "pack/core/start/vim-argumentative"]
+	path = pack/core/start/vim-argumentative
+	url = https://github.com/PeterRincker/vim-argumentative.git
