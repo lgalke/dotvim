@@ -74,7 +74,7 @@ set keywordprg=:Man
 set dictionary+=/usr/share/dict/words
 set thesaurus+=$HOME/.vim/thesaurus/words.txt
 set complete-=i
-set complete+=d
+set complete-=d
 set completeopt+=longest
 " }}}
 " Going Wild {{{
