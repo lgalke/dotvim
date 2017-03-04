@@ -115,9 +115,6 @@
 [submodule "pack/extra/opt/vimproc.vim"]
 	path = pack/extra/start/vimproc.vim
 	url = https://github.com/Shougo/vimproc.vim.git
-[submodule "pack/extra/start/angular-cli.vim"]
-	path = pack/extra/start/angular-cli.vim
-	url = https://github.com/bdauria/angular-cli.vim.git
 [submodule "pack/community/start/vim-css-color"]
 	path = pack/community/start/vim-css-color
 	url = https://github.com/ap/vim-css-color.git
@@ -175,3 +172,9 @@
 [submodule "pack/community/opt/vim-afterglow"]
 	path = pack/community/opt/vim-afterglow
 	url = https://github.com/danilo-augusto/vim-afterglow.git
+[submodule "pack/testing/start/angular-cli.vim"]
+	path = pack/testing/start/angular-cli.vim
+	url = https://github.com/lgalke/angular-cli.vim.git
+[submodule "pack/testing/start/startuptime.vim"]
+	path = pack/testing/start/startuptime.vim
+	url = https://github.com/tweekmonster/startuptime.vim.git

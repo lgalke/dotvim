@@ -186,8 +186,9 @@ map     <F10> :Start<CR>
 " Title case
 nnoremap <Leader>tc :s/\<\(\w\)\(\w*\)\>/\u\1\L\2/g<CR>:nohlsearch<CR>
 
-"Quick access
+" Quick access
 nnoremap <leader>vv :Vedit vimrc<cr>
+nnoremap <Leader>f :find 
 "}}}
 " Section: Text Objects {{{
 " Pipe tables
@@ -210,9 +211,9 @@ endif
 cabbrev \g $HOME/.vim/graveyard
 iabbrev +++ <++++><Left><Left><Left>
 " After searching for the rune markers, you can replace as follows:
-" navigate through them via n/N as usual,
-nnoremap <leader>m /<++.*++>/<CR>
-let g:surround_{char2nr('m')} = '<++\r++>'
+" navigate through them vi n/N as usual,
+nnoremap <leader>m /<++[^\%(++>\)]*++>/<CR>
+let g:surround_{char2nr('m')} = "<++\r++>"
 " ok i should not write that says proselint
 iabbrev very damn
 "}}}
@@ -251,8 +252,9 @@ if has('autocmd')
     autocmd FileType    python           nnoremap <leader>c 0f(3wyt)o<ESC>pV:s/\([a-z_]\+\),\?/self.\1 = \1<C-v><CR>/g<CR>ddV?def<CR>j
     autocmd FileType    *                if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
     autocmd FileType    *                if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
-    autocmd CursorHold  *                smile
-
+    " autocmd CursorHold  *                smile
+    autocmd VimEnter    *                if globpath('`git rev-parse --show-toplevel`,.,..','node_modules/@angular') != '' |  call angular_cli#init() | endif
+          \ |                            setlocal keywordprg=ng\ doc
   augroup END
 endif
 
@@ -344,7 +346,7 @@ let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
-let g:ale_linters = { 'python': ['flake8'], 'html' : 'HTMLHint' } 
+let g:ale_linters = { 'python': ['flake8'], 'html' : ['HTMLHint'], 'vim': [] } 
 " python
 let g:ale_python_mypy_options = '--ignore-missing-imports'
 " Module import not at start of file
@@ -416,5 +418,5 @@ if !exists('$TMUX') && has('termguicolors')
   set termguicolors
 endif
 set background=dark
-silent! colo afterglow
+silent! colo gruvbox
 " }}}
