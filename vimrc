@@ -27,7 +27,7 @@ set nocursorline nocursorcolumn
 " And not all the numbers.
 set nonumber norelativenumber
 
-set visualbell
+set visualbell errorbells
 set scrolloff=5
 
 set guioptions-=e "recommended by flagship
@@ -230,7 +230,7 @@ if has('autocmd')
     
     au!
     " q enough
-    autocmd FileType    help             nnoremap <buffer> q :q!<cr>
+    autocmd FileType    help             setlocal keywordprg=:help | nnoremap <buffer> q :q!<cr>
     " as recommended to not write ugly mails for others
     autocmd FileType    mail             setlocal formatoptions+=aw
     " make useful dispatch
