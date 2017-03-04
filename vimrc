@@ -250,6 +250,7 @@ if has('autocmd')
     autocmd FileType    tex,mail,pandoc  if exists(':Thesaurus') | setlocal keywordprg=:Thesaurus | endif
     autocmd FileType    python           setlocal textwidth=79 colorcolumn=+1 softtabstop=4 shiftwidth=4 expandtab
     autocmd FileType    python           nnoremap <leader>c 0f(3wyt)o<ESC>pV:s/\([a-z_]\+\),\?/self.\1 = \1<C-v><CR>/g<CR>ddV?def<CR>j
+    autocmd FileType    python           setlocal omnifunc=jedi#completions
     autocmd FileType    *                if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
     autocmd FileType    *                if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
     " autocmd CursorHold  *                smile
