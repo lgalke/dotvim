@@ -17,9 +17,13 @@ endif
 " Interface and Behaviour{{{
 " Searching and matching braces
 set hlsearch incsearch
-set showmatch
+
+" They bug around with jedi
+set noshowmatch noshowmode
+
 " Show current command ruler
 set showcmd ruler
+
 " Always show status and tabline
 set laststatus=2 showtabline=2
 " But no cursor column nor line
@@ -369,7 +373,7 @@ nmap [w :PrevWordy<CR>
 " jedi  {{{ "
 let g:jedi#popup_on_dot         = 0
 let g:jedi#smart_auto_mappings  = 0
-let g:jedi#show_call_signatures = 1
+let g:jedi#show_call_signatures = 2
 " let g:jedi#force_py_version     = &pyx
 " }}} jedi  "
 " pandoc {{{
