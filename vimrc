@@ -82,6 +82,7 @@ set wildmenu
 set wildignore+=*/.git/*
 set wildignore+=*.js,*.map
 set wildignore+=tags,.*.un~,*.pyc
+set wildignore+=node_modules
 " set wildignore+=*.bbl,*.aux,*.lot,*.lof,*.bcf,*.soc,*.fdb_latexmk,*.out
 set wildmode=longest:full,full
 set wildcharm=<C-z>
@@ -187,7 +188,7 @@ map     <F10> :Start<CR>
 nnoremap <Leader>tc :s/\<\(\w\)\(\w*\)\>/\u\1\L\2/g<CR>:nohlsearch<CR>
 
 " Quick access
-nnoremap <leader>vv :Vedit vimrc<cr>
+nnoremap <leader>v :Vedit vimrc<cr>
 nnoremap <Leader>f :find 
 "}}}
 " Section: Text Objects {{{
