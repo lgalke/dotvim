@@ -19,7 +19,7 @@ endif
 set hlsearch incsearch
 
 " They bug around with jedi
-set noshowmatch noshowmode
+set noshowmatch
 
 " Show current command ruler
 set showcmd ruler
@@ -373,6 +373,7 @@ nmap [w :PrevWordy<CR>
 " jedi  {{{ "
 let g:jedi#popup_on_dot         = 0
 let g:jedi#smart_auto_mappings  = 0
+set noshowmode
 let g:jedi#show_call_signatures = 2
 " let g:jedi#force_py_version     = &pyx
 " }}} jedi  "
