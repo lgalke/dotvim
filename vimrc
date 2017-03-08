@@ -235,7 +235,8 @@ if has('autocmd')
     
     au!
     " q enough
-    autocmd FileType    help             setlocal keywordprg=:help | nnoremap <buffer> q :q!<cr>
+    autocmd FileType    help             setlocal keywordprg=:help
+    autocmd FileType    qf,help          nnoremap <buffer> q :q!<CR>
     " as recommended to not write ugly mails for others
     autocmd FileType    mail             setlocal formatoptions+=aw
     " make useful dispatch
@@ -259,9 +260,12 @@ if has('autocmd')
     autocmd FileType    *                if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
     autocmd FileType    *                if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
     " autocmd CursorHold  *                smile
-    autocmd VimEnter    *                if globpath('`git rev-parse --show-toplevel`,.,..','node_modules/@angular') != '' |  call angular_cli#init() | endif
-          \ |                            setlocal keywordprg=ng\ doc
+    autocmd VimEnter    *                if globpath('`git rev-parse --show-toplevel`,.,..','node_modules/@angular') != '' 
+          \| call angular_cli#init()
+          \| setlocal keywordprg=ng\ doc 
+          \| endif
   augroup END
+
 endif
 
 " }}}
