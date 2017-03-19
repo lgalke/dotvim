@@ -157,15 +157,9 @@
 [submodule "pack/community/opt/vim-colors-pencil"]
 	path = pack/community/opt/vim-colors-pencil
 	url = https://github.com/reedes/vim-colors-pencil.git
-[submodule "pack/extra/opt/ale"]
-	path = pack/extra/opt/ale
-	url = https://github.com/w0rp/ale.git
 [submodule "pack/testing/start/jedi-vim"]
 	path = pack/testing/start/jedi-vim
 	url = https://github.com/davidhalter/jedi-vim.git
-[submodule "pack/core/start/vim-argumentative"]
-	path = pack/core/start/vim-argumentative
-	url = https://github.com/PeterRincker/vim-argumentative.git
 [submodule "pack/testing/start/emmet-vim"]
 	path = pack/testing/start/emmet-vim
 	url = https://github.com/mattn/emmet-vim.git
@@ -178,3 +172,6 @@
 [submodule "pack/testing/start/startuptime.vim"]
 	path = pack/testing/start/startuptime.vim
 	url = https://github.com/tweekmonster/startuptime.vim.git
+[submodule "pack/core/start/sideways.vim"]
+	path = pack/core/start/sideways.vim
+	url = https://github.com/AndrewRadev/sideways.vim.git

@@ -80,6 +80,7 @@ set thesaurus+=$HOME/.vim/thesaurus/words.txt
 set complete-=i
 set complete-=d
 set completeopt+=longest
+set spelllang=en_gb
 " }}}
 " Going Wild {{{
 set wildmenu
@@ -253,16 +254,16 @@ if has('autocmd')
           \ |           let              b:surround_{char2nr('e')} = "\\begin{\1environment\1}\n\r\n\\end{\1\1}"
           \ |           let              b:surround_{char2nr('v')} = "\\verb|\r|"
           \ |           let              b:surround_{char2nr('V')} = "\\begin{verbatim}\n\r\n\\end{verbatim}"
-    autocmd FileType    tex,mail,pandoc  if exists(':Thesaurus') | setlocal keywordprg=:Thesaurus | endif
+    autocmd FileType    tex,mail,pandoc  if       exists(':Thesaurus') | setlocal keywordprg=:Thesaurus | endif
     autocmd FileType    python           setlocal textwidth=79 colorcolumn=+1 softtabstop=4 shiftwidth=4 expandtab
     autocmd FileType    python           nnoremap <leader>c 0f(3wyt)o<ESC>pV:s/\([a-z_]\+\),\?/self.\1 = \1<C-v><CR>/g<CR>ddV?def<CR>j
     autocmd FileType    python           setlocal omnifunc=jedi#completions
-    autocmd FileType    *                if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
+    autocmd FileType    *                if       exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
     autocmd FileType    *                if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
     " autocmd CursorHold  *                smile
-    autocmd VimEnter    *                if globpath('`git rev-parse --show-toplevel`,.,..','node_modules/@angular') != '' 
+    autocmd VimEnter    *                if globpath('`git rev-parse --show-toplevel`,.,..','node_modules/@angular') != ''
           \| call angular_cli#init()
-          \| setlocal keywordprg=ng\ doc 
+          \| setlocal keywordprg=ng\ doc
           \| endif
   augroup END
 
@@ -350,6 +351,14 @@ nnoremap <leader>e :Errors<CR>
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
+" }}}
+" Sideways {{{
+nnoremap <c-h> :SidewaysLeft<cr>
+nnoremap <c-l> :SidewaysRight<cr>
+omap aa <Plug>SidewaysArgumentTextobjA
+xmap aa <Plug>SidewaysArgumentTextobjA
+omap ia <Plug>SidewaysArgumentTextobjI
+xmap ia <Plug>SidewaysArgumentTextobjI
 " }}}
 " ALE {{{
 let g:ale_echo_msg_error_str = 'E'
