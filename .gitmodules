@@ -175,3 +175,6 @@
 [submodule "pack/core/start/sideways.vim"]
 	path = pack/core/start/sideways.vim
 	url = https://github.com/AndrewRadev/sideways.vim.git
+[submodule "pack/testing/opt/ale"]
+	path = pack/testing/opt/ale
+	url = https://github.com/w0rp/ale
