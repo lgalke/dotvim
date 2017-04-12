@@ -39,7 +39,7 @@ set splitright
 set confirm
 " vim8 specific
 if v:version >= 800
-  set signcolumn=yes
+  set signcolumn=auto
 endif
 if has('conceal')
   set conceallevel=2 concealcursor=
@@ -65,6 +65,10 @@ if has('linebreak')
     set breakindent showbreak=\ +
   endif
 endif
+
+if has('suffixesadd')
+  set suffixesadd=.tex
+endif
 " }}}
 " Defaults (may be changed on ft) {{{
 set foldmethod=marker
@@ -84,11 +88,12 @@ set spelllang=en_gb
 " }}}
 " Going Wild {{{
 set wildmenu
-set wildignore+=*/.git/*
-set wildignore+=*.js,*.map
 set wildignore+=tags,.*.un~,*.pyc
+" Never ever descend into these directories
 set wildignore+=node_modules
-" set wildignore+=*.bbl,*.aux,*.lot,*.lof,*.bcf,*.soc,*.fdb_latexmk,*.out
+set wildignore+=*/.git/*
+" alot of temporary latex files...
+set wildignore+=*.bbl,*.aux,*.lot,*.lof,*.bcf,*.soc,*.fdb_latexmk,*.out,*.run.xml,*.blg,*.fls,*.log,*.toc
 set wildmode=longest:full,full
 set wildcharm=<C-z>
 " }}}
@@ -141,9 +146,10 @@ let g:mapleader = ' '
 let g:maplocalleader = '\'
 inoremap <C-C> <Esc>`^
 " map <Tab> %
-map Y y$
-nnoremap H ^
-nnoremap L $
+noremap Y y$
+noremap H ^
+noremap L $
+
 
 " Convenience
 nnoremap <C-S> :w<cr>
@@ -218,7 +224,7 @@ cabbrev \g $HOME/.vim/graveyard
 iabbrev +++ <++++><Left><Left><Left>
 " After searching for the rune markers, you can replace as follows:
 " navigate through them vi n/N as usual,
-nnoremap <leader>m /<++[^\%(++>\)]*++>/<CR>
+nnoremap <leader>m /<++[^\%(++>\)]\{-}++>/<CR>
 let g:surround_{char2nr('m')} = "<++\r++>"
 " ok i should not write that says proselint
 iabbrev very damn
@@ -235,39 +241,42 @@ if has('autocmd')
   augroup vimrc_ex
     
     au!
-    " q enough
     autocmd FileType    help             setlocal keywordprg=:help
+    " q enough
     autocmd FileType    qf,help          nnoremap <buffer> q :q!<CR>
     " as recommended to not write ugly mails for others
     autocmd FileType    mail             setlocal formatoptions+=aw
     " make useful dispatch
-    autocmd FileType    pandoc           if exists(':Pandoc') | let b:dispatch=":Pandoc pdf" | endif
+    autocmd FileType    pandoc           if exists(':Pandoc') | let b:dispatch=":Pandoc pdf" | endif                                    
     autocmd FileType    pandoc,markdown  setlocal et sw=4 sts=2 iskeyword+=@,-,#
     autocmd FileType    dot              let b:dispatch="dot -Tpdf -o %:r.pdf %"  | setlocal commentstring=//%s
     " guess the dispatch by shebang
     autocmd BufReadPost *                if getline(1) =~# '^#!' | let b:dispatch = getline(1)[2:-1] . ' %' | let b:start = b:dispatch | endif
     autocmd FileType    perl,python,ruby inoremap <silent> <buffer> <C-X>! #!/usr/bin/env<Space><C-R>=&ft<CR>
     autocmd FileType    html             setlocal foldmethod=marker foldmarker=<div,/div> iskeyword+=-
-    autocmd FileType    tex              syn sync minlines=100 maxlines=300
-          \ |           let              b:surround_{char2nr('x')} = "\\texttt{\r}"
-          \ |           let              b:surround_{char2nr('c')} = "\\\1identifier\1{\r}"
-          \ |           let              b:surround_{char2nr('e')} = "\\begin{\1environment\1}\n\r\n\\end{\1\1}"
-          \ |           let              b:surround_{char2nr('v')} = "\\verb|\r|"
-          \ |           let              b:surround_{char2nr('V')} = "\\begin{verbatim}\n\r\n\\end{verbatim}"
-    autocmd FileType    tex,mail,pandoc  if       exists(':Thesaurus') | setlocal keywordprg=:Thesaurus | endif
+    autocmd FileType tex                 syn sync minlines=100 maxlines=300
+          \ |        let                 b:surround_{char2nr('x')} = "\\texttt{\r}"
+          \ |        let                 b:surround_{char2nr('c')} = "\\\1identifier\1{\r}"
+          \ |        let                 b:surround_{char2nr('e')} = "\\begin{\1environment\1}\n\r\n\\end{\1\1}"
+          \ |        let                 b:surround_{char2nr('v')} = "\\verb|\r|"
+          \ |        let                 b:surround_{char2nr('V')} = "\\begin{verbatim}\n\r\n\\end{verbatim}"
+    autocmd FileType    txt,tex,mail,pandoc,markdown  if exists(':Thesaurus') | setlocal keywordprg=:Thesaurus | endif 
+          \ | setlocal spell
     autocmd FileType    python           setlocal textwidth=79 colorcolumn=+1 softtabstop=4 shiftwidth=4 expandtab
     autocmd FileType    python           nnoremap <leader>c 0f(3wyt)o<ESC>pV:s/\([a-z_]\+\),\?/self.\1 = \1<C-v><CR>/g<CR>ddV?def<CR>j
     autocmd FileType    python           setlocal omnifunc=jedi#completions
     autocmd FileType    *                if       exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
     autocmd FileType    *                if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
     " autocmd CursorHold  *                smile
-    autocmd VimEnter    *                if globpath('`git rev-parse --show-toplevel`,.,..','node_modules/@angular') != ''
-          \| call angular_cli#init()
-          \| setlocal keywordprg=ng\ doc
-          \| endif
+    autocmd FileType vim                 setlocal formatoptions-=o
+    " expands plain node to explicitly labelled node.
+    autocmd FileType dot nnoremap <buffer> <localleader>el viwyA<Space>[label=""]<Esc>F"P$
+    " autocmd FileType html,typescript     execute angular_cli#init()
+    autocmd VimEnter * if glob("node_modules/@angular") != '' | execute angular_cli#init() | endif
   augroup END
 
 endif
+let g:angular_cli_debug = 1
 
 " }}}
 " Section: Plugins {{{
@@ -320,7 +329,7 @@ let g:syntastic_check_on_open             = 1
 let g:syntastic_check_on_wq               = 0
 let g:syntastic_auto_jump                 = 0
 " dont clutter the loc list
-let g:syntastic_always_populate_loc_list  = 0
+let g:syntastic_always_populate_loc_list  = 1
 let g:loc_list_height                     = 5
 let g:syntastic_aggregate_errors          = 1
 let g:syntastic_id_checkers               = 1
@@ -328,11 +337,13 @@ let g:syntastic_auto_loc_list             = 0
 let g:tsuquyomi_disable_quickfix          = 1
 let g:syntastic_typescript_checkers       = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
 " tex checker
-let g:syntastic_tex_checkers              = ['chktex', 'lacheck']
+let g:syntastic_tex_checkers              = ['chktex', 'lacheck', 'proselint']
 " 1: Cmd terminated with space
 " 8: Wrong type of dashes
 " 36: spaces around braces
 let g:syntastic_tex_chktex_args           = '-n1 -n8 -n36'
+" Html
+" let g:syntastic_html_checkers             = 
 " python checker
 let g:syntastic_python_checkers           = ['python', 'flake8']
 " let g:syntastic_python_checkers          = []
@@ -353,8 +364,8 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 " }}}
 " Sideways {{{
-nnoremap <c-h> :SidewaysLeft<cr>
-nnoremap <c-l> :SidewaysRight<cr>
+nnoremap <a :SidewaysLeft<cr>
+nnoremap >a :SidewaysRight<cr>
 omap aa <Plug>SidewaysArgumentTextobjA
 xmap aa <Plug>SidewaysArgumentTextobjA
 omap ia <Plug>SidewaysArgumentTextobjI
@@ -397,6 +408,7 @@ let g:pandoc#filetypes#handled         = ['extra', 'pandoc', 'rst', 'textile']
 let g:pandoc#modules#disabled          = ['menu']
 let g:pandoc#syntax#conceal#urls       = 1
 let g:pandoc#completion#bib#mode       = 'citeproc'
+let g:pandoc#keyboard#display_motions  = 0
 " let g:pandoc#biblio#bibs               = ["~/git/vec4ir/masters/masters.bib"]
 " }}}
 " Angular and Typescript {{{
@@ -413,7 +425,7 @@ endif
 " }}}
 " Section: The Packs {{{ "
 if has('packages')
-  if v:version >= 800
+  if v:version >= 800 && 0
     packadd! ale
   else
     packadd! syntastic
@@ -433,10 +445,10 @@ endif
 " }}} The Packs "
 " Section: Colors {{{
 syntax enable
-if !exists('$TMUX') && has('termguicolors')
-  " this should only be used if outside tmux
-  set termguicolors
-endif
+" if !exists('$TMUX') && has('termguicolors')
+"   " this should only be used if outside tmux
+"   set termguicolors
+" endif
 set background=dark
-silent! colo gruvbox
+silent! colo butter
 " }}}

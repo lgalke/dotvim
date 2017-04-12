@@ -79,9 +79,6 @@
 [submodule "pack/start/opt/vim-pathogen"]
 	path = pack/core/opt/vim-pathogen
 	url = https://github.com/tpope/vim-pathogen.git
-[submodule "pack/extra/start/vimtex"]
-	path = pack/extra/start/vimtex
-	url = https://github.com/lervag/vimtex.git
 [submodule "pack/community/start/tagbar"]
 	path = pack/community/start/tagbar
 	url = https://github.com/majutsushi/tagbar.git
@@ -112,15 +109,6 @@
 [submodule "pack/extra/start/tsuquyomi"]
 	path = pack/extra/start/tsuquyomi
 	url = https://github.com/Quramy/tsuquyomi.git
-[submodule "pack/extra/opt/vimproc.vim"]
-	path = pack/extra/start/vimproc.vim
-	url = https://github.com/Shougo/vimproc.vim.git
-[submodule "pack/community/start/vim-css-color"]
-	path = pack/community/start/vim-css-color
-	url = https://github.com/ap/vim-css-color.git
-[submodule "pack/community/start/vim-signify"]
-	path = pack/community/start/vim-signify
-	url = https://github.com/mhinz/vim-signify.git
 [submodule "pack/core/start/vim-liquid"]
 	path = pack/core/start/vim-liquid
 	url = https://github.com/tpope/vim-liquid.git
@@ -166,15 +154,24 @@
 [submodule "pack/community/opt/vim-afterglow"]
 	path = pack/community/opt/vim-afterglow
 	url = https://github.com/danilo-augusto/vim-afterglow.git
-[submodule "pack/testing/start/angular-cli.vim"]
-	path = pack/testing/start/angular-cli.vim
-	url = https://github.com/lgalke/angular-cli.vim.git
 [submodule "pack/testing/start/startuptime.vim"]
 	path = pack/testing/start/startuptime.vim
 	url = https://github.com/tweekmonster/startuptime.vim.git
 [submodule "pack/core/start/sideways.vim"]
 	path = pack/core/start/sideways.vim
 	url = https://github.com/AndrewRadev/sideways.vim.git
+[submodule "pack/community/opt/butter"]
+	path = pack/community/opt/butter
+	url = git@github.com:lgalke/butter.git
+[submodule "pack/testing/start/deleft.vim"]
+	path = pack/testing/start/deleft.vim
+	url = git@github.com:lgalke/deleft.vim.git
+[submodule "pack/testing/start/angular-cli.vim"]
+	path = pack/testing/start/angular-cli.vim
+	url = git@github.com:lgalke/angular-cli.vim.git
+[submodule "pack/extra/start/vimtex"]
+	path = pack/extra/start/vimtex
+	url = https://github.com/lervag/vimtex
 [submodule "pack/testing/opt/ale"]
 	path = pack/testing/opt/ale
-	url = https://github.com/w0rp/ale
+	url = https://github.com/w0rp/ale.git

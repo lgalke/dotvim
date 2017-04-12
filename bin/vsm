@@ -75,7 +75,7 @@ sub_install(){
 }
   
 sub_update(){
-    git -C "$VSM_HOME" submodule update --rebase
+    git -C "$VSM_HOME" submodule update --remote --merge
 }
 
 sub_remove(){
