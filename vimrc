@@ -150,7 +150,6 @@ noremap Y y$
 noremap H ^
 noremap L $
 
-
 " Convenience
 nnoremap <C-S> :w<cr>
 " i dont need multiple cursors
@@ -168,6 +167,9 @@ nmap <Up> <nop>
 nmap <Down> <nop>
 nmap <Left> <nop>
 nmap <Right> <nop>
+
+" quick spell correction
+nnoremap <C-X><C-S> ea<C-X><C-S>
 
 
 " quick modeline, thanks to the pope
@@ -271,8 +273,8 @@ if has('autocmd')
     autocmd FileType vim                 setlocal formatoptions-=o
     " expands plain node to explicitly labelled node.
     autocmd FileType dot nnoremap <buffer> <localleader>el viwyA<Space>[label=""]<Esc>F"P$
-    " autocmd FileType html,typescript     execute angular_cli#init()
-    autocmd VimEnter * if glob("node_modules/@angular") != '' | execute angular_cli#init() | endif
+    autocmd FileType html,typescript     execute angular_cli#init()
+    " autocmd VimEnter * if glob("node_modules/@angular") != '' | execute angular_cli#init() | endif
   augroup END
 
 endif
@@ -309,9 +311,20 @@ endif
 nmap <C-\> <plug>(vimtex-cmd-create)
 imap <C-\> <plug>(vimtex-cmd-create)
 
-let g:vimtex_latexmk_continuous           = 0
-let g:vimtex_latexmk_background           = 0
-let g:vimtex_latexmk_callback             = 0
+let g:vimtex_compiler_latexmk = {
+    \ 'backend' : 'jobs',
+    \ 'background' : 1,
+    \ 'build_dir' : '',
+    \ 'callback' : 0,
+    \ 'continuous' : 1,
+    \ 'options' : [
+    \   '-pdf',
+    \   '-verbose',
+    \   '-file-line-error',
+    \   '-synctex=1',
+    \   '-interaction=nonstopmode',
+    \ ],
+    \}
 let g:vimtex_view_general_viewer          = 'okular'
 let g:vimtex_view_general_options         = '--unique file:@pdf\#src:@line@tex'
 let g:vimtex_view_general_options_latexmk = '--unique'
@@ -450,5 +463,5 @@ syntax enable
 "   set termguicolors
 " endif
 set background=dark
-silent! colo butter
+silent! colo gruvbox
 " }}}
