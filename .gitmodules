@@ -178,3 +178,6 @@
 [submodule "pack/extra/start/vim-rhubarb"]
 	path = pack/extra/start/vim-rhubarb
 	url = https://github.com/tpope/vim-rhubarb
+[submodule "pack/core/start/vim-rsi"]
+	path = pack/core/start/vim-rsi
+	url = https://github.com/tpope/vim-rsi.git
