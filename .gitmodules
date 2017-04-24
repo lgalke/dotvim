@@ -175,3 +175,6 @@
 [submodule "pack/testing/opt/ale"]
 	path = pack/testing/opt/ale
 	url = https://github.com/w0rp/ale.git
+[submodule "pack/extra/start/vim-rhubarb"]
+	path = pack/extra/start/vim-rhubarb
+	url = https://github.com/tpope/vim-rhubarb
