@@ -438,7 +438,7 @@ endif
 " }}}
 " Section: The Packs {{{ "
 if has('packages')
-  if v:version >= 800 && 0
+  if v:version >= 800
     packadd! ale
   else
     packadd! syntastic
