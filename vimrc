@@ -80,7 +80,6 @@ set keywordprg=:Man
 " }}}
 " Completion {{{
 set dictionary+=/usr/share/dict/words
-set thesaurus+=$HOME/.vim/thesaurus/words.txt
 set complete-=i
 set complete-=d
 set completeopt+=longest
@@ -189,6 +188,8 @@ if has('autocmd')
   augroup END
 endif
 
+nmap <F5> :if exists(':MundoToggle')<Bar>exe 'MundoToggle'<Bar>endif<CR>
+
 " Tpope's fkeys are cool
 nmap    <F6>  :if &previewwindow<Bar>pclose<Bar>elseif exists(':Gstatus')<Bar>exe 'Gstatus'<Bar>else<Bar>ls<Bar>endif<CR>
 nmap    <F7>  :if exists(':Lcd')<Bar>exe 'Lcd'<Bar>elseif exists(':Cd')<Bar>exe 'Cd'<Bar>else<Bar>lcd %:h<Bar>endif<CR>
@@ -231,11 +232,6 @@ let g:surround_{char2nr('m')} = "<++\r++>"
 " ok i should not write that says proselint
 iabbrev very damn
 "}}}
-" Section: Commands {{{
-" command! -complete=packadd -nargs=1 Packadd packadd <args> | write | edit %
-command! -bar -bang -complete=packadd -nargs=1 Packadd packadd<bang> <args> | doautoall BufRead
-command! -bar -nargs=0 Helptags silent! helptags ALL
-" }}}
 " Section: Autocmds {{{
 
 if has('autocmd')
@@ -422,7 +418,6 @@ let g:pandoc#modules#disabled          = ['menu']
 let g:pandoc#syntax#conceal#urls       = 1
 let g:pandoc#completion#bib#mode       = 'citeproc'
 let g:pandoc#keyboard#display_motions  = 0
-" let g:pandoc#biblio#bibs               = ["~/git/vec4ir/masters/masters.bib"]
 " }}}
 " Angular and Typescript {{{
 let g:typescript_compiler_binary = 'tsc'
@@ -443,6 +438,8 @@ if has('packages')
   else
     packadd! syntastic
   endif
+  command! -bar -bang -complete=packadd -nargs=1 Packadd packadd<bang> <args> | doautoall BufRead
+  command! -bar -nargs=0 Helptags silent! helptags ALL
   if has('syntax') && has('eval')
     packadd! matchit
     " Remember b:match_words

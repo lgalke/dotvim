@@ -181,3 +181,6 @@
 [submodule "pack/core/start/vim-rsi"]
 	path = pack/core/start/vim-rsi
 	url = https://github.com/tpope/vim-rsi.git
+[submodule "pack/testing/start/vim-mundo"]
+	path = pack/testing/start/vim-mundo
+	url = https://github.com/simnalamburt/vim-mundo

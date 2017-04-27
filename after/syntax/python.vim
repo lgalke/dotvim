@@ -14,7 +14,7 @@ hi link pythonMatrixMultiply pythonOperator
 " Deep Learning by Ian Goodfellow, Aaron Courville and Yoshua Bengio
 syn keyword linalgScalar a b c d
 syn keyword linalgVector e u v w x y z
-syn keyword linalgMatrix A B C D I E H X Y Z
+syn keyword linalgMatrix A B C D I E H W X Y Z
 
 
 hi linalgScalar term=italic      cterm=italic      gui=italic
