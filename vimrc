@@ -149,6 +149,24 @@ noremap Y y$
 noremap H ^
 noremap L $
 
+function! s:OpenAux(filename, suffixpool)
+  let l:basename = fnamemodify(a:filename, ":r")
+  for suffix in a:suffixpool
+    let l:auxfile = l:basename . suffix
+    if l:auxfile !=# a:filename
+      silent! execute "vsplit " . l:auxfile
+    endif
+  endfor
+endfunction
+
+set winwidth=80
+augroup openaux
+  au!
+  au FileType typescript,html,spec,css nnoremap <C-x>w :call <SID>OpenAux(expand("%"), [".ts",".html",".spec",".css"])<CR>
+  au FileType tex,bib nnoremap <C-x>w :call <SID>OpenAux(expand("%"), [".tex", ".bib"])<CR>
+augroup END
+
+
 " Convenience
 nnoremap <C-S> :w<cr>
 " i dont need multiple cursors
@@ -460,5 +478,5 @@ syntax enable
 "   set termguicolors
 " endif
 set background=dark
-silent! colo gruvbox
+silent! colo jellybeans
 " }}}

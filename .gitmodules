@@ -184,3 +184,9 @@
 [submodule "pack/testing/start/vim-mundo"]
 	path = pack/testing/start/vim-mundo
 	url = https://github.com/simnalamburt/vim-mundo
+[submodule "pack/testing/start/splitjoin.vim"]
+	path = pack/testing/start/splitjoin.vim
+	url = https://github.com/lgalke/splitjoin.vim.git
+[submodule "pack/community/opt/jellybeans.vim"]
+	path = pack/community/opt/jellybeans.vim
+	url = https://github.com/nanotech/jellybeans.vim
