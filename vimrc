@@ -98,8 +98,8 @@ set wildcharm=<C-z>
 " }}}
 " Proper Line Return {{{
 augroup line_return
-    au!
-    au BufReadPost *
+  au!
+  au BufReadPost *
         \ if line("'\"") > 0 && line("'\"") <= line("$") |
         \     execute 'normal! g`"zvzz' |
         \ endif
@@ -109,6 +109,7 @@ augroup END
 let g:tex_flavor = 'latex'
 let g:is_bash = 1
 let g:python_highlight_all = 1
+set completefunc=emoji#complete
 " }}}
 " File Movement {{{
 set path+=**
@@ -255,7 +256,7 @@ iabbrev very damn
 if has('autocmd')
   filetype plugin indent on
   augroup vimrc_ex
-    
+
     au!
     autocmd FileType    help             setlocal keywordprg=:help
     " q enough
@@ -282,7 +283,6 @@ if has('autocmd')
     autocmd FileType    python           nnoremap <leader>c 0f(3wyt)o<ESC>pV:s/\([a-z_]\+\),\?/self.\1 = \1<C-v><CR>/g<CR>ddV?def<CR>j
     autocmd FileType    python           setlocal omnifunc=jedi#completions
     autocmd FileType    *                if       exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
-    autocmd FileType    *                if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
     " autocmd CursorHold  *                smile
     autocmd FileType vim                 setlocal formatoptions-=o
     " expands plain node to explicitly labelled node.
@@ -326,19 +326,19 @@ nmap <C-\> <plug>(vimtex-cmd-create)
 imap <C-\> <plug>(vimtex-cmd-create)
 
 let g:vimtex_compiler_latexmk = {
-    \ 'backend' : 'jobs',
-    \ 'background' : 1,
-    \ 'build_dir' : '',
-    \ 'callback' : 0,
-    \ 'continuous' : 1,
-    \ 'options' : [
-    \   '-pdf',
-    \   '-verbose',
-    \   '-file-line-error',
-    \   '-synctex=1',
-    \   '-interaction=nonstopmode',
-    \ ],
-    \}
+      \ 'backend' : 'jobs',
+      \ 'background' : 1,
+      \ 'build_dir' : '',
+      \ 'callback' : 0,
+      \ 'continuous' : 1,
+      \ 'options' : [
+      \   '-pdf',
+      \   '-verbose',
+      \   '-file-line-error',
+      \   '-synctex=1',
+      \   '-interaction=nonstopmode',
+      \ ],
+      \}
 let g:vimtex_view_general_viewer          = 'okular'
 let g:vimtex_view_general_options         = '--unique file:@pdf\#src:@line@tex'
 let g:vimtex_view_general_options_latexmk = '--unique'
@@ -403,7 +403,7 @@ let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
-let g:ale_linters = { 'python': ['flake8'], 'html' : ['HTMLHint'], 'vim': [] } 
+let g:ale_linters = { 'python': ['flake8'], 'html' : ['HTMLHint'], 'vim': ['vint'] } 
 " python
 let g:ale_python_mypy_options = '--ignore-missing-imports'
 " Module import not at start of file
@@ -448,6 +448,16 @@ if has('autocmd')
   augroup END
 endif
 " }}}
+" {{{ Github Dashboard
+let g:github_dashboard = {}
+let g:github_dashboard['emoji'] = 1
+let g:github_dashboard['emoji_map'] = {
+      \   'user_dashboard': 'blush',
+      \   'user_activity':  'smile',
+      \   'repo_activity':  'laughing',
+      \   'ForkEvent':      'fork_and_knife'
+      \ }
+" }}}
 " }}}
 " Section: The Packs {{{ "
 if has('packages')
@@ -473,10 +483,11 @@ endif
 " }}} The Packs "
 " Section: Colors {{{
 syntax enable
-" if !exists('$TMUX') && has('termguicolors')
-"   " this should only be used if outside tmux
-"   set termguicolors
-" endif
+if !exists('$TMUX') && has('termguicolors')
+  " this should only be used if outside tmux
+  set termguicolors
+endif
+let g:jellybeans_use_term_italics = 1
 set background=dark
-silent! colo jellybeans
+silent! colo SerialExperimentsLain
 " }}}

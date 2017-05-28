@@ -190,3 +190,18 @@
 [submodule "pack/community/opt/jellybeans.vim"]
 	path = pack/community/opt/jellybeans.vim
 	url = https://github.com/nanotech/jellybeans.vim
+[submodule "pack/testing/start/vimwiki"]
+	path = pack/testing/start/vimwiki
+	url = https://github.com/vimwiki/vimwiki.git
+[submodule "pack/testing/start/vim-css-color"]
+	path = pack/testing/start/vim-css-color
+	url = https://github.com/ap/vim-css-color
+[submodule "pack/extra/start/vim-emoji"]
+	path = pack/extra/start/vim-emoji
+	url = https://github.com/junegunn/vim-emoji
+[submodule "pack/extra/start/vim-github-dashboard"]
+	path = pack/extra/start/vim-github-dashboard
+	url = https://github.com/junegunn/vim-github-dashboard
+[submodule "pack/extra/opt/SerialExperimentsLain"]
+	path = pack/extra/opt/SerialExperimentsLain
+	url = https://github.com/lu-ren/SerialExperimentsLain
