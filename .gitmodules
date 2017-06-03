@@ -139,9 +139,6 @@
 [submodule "pack/community/opt/vim-github-colorscheme"]
 	path = pack/community/opt/vim-github-colorscheme
 	url = https://github.com/endel/vim-github-colorscheme.git
-[submodule "pack/testing/start/vim-easy-align"]
-	path = pack/testing/start/vim-easy-align
-	url = https://github.com/junegunn/vim-easy-align.git
 [submodule "pack/community/opt/vim-colors-pencil"]
 	path = pack/community/opt/vim-colors-pencil
 	url = https://github.com/reedes/vim-colors-pencil.git
@@ -205,3 +202,6 @@
 [submodule "pack/extra/opt/SerialExperimentsLain"]
 	path = pack/extra/opt/SerialExperimentsLain
 	url = https://github.com/lu-ren/SerialExperimentsLain
+[submodule "pack/AndrewRadev-pack"]
+	path = pack/AndrewRadev-pack
+	url = git@github.com:lgalke/AndrewRadev-pack.git
