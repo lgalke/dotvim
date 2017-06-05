@@ -489,5 +489,5 @@ if !exists('$TMUX') && has('termguicolors')
 endif
 let g:jellybeans_use_term_italics = 1
 set background=dark
-silent! colo badwolf
+silent! colo gruvbox
 " }}}

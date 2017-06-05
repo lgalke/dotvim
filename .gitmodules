@@ -71,7 +71,7 @@
 	path = pack/extra/start/vim-endwise
 	url = https://github.com/tpope/vim-endwise.git
 [submodule "pack/extra/opt/gruvbox"]
-	path = pack/extra/opt/gruvbox
+	path = pack/community/opt/gruvbox
 	url = https://github.com/morhetz/gruvbox.git
 [submodule "pack/extra/opt/syntastic"]
 	path = pack/extra/opt/syntastic
@@ -113,7 +113,7 @@
 	path = pack/core/start/vim-liquid
 	url = https://github.com/tpope/vim-liquid.git
 [submodule "pack/extra/opt/badwolf"]
-	path = pack/extra/opt/badwolf
+	path = pack/community/opt/badwolf
 	url = https://github.com/sjl/badwolf.git
 [submodule "pack/extra/start/FastFold"]
 	path = pack/extra/start/FastFold
@@ -154,9 +154,6 @@
 [submodule "pack/testing/start/startuptime.vim"]
 	path = pack/testing/start/startuptime.vim
 	url = https://github.com/tweekmonster/startuptime.vim.git
-[submodule "pack/core/start/sideways.vim"]
-	path = pack/core/start/sideways.vim
-	url = https://github.com/AndrewRadev/sideways.vim.git
 [submodule "pack/community/opt/butter"]
 	path = pack/community/opt/butter
 	url = git@github.com:lgalke/butter.git
@@ -170,7 +167,7 @@
 	path = pack/extra/start/vimtex
 	url = https://github.com/lervag/vimtex
 [submodule "pack/testing/opt/ale"]
-	path = pack/testing/opt/ale
+	path = pack/extra/opt/ale
 	url = https://github.com/w0rp/ale.git
 [submodule "pack/extra/start/vim-rhubarb"]
 	path = pack/extra/start/vim-rhubarb
@@ -187,9 +184,6 @@
 [submodule "pack/community/opt/jellybeans.vim"]
 	path = pack/community/opt/jellybeans.vim
 	url = https://github.com/nanotech/jellybeans.vim
-[submodule "pack/testing/start/vimwiki"]
-	path = pack/testing/start/vimwiki
-	url = https://github.com/vimwiki/vimwiki.git
 [submodule "pack/testing/start/vim-css-color"]
 	path = pack/testing/start/vim-css-color
 	url = https://github.com/ap/vim-css-color
@@ -200,7 +194,7 @@
 	path = pack/extra/start/vim-github-dashboard
 	url = https://github.com/junegunn/vim-github-dashboard
 [submodule "pack/extra/opt/SerialExperimentsLain"]
-	path = pack/extra/opt/SerialExperimentsLain
+	path = pack/community/opt/SerialExperimentsLain
 	url = https://github.com/lu-ren/SerialExperimentsLain
 [submodule "pack/AndrewRadev-pack"]
 	path = pack/AndrewRadev-pack
