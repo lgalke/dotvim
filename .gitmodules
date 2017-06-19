@@ -199,3 +199,6 @@
 [submodule "pack/AndrewRadev-pack"]
 	path = pack/AndrewRadev-pack
 	url = git@github.com:lgalke/AndrewRadev-pack.git
+[submodule "pack/extra/start/vim-getting-things-down"]
+	path = pack/extra/start/vim-getting-things-down
+	url = https://github.com/rlue/vim-getting-things-down

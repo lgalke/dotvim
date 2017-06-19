@@ -27,11 +27,10 @@ set showcmd ruler
 " Always show status and tabline
 set laststatus=2 showtabline=2
 " But no cursor column nor line
-set nocursorline nocursorcolumn
 " And not all the numbers.
-set nonumber norelativenumber
+set number relativenumber
+set cursorline cursorcolumn
 
-set visualbell errorbells
 set scrolloff=5
 
 set guioptions-=e "recommended by flagship
@@ -382,9 +381,9 @@ let g:syntastic_python_flake8_args        = '--ignore=E402'
 " let g:syntastic_python_flake8_args       = '-m flake8'
 
 " Fill quickfix list
-nnoremap <leader>e :Errors<CR>
 " }}}
 " Easy-Align {{{
+" Unused
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
@@ -399,9 +398,9 @@ omap ia <Plug>SidewaysArgumentTextobjI
 xmap ia <Plug>SidewaysArgumentTextobjI
 " }}}
 " ALE {{{
-let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_error_str   = 'E'
 let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_echo_msg_format      = '[%linter%] %s [%severity%]'
 
 let g:ale_linters = { 'python': ['flake8'], 'html' : ['HTMLHint'], 'vim': ['vint'] } 
 " python
@@ -422,14 +421,15 @@ nmap ]w :NextWordy<CR>
 nmap [w :PrevWordy<CR>
 " }}}
 " jedi  {{{ "
+" showmode needs to be disabled to show call signatures in modeline
+set noshowmode
 let g:jedi#popup_on_dot         = 0
 let g:jedi#smart_auto_mappings  = 0
-set noshowmode
 let g:jedi#show_call_signatures = 2
 " let g:jedi#force_py_version     = &pyx
 " }}} jedi  "
 " pandoc {{{
-let g:pandoc#formatting#mode = 's'
+let g:pandoc#formatting#mode           = 's'
 let g:pandoc#filetypes#pandoc_markdown = 0
 let g:pandoc#filetypes#handled         = ['extra', 'pandoc', 'rst', 'textile']
 let g:pandoc#modules#disabled          = ['menu']
@@ -465,6 +465,7 @@ if has('packages')
     packadd! ale
   else
     packadd! syntastic
+    nnoremap <leader>e :Errors<CR>
   endif
   command! -bar -bang -complete=packadd -nargs=1 Packadd packadd<bang> <args> | doautoall BufRead
   command! -bar -nargs=0 Helptags silent! helptags ALL
