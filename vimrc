@@ -187,6 +187,7 @@ nmap <Right> <nop>
 
 " quick spell correction
 nnoremap <C-X><C-S> ea<C-X><C-S>
+inoremap <C-K><C-K> <Esc>:help digraph-table<CR>
 
 
 " quick modeline, thanks to the pope

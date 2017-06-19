@@ -202,3 +202,6 @@
 [submodule "pack/extra/start/vim-getting-things-down"]
 	path = pack/extra/start/vim-getting-things-down
 	url = https://github.com/rlue/vim-getting-things-down
+[submodule "pack/core/start/vim-characterize"]
+	path = pack/core/start/vim-characterize
+	url = https://github.com/tpope/vim-characterize.git
