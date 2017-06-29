@@ -82,7 +82,7 @@ set dictionary+=/usr/share/dict/words
 set complete-=i
 set complete-=d
 set completeopt+=longest
-set spelllang=en_gb
+set spelllang=en_us
 " }}}
 " Going Wild {{{
 set wildmenu
@@ -149,23 +149,9 @@ noremap Y y$
 noremap H ^
 noremap L $
 
-function! s:OpenAux(filename, suffixpool)
-  let l:basename = fnamemodify(a:filename, ":r")
-  for suffix in a:suffixpool
-    let l:auxfile = l:basename . suffix
-    if l:auxfile !=# a:filename
-      silent! execute "vsplit " . l:auxfile
-    endif
-  endfor
-endfunction
 
-set winwidth=80
-augroup openaux
-  au!
-  au FileType typescript,html,spec,css nnoremap <C-x>w :call <SID>OpenAux(expand("%"), [".ts",".html",".spec",".css"])<CR>
-  au FileType tex,bib nnoremap <C-x>w :call <SID>OpenAux(expand("%"), [".tex", ".bib"])<CR>
-augroup END
 
+" set winwidth=80
 
 " Convenience
 nnoremap <C-S> :w<cr>
@@ -193,7 +179,6 @@ inoremap <C-K><C-K> <Esc>:help digraph-table<CR>
 " quick modeline, thanks to the pope
 inoremap <C-X>^ <C-R>=substitute(&commentstring,' \=%s\>'," -*- ".&ft." -*- vim:set ft=".&ft." ".(&et?"et":"noet")." sw=".&sw." sts=".&sts.':','')<CR>
 
-
 " F keys {{{
 nmap    <F2>     :20Lex<CR>
 " we could merge f3 and f4
@@ -218,11 +203,11 @@ map     <F10> :Start<CR>
 " }}}
 
 " Title case
-nnoremap <Leader>tc :s/\<\(\w\)\(\w*\)\>/\u\1\L\2/g<CR>:nohlsearch<CR>
 
 " Quick access
-nnoremap <leader>v :Vedit vimrc<cr>
-nnoremap <Leader>f :find 
+nnoremap <leader>v :edit $MYVIMRC<cr>
+nnoremap <Leader>f :find<Space>
+nnoremap <Leader>b :ls<CR>:b<Space>
 "}}}
 " Section: Text Objects {{{
 " Pipe tables
@@ -322,8 +307,9 @@ if has('autocmd')
   augroup END
 endif
 
-nmap <C-\> <plug>(vimtex-cmd-create)
-imap <C-\> <plug>(vimtex-cmd-create)
+
+nmap <C-\> <Plug>(vimtex-cmd-create)
+imap <C-\> <Plug>(vimtex-cmd-create)
 
 let g:vimtex_compiler_latexmk = {
       \ 'backend' : 'jobs',
@@ -386,9 +372,9 @@ let g:syntastic_python_flake8_args        = '--ignore=E402'
 " Easy-Align {{{
 " Unused
 " Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
+" xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
+" nmap ga <Plug>(EasyAlign)
 " }}}
 " Sideways {{{
 nnoremap <a :SidewaysLeft<cr>
@@ -441,13 +427,6 @@ let g:pandoc#keyboard#display_motions  = 0
 " Angular and Typescript {{{
 let g:typescript_compiler_binary = 'tsc'
 let g:typescript_compiler_options = ''
-if has('autocmd')
-  augroup qfpost
-    au!
-    autocmd QuickFixCmdPost [^l]* nested cwindow
-    autocmd QuickFixCmdPost    l* nested lwindow
-  augroup END
-endif
 " }}}
 " {{{ Github Dashboard
 let g:github_dashboard = {}
@@ -485,11 +464,10 @@ endif
 " }}} The Packs "
 " Section: Colors {{{
 syntax enable
-if !exists('$TMUX') && has('termguicolors')
+if has('termguicolors')
   " this should only be used if outside tmux
   set termguicolors
 endif
-let g:jellybeans_use_term_italics = 1
-set background=dark
-silent! colo gruvbox
+set bg=dark
+silent! colo slate
 " }}}
