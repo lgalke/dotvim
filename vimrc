@@ -51,8 +51,8 @@ set autoindent
 set smartindent
 " }}}
 " Lists {{{
-set nolist
-set listchars=eol:¶,tab:¦-,trail:±,extends:»,precedes:«,nbsp:~
+set list
+set listchars=eol:¶,tab:¦-,trail:·,extends:»,precedes:«,nbsp:~
 " }}}
 " Wraps and Breaks {{{
 set wrap
@@ -182,7 +182,6 @@ inoremap <C-X>^ <C-R>=substitute(&commentstring,' \=%s\>'," -*- ".&ft." -*- vim:
 " F keys {{{
 nmap    <F2>     :20Lex<CR>
 " we could merge f3 and f4
-nmap    <F3>     :if exists(':TagbarToggle')<Bar>exe 'TagbarToggle'<Bar>endif<CR>
 
 if has('autocmd')
   augroup f4_map
@@ -208,6 +207,9 @@ map     <F10> :Start<CR>
 nnoremap <leader>v :edit $MYVIMRC<cr>
 nnoremap <Leader>f :find<Space>
 nnoremap <Leader>b :ls<CR>:b<Space>
+if exists(':TagbarToggle')
+  nnoremap <leader>n :TagbarToggle<CR>
+endif
 "}}}
 " Section: Text Objects {{{
 " Pipe tables
@@ -245,7 +247,7 @@ if has('autocmd')
     au!
     autocmd FileType    help             setlocal keywordprg=:help
     " q enough
-    autocmd FileType    qf,help          nnoremap <buffer> q :q!<CR>
+    autocmd FileType    qf,help,netrw          nnoremap <buffer> q :q!<CR>
     " as recommended to not write ugly mails for others
     autocmd FileType    mail             setlocal formatoptions+=aw
     " make useful dispatch
@@ -271,7 +273,7 @@ if has('autocmd')
     " autocmd CursorHold  *                smile
     autocmd FileType vim                 setlocal formatoptions-=o
     " expands plain node to explicitly labelled node.
-    autocmd FileType dot nnoremap <buffer> <localleader>el viwyA<Space>[label=""]<Esc>F"P$
+    autocmd FileType dot                 nnoremap <buffer> <localleader>el viwyA<Space>[label=""]<Esc>F"P$
     autocmd FileType html,typescript     execute angular_cli#init()
     " autocmd VimEnter * if glob("node_modules/@angular") != '' | execute angular_cli#init() | endif
   augroup END
@@ -284,32 +286,24 @@ let g:angular_cli_debug = 1
 " Small adjustments {{{
 
 let g:markdown_fenced_languages           = ['html', 'python', 'bash=sh']
+
 let g:SimpylFold_docstring_preview        = 1
-let g:ack_use_dispatch                    = 1
+
 let g:python_pep8_indent_multiline_string = 1
 let g:ragtag_global_maps                  = 1
-let g:delimitMate_expand_cr               = 1
-let g:signify_vcs_list                    = [ 'git' ]
-let g:signify_line_highlight              = 0
 let g:online_thesaurus_map_keys           = 0
-let g:ctrlp_map                           = '<Leader>o'
-let g:ctrlp_user_command                  = ['.git', 'cd %s && git ls-files']
+
+" Reinclude angular cli?
 let g:angular_cli_use_dispatch            = 1
 
 " }}}
 " Vimtex {{{
-if has('autocmd')
-  augroup vimtex_customization
-    au!
-    au User VimtexEventInitPost 
-          \ call vimtex#imaps#add_map({'lhs' : 'bs', 'rhs' : '\boldsymbol{}<Left>'}) |
-          \ call vimtex#imaps#add_map({'lhs' : 'bb', 'rhs' : '\mathbb{}<Left>'})
-  augroup END
-endif
-
-
-nmap <C-\> <Plug>(vimtex-cmd-create)
-imap <C-\> <Plug>(vimtex-cmd-create)
+augroup vimtex_customization
+  au!
+  au User VimtexEventInitPost 
+        \ call vimtex#imaps#add_map({'lhs' : 'bs', 'rhs' : '\boldsymbol{}<Left>'}) |
+        \ call vimtex#imaps#add_map({'lhs' : 'bb', 'rhs' : '\mathbb{}<Left>'})
+augroup END
 
 let g:vimtex_compiler_latexmk = {
       \ 'backend' : 'jobs',
@@ -389,7 +383,6 @@ let g:ale_echo_msg_error_str   = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format      = '[%linter%] %s [%severity%]'
 
-let g:ale_linters = { 'python': ['flake8'], 'html' : ['HTMLHint'], 'vim': ['vint'] } 
 " python
 let g:ale_python_mypy_options = '--ignore-missing-imports'
 " Module import not at start of file
@@ -402,10 +395,6 @@ let g:ale_python_flake8_args = '--ignore=E402'
 let g:ale_tex_chktex_options = '-n1'
 
 let g:ale_linter_aliases = {'pandoc': 'markdown'}
-" }}}
-" Wordy {{{
-nmap ]w :NextWordy<CR>
-nmap [w :PrevWordy<CR>
 " }}}
 " jedi  {{{ "
 " showmode needs to be disabled to show call signatures in modeline
@@ -441,7 +430,7 @@ let g:github_dashboard['emoji_map'] = {
 " }}}
 " Section: The Packs {{{ "
 if has('packages')
-  if v:version >= 800
+  if has('timers') && exists('*job_start') && exists('*ch_close_in')
     packadd! ale
   else
     packadd! syntastic
@@ -456,7 +445,7 @@ if has('packages')
   endif
 else
   " BACKWARDS COMPATIBLE
-  runtime pack/core/opt/vim-pathogen/autoload/pathogen.vim
+  runtime pack/tpope-pack/opt/vim-pathogen/autoload/pathogen.vim
   echom 'Pathogen infection.'
   execute pathogen#infect('pack/core/start/{}' , 'pack/extra/start/{}' , 'pack/community/start/{}' , 'pack/testing/start/{}')
   " execute pathogen#infect('pack/core/opt/{}'   , 'pack/extra/opt/{}'   , 'pack/community/opt/{}'   , 'pack/testing/opt/{}')
