@@ -208,7 +208,7 @@ nnoremap <leader>v :edit $MYVIMRC<cr>
 nnoremap <Leader>f :find<Space>
 nnoremap <Leader>b :ls<CR>:b<Space>
 if exists(':TagbarToggle')
-  nnoremap <leader>n :TagbarToggle<CR>
+  nnoremap <leader>t :TagbarToggle<CR>
 endif
 "}}}
 " Section: Text Objects {{{
@@ -427,11 +427,14 @@ let g:github_dashboard['emoji_map'] = {
       \   'ForkEvent':      'fork_and_knife'
       \ }
 " }}}
+" {{{
+let g:fugitive_gitlab_domains = [ 'https://git.kd.informatik.uni-kiel.de' ]
+" }}}
 " }}}
 " Section: The Packs {{{ "
 if has('packages')
   if has('timers') && exists('*job_start') && exists('*ch_close_in')
-    packadd! ale
+    " packadd! ale
   else
     packadd! syntastic
     nnoremap <leader>e :Errors<CR>
@@ -458,5 +461,5 @@ if has('termguicolors')
   set termguicolors
 endif
 set bg=dark
-silent! colo slate
+silent! colo gruvbox
 " }}}
