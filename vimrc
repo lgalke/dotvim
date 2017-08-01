@@ -207,9 +207,7 @@ map     <F10> :Start<CR>
 nnoremap <leader>v :edit $MYVIMRC<cr>
 nnoremap <Leader>f :find<Space>
 nnoremap <Leader>b :ls<CR>:b<Space>
-if exists(':TagbarToggle')
-  nnoremap <leader>t :TagbarToggle<CR>
-endif
+nnoremap <leader>t :TagbarToggle<CR>
 "}}}
 " Section: Text Objects {{{
 " Pipe tables
