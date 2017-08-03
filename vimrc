@@ -459,5 +459,5 @@ if has('termguicolors')
   set termguicolors
 endif
 set bg=dark
-silent! colo gruvbox
+silent! colo iceberg
 " }}}
