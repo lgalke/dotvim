@@ -108,7 +108,7 @@ augroup END
 let g:tex_flavor = 'latex'
 let g:is_bash = 1
 let g:python_highlight_all = 1
-set completefunc=emoji#complete
+set completefunc=autoprogramming#complete
 " }}}
 " File Movement {{{
 set path+=**
