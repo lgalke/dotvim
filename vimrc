@@ -144,11 +144,9 @@ augroup END
 let g:mapleader = ' '
 let g:maplocalleader = '\'
 inoremap <C-C> <Esc>`^
-" map <Tab> %
 noremap Y y$
 noremap H ^
 noremap L $
-
 
 
 " set winwidth=80
@@ -361,13 +359,6 @@ let g:syntastic_python_flake8_args        = '--ignore=E402'
 
 " Fill quickfix list
 " }}}
-" Easy-Align {{{
-" Unused
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-" xmap ga <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-" nmap ga <Plug>(EasyAlign)
-" }}}
 " Sideways {{{
 nnoremap <a :SidewaysLeft<cr>
 nnoremap >a :SidewaysRight<cr>
@@ -411,32 +402,13 @@ let g:pandoc#syntax#conceal#urls       = 1
 let g:pandoc#completion#bib#mode       = 'citeproc'
 let g:pandoc#keyboard#display_motions  = 0
 " }}}
-" Angular and Typescript {{{
-let g:typescript_compiler_binary = 'tsc'
-let g:typescript_compiler_options = ''
-" }}}
-" {{{ Github Dashboard
-let g:github_dashboard = {}
-let g:github_dashboard['emoji'] = 1
-let g:github_dashboard['emoji_map'] = {
-      \   'user_dashboard': 'blush',
-      \   'user_activity':  'smile',
-      \   'repo_activity':  'laughing',
-      \   'ForkEvent':      'fork_and_knife'
-      \ }
-" }}}
 " {{{
 let g:fugitive_gitlab_domains = [ 'https://git.kd.informatik.uni-kiel.de' ]
 " }}}
 " }}}
 " Section: The Packs {{{ "
 if has('packages')
-  if has('timers') && exists('*job_start') && exists('*ch_close_in')
-    " packadd! ale
-  else
-    packadd! syntastic
-    nnoremap <leader>e :Errors<CR>
-  endif
+  packadd! ale
   command! -bar -bang -complete=packadd -nargs=1 Packadd packadd<bang> <args> | doautoall BufRead
   command! -bar -nargs=0 Helptags silent! helptags ALL
   if has('syntax') && has('eval')
@@ -448,7 +420,7 @@ else
   " BACKWARDS COMPATIBLE
   runtime pack/tpope-pack/opt/vim-pathogen/autoload/pathogen.vim
   echom 'Pathogen infection.'
-  execute pathogen#infect('pack/core/start/{}' , 'pack/extra/start/{}' , 'pack/community/start/{}' , 'pack/testing/start/{}')
+  execute pathogen#infect('pack/tpope-pack/start/{}' , 'pack/extra-pack/start/{}' , 'pack/AndrewRadev-pack/start/{}')
   " execute pathogen#infect('pack/core/opt/{}'   , 'pack/extra/opt/{}'   , 'pack/community/opt/{}'   , 'pack/testing/opt/{}')
 endif
 " }}} The Packs "
