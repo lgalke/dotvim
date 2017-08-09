@@ -2,6 +2,7 @@
 syn keyword pythonBuiltinObj     self
 " Common package abbreviations
 syn keyword pythonInclude        np pd tf sp
+syn keyword pythonInclude        torch nn F optim Variable
 " kwargs
 syn match   pythonFunction       /\h\w*\ze=/
 " Additional operators
