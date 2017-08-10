@@ -218,8 +218,8 @@ onoremap a<Bar> :<c-u>normal! F<Bar>vf<Bar><cr>
 " }}} Section: Text Objects
 " Section: Abbreviations and Graveyard {{{ 
 if exists('*strftime')
-  iabbrev :date: <c-r>=strftime("%d/%m/%y")<cr>
-  iabbrev :time: <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
+  iabbrev :date: <c-r>=strftime("%y-%m-%d")<cr>
+  iabbrev :time: <c-r>=strftime("%y-%m-%d %H:%M:%S")<cr>
 endif
 " The following is one mapping for all: 
 " - Visual selection: :w \g/<filename> will create a grave
@@ -229,9 +229,11 @@ cabbrev \g $HOME/.vim/graveyard
 iabbrev +++ <++++><Left><Left><Left>
 " After searching for the rune markers, you can replace as follows:
 " navigate through them vi n/N as usual,
+" wildcharm = <c-z> 
+nnoremap <leader>r :-1r<Space>$HOME/.vim/graveyard/<c-z>
 nnoremap <leader>m /<++[^\%(++>\)]\{-}++>/<CR>
 let g:surround_{char2nr('m')} = "<++\r++>"
-" ok i should not write that says proselint
+" ok proselint said i should not write that 
 iabbrev very damn
 "}}}
 " Section: Autocmds {{{
@@ -407,6 +409,8 @@ let g:fugitive_gitlab_domains = [ 'https://git.kd.informatik.uni-kiel.de' ]
 " }}}
 " }}}
 " Section: The Packs {{{ "
+
+runtime ftplugin/man.vim
 if has('packages')
   packadd! ale
   command! -bar -bang -complete=packadd -nargs=1 Packadd packadd<bang> <args> | doautoall BufRead
