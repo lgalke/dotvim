@@ -1,12 +1,12 @@
 " I always forget it in method names, so highlight to remember
-syn keyword pythonBuiltinObj     self
+" syn keyword pythonBuiltinObj     self
 " Common package abbreviations
 syn keyword pythonInclude        np pd tf sp
 syn keyword pythonInclude        torch nn F optim Variable
 " kwargs
-syn match   pythonFunction       /\h\w*\ze=/
+" syn match   pythonFunction       /\h\w*\ze=/
 " Additional operators
-syn match   pythonOperator       #[+=\*/-]#
+" syn match   pythonOperator       #[+=\*/-]#
 
 " I want the matrix multiplication operator to be colored
 hi link pythonMatrixMultiply pythonOperator
