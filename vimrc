@@ -51,7 +51,7 @@ set autoindent
 set smartindent
 " }}}
 " Lists {{{
-set list
+" set list
 set listchars=eol:¶,tab:¦-,trail:·,extends:»,precedes:«,nbsp:~
 " }}}
 " Wraps and Breaks {{{
@@ -72,7 +72,7 @@ endif
 " Defaults (may be changed on ft) {{{
 set foldmethod=marker
 set commentstring=#\ %s
-set formatoptions=rqn1j
+" set formatoptions=rqn1j
 " Provides :Man
 runtime! ftplugin/man.vim
 set keywordprg=:Man
@@ -435,5 +435,5 @@ if has('termguicolors')
   set termguicolors
 endif
 set bg=dark
-silent! colo vividchalk
+silent! colo iceberg
 " }}}
