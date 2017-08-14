@@ -113,6 +113,9 @@ set completefunc=autoprogramming#complete
 " File Movement {{{
 set path+=**
 " }}}
+" Terminal {{{
+set termsize=10x0
+"}}}
 " }}}
 " Section: Statusline {{{
 " this is hacky to fix with to 2
@@ -272,7 +275,7 @@ if has('autocmd')
     autocmd FileType vim                 setlocal formatoptions-=o
     " expands plain node to explicitly labelled node.
     autocmd FileType dot                 nnoremap <buffer> <localleader>el viwyA<Space>[label=""]<Esc>F"P$
-    autocmd FileType html,typescript     execute angular_cli#init()
+    " autocmd FileType html,typescript     execute angular_cli#init()
     " autocmd VimEnter * if glob("node_modules/@angular") != '' | execute angular_cli#init() | endif
   augroup END
 
