@@ -51,7 +51,7 @@ set autoindent
 set smartindent
 " }}}
 " Lists {{{
-set list
+" set list
 set listchars=eol:¶,tab:¦-,trail:·,extends:»,precedes:«,nbsp:~
 " }}}
 " Wraps and Breaks {{{
@@ -72,7 +72,7 @@ endif
 " Defaults (may be changed on ft) {{{
 set foldmethod=marker
 set commentstring=#\ %s
-set formatoptions=rqn1j
+" set formatoptions=rqn1j
 " Provides :Man
 runtime! ftplugin/man.vim
 set keywordprg=:Man
@@ -147,11 +147,9 @@ augroup END
 let g:mapleader = ' '
 let g:maplocalleader = '\'
 inoremap <C-C> <Esc>`^
-" map <Tab> %
 noremap Y y$
 noremap H ^
 noremap L $
-
 
 
 " set winwidth=80
@@ -223,8 +221,8 @@ onoremap a<Bar> :<c-u>normal! F<Bar>vf<Bar><cr>
 " }}} Section: Text Objects
 " Section: Abbreviations and Graveyard {{{ 
 if exists('*strftime')
-  iabbrev :date: <c-r>=strftime("%d/%m/%y")<cr>
-  iabbrev :time: <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
+  iabbrev :date: <c-r>=strftime("%y-%m-%d")<cr>
+  iabbrev :time: <c-r>=strftime("%y-%m-%d %H:%M:%S")<cr>
 endif
 " The following is one mapping for all: 
 " - Visual selection: :w \g/<filename> will create a grave
@@ -234,9 +232,11 @@ cabbrev \g $HOME/.vim/graveyard
 iabbrev +++ <++++><Left><Left><Left>
 " After searching for the rune markers, you can replace as follows:
 " navigate through them vi n/N as usual,
+" wildcharm = <c-z> 
+nnoremap <leader>r :-1r<Space>$HOME/.vim/graveyard/<c-z>
 nnoremap <leader>m /<++[^\%(++>\)]\{-}++>/<CR>
 let g:surround_{char2nr('m')} = "<++\r++>"
-" ok i should not write that says proselint
+" ok proselint said i should not write that 
 iabbrev very damn
 "}}}
 " Section: Autocmds {{{
@@ -364,13 +364,6 @@ let g:syntastic_python_flake8_args        = '--ignore=E402'
 
 " Fill quickfix list
 " }}}
-" Easy-Align {{{
-" Unused
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-" xmap ga <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-" nmap ga <Plug>(EasyAlign)
-" }}}
 " Sideways {{{
 nnoremap <a :SidewaysLeft<cr>
 nnoremap >a :SidewaysRight<cr>
@@ -414,32 +407,15 @@ let g:pandoc#syntax#conceal#urls       = 1
 let g:pandoc#completion#bib#mode       = 'citeproc'
 let g:pandoc#keyboard#display_motions  = 0
 " }}}
-" Angular and Typescript {{{
-let g:typescript_compiler_binary = 'tsc'
-let g:typescript_compiler_options = ''
-" }}}
-" {{{ Github Dashboard
-let g:github_dashboard = {}
-let g:github_dashboard['emoji'] = 1
-let g:github_dashboard['emoji_map'] = {
-      \   'user_dashboard': 'blush',
-      \   'user_activity':  'smile',
-      \   'repo_activity':  'laughing',
-      \   'ForkEvent':      'fork_and_knife'
-      \ }
-" }}}
 " {{{
 let g:fugitive_gitlab_domains = [ 'https://git.kd.informatik.uni-kiel.de' ]
 " }}}
 " }}}
 " Section: The Packs {{{ "
+
+runtime ftplugin/man.vim
 if has('packages')
-  if has('timers') && exists('*job_start') && exists('*ch_close_in')
-    " packadd! ale
-  else
-    packadd! syntastic
-    nnoremap <leader>e :Errors<CR>
-  endif
+  packadd! ale
   command! -bar -bang -complete=packadd -nargs=1 Packadd packadd<bang> <args> | doautoall BufRead
   command! -bar -nargs=0 Helptags silent! helptags ALL
   if has('syntax') && has('eval')
@@ -451,7 +427,7 @@ else
   " BACKWARDS COMPATIBLE
   runtime pack/tpope-pack/opt/vim-pathogen/autoload/pathogen.vim
   echom 'Pathogen infection.'
-  execute pathogen#infect('pack/core/start/{}' , 'pack/extra/start/{}' , 'pack/community/start/{}' , 'pack/testing/start/{}')
+  execute pathogen#infect('pack/tpope-pack/start/{}' , 'pack/extra-pack/start/{}' , 'pack/AndrewRadev-pack/start/{}')
   " execute pathogen#infect('pack/core/opt/{}'   , 'pack/extra/opt/{}'   , 'pack/community/opt/{}'   , 'pack/testing/opt/{}')
 endif
 " }}} The Packs "
