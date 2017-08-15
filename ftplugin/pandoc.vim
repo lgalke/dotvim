@@ -7,7 +7,10 @@ function! Heading(level) abort
     normal! yypVr=
   elseif a:level == 2
     normal! yypVr-
-  else execute 'normal 0i' . repeat('#', a:level) . ' ' endif call cursor(l:cline, 0)
+  else
+    execute 'normal 0i' . repeat('#', a:level) . ' '
+  endif
+  call cursor(l:cline, 0)
 endfunction
 
 nnoremap <buffer> <localleader>h1 :call <SID>Heading(1)<CR>
