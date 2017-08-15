@@ -206,6 +206,8 @@ nnoremap <leader>v :edit $MYVIMRC<cr>
 nnoremap <Leader>f :find<Space>
 nnoremap <Leader>b :ls<CR>:b<Space>
 nnoremap <leader>t :TagbarToggle<CR>
+nnoremap <leader>m :Make<CR>
+nnoremap <leader>d :Dispatch<CR>
 "}}}
 " Section: Text Objects {{{
 " Pipe tables
