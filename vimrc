@@ -28,8 +28,8 @@ set showcmd ruler
 set laststatus=2 showtabline=2
 " But no cursor column nor line
 " And not all the numbers.
-set number relativenumber
-set cursorline cursorcolumn
+" set number relativenumber
+" set cursorline cursorcolumn
 
 set scrolloff=5
 
@@ -156,8 +156,8 @@ nnoremap <C-S> :w<cr>
 " i dont need multiple cursors
 xnoremap <C-S> :s/
 " zvzz
-" nnoremap n nzvzz
-" nnoremap N Nzvzz
+nnoremap n nzvzz
+nnoremap N Nzvzz
 
 " Visual adjustments
 xmap < <gv
@@ -210,7 +210,7 @@ nnoremap <leader>t :TagbarToggle<CR>
 " Section: Text Objects {{{
 " Pipe tables
 " Complements cucumbertables.vim by tpope
-" inoremap <Bar>-<Bar> <Esc>kyyp:s/\v[^<Bar>]/-/g<CR>:nohlsearch<CR>j
+inoremap <Bar><Bar> <Esc>kyyp:s/\v[^<Bar>]/-/g<CR>:nohlsearch<CR>j
 
 " test object for table cells
 onoremap i<Bar> :<c-u>normal! T<Bar>vt<Bar><cr>
@@ -329,38 +329,6 @@ let g:vimtex_indent_bib_enabled           = 1
 let g:vimtex_format_enabled               = 1 " this did not work well, recheck if fixed
 let g:vimtex_disable_version_warning      = 1 " avoid checking manually latexmk, bibtex and stuff
 " }}}
-" Syntastic {{{
-let g:syntastic_check_on_open             = 1
-let g:syntastic_check_on_wq               = 0
-let g:syntastic_auto_jump                 = 0
-" dont clutter the loc list
-let g:syntastic_always_populate_loc_list  = 1
-let g:loc_list_height                     = 5
-let g:syntastic_aggregate_errors          = 1
-let g:syntastic_id_checkers               = 1
-let g:syntastic_auto_loc_list             = 0
-let g:tsuquyomi_disable_quickfix          = 1
-let g:syntastic_typescript_checkers       = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
-" tex checker
-let g:syntastic_tex_checkers              = ['chktex', 'lacheck', 'proselint']
-" 1: Cmd terminated with space
-" 8: Wrong type of dashes
-" 36: spaces around braces
-let g:syntastic_tex_chktex_args           = '-n1 -n8 -n36'
-" Html
-" let g:syntastic_html_checkers             = 
-" python checker
-let g:syntastic_python_checkers           = ['python', 'flake8']
-" let g:syntastic_python_checkers          = []
-let g:syntastic_python_python_exec        = '/usr/bin/python3'
-" let g:syntastic_python_flake8_exec       = '/usr/bin/python3'
-" E402 : module level import not at top of file
-" E501, E203
-let g:syntastic_python_flake8_args        = '--ignore=E402'
-" let g:syntastic_python_flake8_args       = '-m flake8'
-
-" Fill quickfix list
-" }}}
 " Sideways {{{
 nnoremap <a :SidewaysLeft<cr>
 nnoremap >a :SidewaysRight<cr>
@@ -375,9 +343,7 @@ let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format      = '[%linter%] %s [%severity%]'
 
 " python
-let g:ale_python_mypy_options = '--ignore-missing-imports'
-" Module import not at start of file
-let g:ale_python_flake8_args = '--ignore=E402'
+let g:ale_linters = { 'python' : [ 'flake8' ] }
 
 " tex
 " We drop default -I
@@ -387,25 +353,22 @@ let g:ale_tex_chktex_options = '-n1'
 
 let g:ale_linter_aliases = {'pandoc': 'markdown'}
 " }}}
-" jedi  {{{ "
-" showmode needs to be disabled to show call signatures in modeline
-set noshowmode
-let g:jedi#popup_on_dot         = 0
-let g:jedi#smart_auto_mappings  = 0
-let g:jedi#show_call_signatures = 2
-" let g:jedi#force_py_version     = &pyx
-" }}} jedi  "
 " pandoc {{{
 let g:pandoc#formatting#mode           = 's'
 let g:pandoc#filetypes#pandoc_markdown = 0
-let g:pandoc#filetypes#handled         = ['extra', 'pandoc', 'rst', 'textile']
 let g:pandoc#modules#disabled          = ['menu']
 let g:pandoc#syntax#conceal#urls       = 1
 let g:pandoc#completion#bib#mode       = 'citeproc'
 let g:pandoc#keyboard#display_motions  = 0
 " }}}
-" {{{
+" {{{ fugitive
 let g:fugitive_gitlab_domains = [ 'https://git.kd.informatik.uni-kiel.de' ]
+nnoremap <leader>gw :Gwrite<CR>
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gc :Gcommit<CR>
+nnoremap <leader>gp :Gpush<CR>
+nnoremap <leader>gf :Gfetch<CR>
+nnoremap <leader>gm :Gmerge<CR>
 " }}}
 " }}}
 " Section: The Packs {{{ "
