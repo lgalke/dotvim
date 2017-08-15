@@ -1,2 +1,12 @@
 # dotvim
-New try to be clean with plugins..
+
+This is my vim configuration.
+
+
+## To Do
+
+- Merge ftplugin/pandoc.vim ftplugin/markdown.vim
+
+
+
+

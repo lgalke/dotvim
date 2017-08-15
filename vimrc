@@ -9,6 +9,7 @@ scriptencoding
 set autowrite
 set ignorecase smartcase
 set foldopen+=jump
+set foldcolumn=4
 set backspace=2
 if has('persistent_undo')
   set undofile	" keep an undo file (undo changes after closing)
@@ -49,6 +50,7 @@ set expandtab
 set shiftround
 set autoindent
 set smartindent
+set foldlevel=2
 " }}}
 " Lists {{{
 " set list
@@ -129,13 +131,12 @@ set path+=**
 let s:hl_as_usual = {'hl': 'Statusline'}
 augroup my_flagship
   au!
-  autocmd User Flags call Hoist('buffer', +10, {'hl': 'WarningMsg'}, 'SyntasticStatuslineFlag')
   autocmd User Flags call Hoist('buffer', +10, {'hl': 'WarningMsg'}, 'ALEGetStatusLine')
   autocmd User Flags call Hoist('window', +10, s:hl_as_usual, "%{tagbar#currenttag('[%s]', '')}")
-  autocmd User Flags call Hoist('buffer', -10, s:hl_as_usual, '[%{&formatoptions}]')
-  autocmd User Flags call Hoist('buffer', -10, s:hl_as_usual, '[%{&complete}]')
+  " autocmd User Flags call Hoist('buffer', -10, s:hl_as_usual, '[%{&formatoptions}]')
+  " autocmd User Flags call Hoist('buffer', -10, s:hl_as_usual, '[%{&complete}]')
   " autocmd User Flags call Hoist("buffer", 0, hl_as_usual, '%{g:asyncrun_status}')
-  autocmd User Flags call Hoist('global', 0, "[%{&cpoptions}]")
+  " autocmd User Flags call Hoist('global', 0, "[%{&cpoptions}]")
   " this is necessary because (vim-signify|vim-gitgutter) somehow breaks colors
   " autocmd User Flags call Hoist("buffer", -10, hl_as_usual, function('fugitive#statusline'))
 augroup END
@@ -144,9 +145,9 @@ augroup END
 let g:mapleader = ' '
 let g:maplocalleader = '\'
 inoremap <C-C> <Esc>`^
-noremap Y y$
-noremap H ^
-noremap L $
+nmap Y y$
+nmap H ^
+nmap L $
 
 
 " set winwidth=80
@@ -202,6 +203,8 @@ map     <F10> :Start<CR>
 " Title case
 
 " Quick access
+nnoremap <leader>u yypVr
+nnoremap <leader>d :edit ~/dash.rst<CR>
 nnoremap <leader>v :edit $MYVIMRC<cr>
 nnoremap <Leader>f :find<Space>
 nnoremap <Leader>b :ls<CR>:b<Space>
@@ -218,8 +221,8 @@ onoremap a<Bar> :<c-u>normal! F<Bar>vf<Bar><cr>
 " }}} Section: Text Objects
 " Section: Abbreviations and Graveyard {{{ 
 if exists('*strftime')
-  iabbrev :date: <c-r>=strftime("%y-%m-%d")<cr>
-  iabbrev :time: <c-r>=strftime("%y-%m-%d %H:%M:%S")<cr>
+  iabbrev :date: <c-r>=strftime("%Y-%m-%d")<cr>
+  iabbrev :time: <c-r>=strftime("%Y-%m-%d %H:%M:%S")<cr>
 endif
 " The following is one mapping for all: 
 " - Visual selection: :w \g/<filename> will create a grave
@@ -264,16 +267,12 @@ if has('autocmd')
           \ |        let                 b:surround_{char2nr('V')} = "\\begin{verbatim}\n\r\n\\end{verbatim}"
     autocmd FileType    txt,tex,mail,pandoc,markdown  if exists(':Thesaurus') | setlocal keywordprg=:Thesaurus | endif 
           \ | setlocal spell
-    autocmd FileType    python           setlocal textwidth=79 colorcolumn=+1 softtabstop=4 shiftwidth=4 expandtab
-    autocmd FileType    python           nnoremap <leader>c 0f(3wyt)o<ESC>pV:s/\([a-z_]\+\),\?/self.\1 = \1<C-v><CR>/g<CR>ddV?def<CR>j
-    autocmd FileType    python           setlocal omnifunc=jedi#completions
     autocmd FileType    *                if       exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
     " autocmd CursorHold  *                smile
     autocmd FileType vim                 setlocal formatoptions-=o
     " expands plain node to explicitly labelled node.
     autocmd FileType dot                 nnoremap <buffer> <localleader>el viwyA<Space>[label=""]<Esc>F"P$
-    autocmd FileType html,typescript     execute angular_cli#init()
-    " autocmd VimEnter * if glob("node_modules/@angular") != '' | execute angular_cli#init() | endif
+    autocmd FileType python setlocal foldmethod=indent foldnestmax=3
   augroup END
 
 endif
@@ -283,7 +282,7 @@ let g:angular_cli_debug = 1
 " Section: Plugins {{{
 " Small adjustments {{{
 
-let g:markdown_fenced_languages           = ['html', 'python', 'bash=sh']
+let g:markdown_fenced_languages           = ['html', 'python', 'sh']
 
 let g:SimpylFold_docstring_preview        = 1
 
@@ -338,13 +337,22 @@ omap ia <Plug>SidewaysArgumentTextobjI
 xmap ia <Plug>SidewaysArgumentTextobjI
 " }}}
 " ALE {{{
-let g:ale_echo_msg_error_str   = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format      = '[%linter%] %s [%severity%]'
+" let g:ale_echo_msg_error_str   = 'E'
+" let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%/%severity%] %s'
+let g:ale_linter_aliases = { 'pandoc': 'markdown'}
+let g:ale_linters = { 'python' : ['flake8'] }
+let g:ale_fixers = {
+\   'python': [
+\       'add_blank_lines_for_python_control_statements',
+\       'autopep8',
+\       'isort',
+\       'yapf',
+\       'remove_trailing_lines'
+\   ],
+\}
 
-" python
-let g:ale_linters = { 'python' : [ 'flake8' ] }
-
+let python_highlight_all = 1
 " tex
 " We drop default -I
 " n1 command terminated with space
@@ -356,6 +364,7 @@ let g:ale_linter_aliases = {'pandoc': 'markdown'}
 " pandoc {{{
 let g:pandoc#formatting#mode           = 's'
 let g:pandoc#filetypes#pandoc_markdown = 0
+let g:pandoc#filetypes#handled = [ "pandoc" ]
 let g:pandoc#modules#disabled          = ['menu']
 let g:pandoc#syntax#conceal#urls       = 1
 let g:pandoc#completion#bib#mode       = 'citeproc'
@@ -393,10 +402,11 @@ endif
 " }}} The Packs "
 " Section: Colors {{{
 syntax enable
+set t_Co=256
 if has('termguicolors')
   " this should only be used if outside tmux
   set termguicolors
 endif
 set bg=dark
-silent! colo iceberg
+silent! colo pencil
 " }}}
