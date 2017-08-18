@@ -135,7 +135,6 @@ let s:hl_as_usual = {'hl': 'Statusline'}
 augroup my_flagship
   au!
   autocmd User Flags call Hoist('buffer', +10, {'hl': 'WarningMsg'}, 'ALEGetStatusLine')
-  autocmd User Flags call Hoist('window', +10, s:hl_as_usual, "%{tagbar#currenttag('[%s]', '')}")
   " autocmd User Flags call Hoist('buffer', -10, s:hl_as_usual, '[%{&formatoptions}]')
   " autocmd User Flags call Hoist('buffer', -10, s:hl_as_usual, '[%{&complete}]')
   " autocmd User Flags call Hoist("buffer", 0, hl_as_usual, '%{g:asyncrun_status}')
