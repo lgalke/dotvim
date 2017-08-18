@@ -136,7 +136,6 @@ let s:hl_as_usual = {'hl': 'Statusline'}
 augroup my_flagship
   au!
   autocmd User Flags call Hoist('buffer', +10, {'hl': 'WarningMsg'}, 'ALEGetStatusLine')
-  autocmd User Flags call Hoist('window', +10, s:hl_as_usual, "%{tagbar#currenttag('[%s]', '')}")
   " autocmd User Flags call Hoist('buffer', -10, s:hl_as_usual, '[%{&formatoptions}]')
   " autocmd User Flags call Hoist('buffer', -10, s:hl_as_usual, '[%{&complete}]')
   " autocmd User Flags call Hoist("buffer", 0, hl_as_usual, '%{g:asyncrun_status}')
@@ -213,8 +212,8 @@ nnoremap <leader>v :edit $MYVIMRC<cr>
 nnoremap <Leader>f :find<Space>
 nnoremap <Leader>b :ls<CR>:b<Space>
 nnoremap <leader>t :TagbarToggle<CR>
-nnoremap <leader>m :Make<CR>
-nnoremap <leader>d :Dispatch<CR>
+" nnoremap <leader>m :Make<CR>
+" nnoremap <leader>d :Dispatch<CR>
 "}}}
 " Section: Text Objects {{{
 " Pipe tables
@@ -414,5 +413,8 @@ if has('termguicolors')
   set termguicolors
 endif
 set bg=dark
-silent! colo vividchalk
+silent! colo pencil
 " }}}
+if filereadable(expand("~/.vimrc.local"))
+  source ~/.vimrc.local
+endif
