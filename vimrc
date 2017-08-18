@@ -10,6 +10,7 @@ set autowrite
 set ignorecase smartcase
 set foldopen+=jump
 set foldcolumn=4
+set virtualedit+=block
 set backspace=2
 if has('persistent_undo')
   set undofile	" keep an undo file (undo changes after closing)
@@ -413,5 +414,5 @@ if has('termguicolors')
   set termguicolors
 endif
 set bg=dark
-silent! colo gruvbox
+silent! colo vividchalk
 " }}}
