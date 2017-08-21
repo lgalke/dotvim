@@ -120,27 +120,9 @@ set termsize=10x0
 "}}}
 " }}}
 " Section: Statusline {{{
-" this is hacky to fix with to 2
-" set statusline=%#WarningMsg#%-2.2(%M\ %)%*
-" set statusline+=%#CursorLineNr#%4.4(%c%)%*
-" " buffer number and modified
-" set statusline+=[b%n\ %f%(\ *%{fugitive#head()}%)]
-" " file
-" " usual stuff
-" set statusline+=\ %H%R
-" set statusline+=%=
-" set statusline+=%a
-" set statusline+=\ @\ %P
-let s:hl_as_usual = {'hl': 'Statusline'}
 augroup my_flagship
   au!
-  autocmd User Flags call Hoist('buffer', +10, {'hl': 'WarningMsg'}, 'ALEGetStatusLine')
-  " autocmd User Flags call Hoist('buffer', -10, s:hl_as_usual, '[%{&formatoptions}]')
-  " autocmd User Flags call Hoist('buffer', -10, s:hl_as_usual, '[%{&complete}]')
-  " autocmd User Flags call Hoist("buffer", 0, hl_as_usual, '%{g:asyncrun_status}')
-  " autocmd User Flags call Hoist('global', 0, "[%{&cpoptions}]")
-  " this is necessary because (vim-signify|vim-gitgutter) somehow breaks colors
-  " autocmd User Flags call Hoist("buffer", -10, hl_as_usual, function('fugitive#statusline'))
+  autocmd User Flags call Hoist('window', +10, {'hl': 'WarningMsg'}, 'ALEGetStatusLine')
 augroup END
 " }}}
 " Section: The Map {{{
@@ -210,7 +192,6 @@ nnoremap <leader>d :edit ~/dash.rst<CR>
 nnoremap <leader>v :edit $MYVIMRC<cr>
 nnoremap <Leader>f :find<Space>
 nnoremap <Leader>b :ls<CR>:b<Space>
-nnoremap <leader>t :TagbarToggle<CR>
 " nnoremap <leader>m :Make<CR>
 " nnoremap <leader>d :Dispatch<CR>
 "}}}
