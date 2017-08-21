@@ -413,7 +413,7 @@ if has('termguicolors')
   set termguicolors
 endif
 set bg=dark
-silent! colo pencil
+silent! colo nova
 " }}}
 if filereadable(expand("~/.vimrc.local"))
   source ~/.vimrc.local
