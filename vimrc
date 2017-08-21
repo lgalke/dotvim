@@ -73,7 +73,6 @@ if has('suffixesadd')
 endif
 " }}}
 " Defaults (may be changed on ft) {{{
-set foldmethod=marker
 set commentstring=#\ %s
 " set formatoptions=rqn1j
 " Provides :Man
