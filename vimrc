@@ -9,7 +9,7 @@ scriptencoding
 set autowrite
 set ignorecase smartcase
 set foldopen+=jump
-set foldcolumn=4
+set foldcolumn=2
 set virtualedit+=block
 set backspace=2
 if has('persistent_undo')
@@ -109,7 +109,6 @@ augroup END
 " Native global options {{{
 let g:tex_flavor = 'latex'
 let g:is_bash = 1
-let g:python_highlight_all = 1
 set completefunc=autoprogramming#complete
 " }}}
 " File Movement {{{
@@ -266,13 +265,12 @@ let g:angular_cli_debug = 1
 " Small adjustments {{{
 
 let g:markdown_fenced_languages           = ['html', 'python', 'sh']
+let rst_syntax_code_list = [ 'vim', 'python', 'sh'] 
+let python_highlight_all = 1
+let g:ragtag_global_maps                  = 1
 
 let g:SimpylFold_docstring_preview        = 1
-let g:ragtag_global_maps                  = 1
 let g:online_thesaurus_map_keys           = 0
-
-" Reinclude angular cli?
-let g:angular_cli_use_dispatch            = 1
 
 " }}}
 " Vimtex {{{
@@ -335,7 +333,6 @@ let g:ale_fixers = {
 \   ],
 \}
 
-let python_highlight_all = 1
 " tex
 " We drop default -I
 " n1 command terminated with space
@@ -391,7 +388,7 @@ if has('termguicolors')
   set termguicolors
 endif
 set bg=dark
-silent! colo nova
+silent! colo gruvbox
 " }}}
 if filereadable(expand("~/.vimrc.local"))
   source ~/.vimrc.local
