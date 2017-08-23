@@ -51,7 +51,7 @@ set expandtab
 set shiftround
 set autoindent
 set smartindent
-set foldlevel=2
+set foldlevel=1
 " }}}
 " Lists {{{
 " set list
@@ -192,8 +192,6 @@ nnoremap <leader>d :edit ~/dash.rst<CR>
 nnoremap <leader>v :edit $MYVIMRC<cr>
 nnoremap <Leader>f :find<Space>
 nnoremap <Leader>b :ls<CR>:b<Space>
-" nnoremap <leader>m :Make<CR>
-" nnoremap <leader>d :Dispatch<CR>
 "}}}
 " Section: Text Objects {{{
 " Pipe tables
@@ -270,8 +268,6 @@ let g:angular_cli_debug = 1
 let g:markdown_fenced_languages           = ['html', 'python', 'sh']
 
 let g:SimpylFold_docstring_preview        = 1
-
-let g:python_pep8_indent_multiline_string = 1
 let g:ragtag_global_maps                  = 1
 let g:online_thesaurus_map_keys           = 0
 
@@ -301,6 +297,8 @@ let g:vimtex_compiler_latexmk = {
       \   '-interaction=nonstopmode',
       \ ],
       \}
+
+" move this to vimrc.local
 let g:vimtex_view_general_viewer          = 'okular'
 let g:vimtex_view_general_options         = '--unique file:@pdf\#src:@line@tex'
 let g:vimtex_view_general_options_latexmk = '--unique'
@@ -366,8 +364,8 @@ nnoremap <leader>gm :Gmerge<CR>
 " }}}
 " }}}
 " Section: The Packs {{{ "
-
 runtime ftplugin/man.vim
+let g:ft_man_folding_enable = 1
 if has('packages')
   packadd! ale
   command! -bar -bang -complete=packadd -nargs=1 Packadd packadd<bang> <args> | doautoall BufRead
