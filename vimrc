@@ -85,6 +85,7 @@ set complete-=i
 set complete-=d
 set completeopt+=longest
 set spelllang=en_us
+set fdm=marker
 " }}}
 " Going Wild {{{
 set wildmenu
@@ -110,13 +111,8 @@ augroup END
 let g:tex_flavor = 'latex'
 let g:is_bash = 1
 set completefunc=autoprogramming#complete
-" }}}
-" File Movement {{{
 set path+=**
 " }}}
-" Terminal {{{
-set termsize=10x0
-"}}}
 " }}}
 " Section: Statusline {{{
 augroup my_flagship
