@@ -127,6 +127,8 @@ inoremap <C-C> <Esc>`^
 nmap Y y$
 nmap H ^
 nmap L $
+xmap H ^
+xmap L $
 
 
 " set winwidth=80
@@ -292,10 +294,10 @@ let g:vimtex_compiler_latexmk = {
       \ ],
       \}
 
+" let g:vimtex_view_general_viewer          = 'okular'
+" let g:vimtex_view_general_options         = '--unique file:@pdf\#src:@line@tex'
+" let g:vimtex_view_general_options_latexmk = '--unique'
 " move this to vimrc.local
-let g:vimtex_view_general_viewer          = 'okular'
-let g:vimtex_view_general_options         = '--unique file:@pdf\#src:@line@tex'
-let g:vimtex_view_general_options_latexmk = '--unique'
 let g:vimtex_complete_recursive_bib       = 1
 let g:vimtex_fold_enabled                 = 1
 let g:vimtex_fold_preamble                = 1
