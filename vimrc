@@ -85,7 +85,6 @@ set complete-=i
 set complete-=d
 set completeopt+=longest
 set spelllang=en_us
-set fdm=marker
 " }}}
 " Going Wild {{{
 set wildmenu
