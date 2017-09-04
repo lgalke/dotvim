@@ -252,7 +252,6 @@ if has('autocmd')
     autocmd FileType vim                 setlocal formatoptions-=o
     " expands plain node to explicitly labelled node.
     autocmd FileType dot                 nnoremap <buffer> <localleader>el viwyA<Space>[label=""]<Esc>F"P$
-    autocmd FileType python setlocal foldmethod=indent foldnestmax=3
   augroup END
 
 endif
