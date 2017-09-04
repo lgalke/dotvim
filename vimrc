@@ -357,6 +357,9 @@ nnoremap <leader>gp :Gpush<CR>
 nnoremap <leader>gf :Gfetch<CR>
 nnoremap <leader>gm :Gmerge<CR>
 " }}}
+" {{{ misc
+let g:SimpylFold_docstring_preview = 1
+" }}}
 " }}}
 " Section: The Packs {{{ "
 runtime ftplugin/man.vim
