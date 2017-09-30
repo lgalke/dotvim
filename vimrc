@@ -151,8 +151,6 @@ nmap <Down> <nop>
 nmap <Left> <nop>
 nmap <Right> <nop>
 
-" quick spell correction
-nnoremap <C-X><C-S> ea<C-X><C-S>
 inoremap <C-K><C-K> <Esc>:help digraph-table<CR>
 
 
@@ -389,7 +387,7 @@ if has('termguicolors')
   set notermguicolors
 endif
 set bg=dark
-silent! colo vividchalk
+silent! colo gruvbox
 " }}}
 " {{{ Operating System and local vimrc
 
