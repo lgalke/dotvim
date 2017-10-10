@@ -6,6 +6,7 @@ scriptencoding
 " }}}
 " Section: Basic Options {{{
 " Behavior {{{
+source $VIMRUNTIME/vimrc_example.vim
 set autowrite
 set ignorecase smartcase
 set foldopen+=jump
@@ -55,7 +56,7 @@ set foldlevel=1
 " }}}
 " Lists {{{
 " set list
-set listchars=eol:¶,tab:¦-,trail:·,extends:»,precedes:«,nbsp:~
+" set listchars=eol:¶,tab:¦-,trail:·,extends:»,precedes:«,nbsp:~
 " }}}
 " Wraps and Breaks {{{
 set wrap
@@ -150,8 +151,6 @@ nmap <Down> <nop>
 nmap <Left> <nop>
 nmap <Right> <nop>
 
-" quick spell correction
-nnoremap <C-X><C-S> ea<C-X><C-S>
 inoremap <C-K><C-K> <Esc>:help digraph-table<CR>
 
 
@@ -231,9 +230,7 @@ if has('autocmd')
     " as recommended to not write ugly mails for others
     autocmd FileType    mail             setlocal formatoptions+=aw
     " make useful dispatch
-    autocmd FileType    pandoc           if exists(':Pandoc') | let b:dispatch=":Pandoc pdf" | endif                                    
     autocmd FileType    pandoc,markdown  setlocal et sw=4 sts=2 iskeyword+=@,-,#
-    autocmd FileType    dot              let b:dispatch="dot -Tpdf -o %:r.pdf %"  | setlocal commentstring=//%s
     " guess the dispatch by shebang
     autocmd BufReadPost *                if getline(1) =~# '^#!' | let b:dispatch = getline(1)[2:-1] . ' %' | let b:start = b:dispatch | endif
     autocmd FileType    perl,python,ruby inoremap <silent> <buffer> <C-X>! #!/usr/bin/env<Space><C-R>=&ft<CR>
@@ -244,11 +241,9 @@ if has('autocmd')
           \ |        let                 b:surround_{char2nr('e')} = "\\begin{\1environment\1}\n\r\n\\end{\1\1}"
           \ |        let                 b:surround_{char2nr('v')} = "\\verb|\r|"
           \ |        let                 b:surround_{char2nr('V')} = "\\begin{verbatim}\n\r\n\\end{verbatim}"
-    autocmd FileType    txt,tex,mail,pandoc,markdown  if exists(':Thesaurus') | setlocal keywordprg=:Thesaurus | endif 
-          \ | setlocal spell
     autocmd FileType    *                if       exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
     " autocmd CursorHold  *                smile
-    autocmd FileType vim                 setlocal formatoptions-=o
+    autocmd FileType vim                 setlocal formatoptions-=o fdm=marker
     " expands plain node to explicitly labelled node.
     autocmd FileType dot                 nnoremap <buffer> <localleader>el viwyA<Space>[label=""]<Esc>F"P$
   augroup END
@@ -391,6 +386,45 @@ endif
 set bg=dark
 silent! colo gruvbox
 " }}}
+" {{{ Operating System and local vimrc
+
+
+function MyDiff()
+  " Windows compatible :diff
+  let opt = '-a --binary '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  if $VIMRUNTIME =~ ' '
+    if &sh =~ '\<cmd'
+      if empty(&shellxquote)
+        let l:shxq_sav = ''
+        set shellxquote&
+      endif
+      let cmd = '"' . $VIMRUNTIME . '\diff"'
+    else
+      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+    endif
+  else
+    let cmd = $VIMRUNTIME . '\diff'
+  endif
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
+  if exists('l:shxq_sav')
+    let &shellxquote=l:shxq_sav
+  endif
+endfunction
+
+if has('win32')
+  behave mswin
+  source $VIMRUNTIME/mswin.vim
+  set diffexpr=MyDiff()
+endif
 if filereadable(expand("~/.vimrc.local"))
   source ~/.vimrc.local
 endif
+" }}}
