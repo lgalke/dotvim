@@ -191,7 +191,7 @@ nnoremap <Leader>b :ls<CR>:b<Space>
 " Section: Text Objects {{{
 " Pipe tables
 " Complements cucumbertables.vim by tpope
-inoremap <Bar><Bar> <Esc>kyyp:s/\v[^<Bar>]/-/g<CR>:nohlsearch<CR>j
+" inoremap <Bar><Bar> <Esc>kyyp:s/\v[^<Bar>]/-/g<CR>:nohlsearch<CR>j
 
 " test object for table cells
 onoremap i<Bar> :<c-u>normal! T<Bar>vt<Bar><cr>
