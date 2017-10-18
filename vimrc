@@ -97,6 +97,7 @@ set wildignore+=*/.git/*
 set wildignore+=*.bbl,*.aux,*.lot,*.lof,*.bcf,*.soc,*.fdb_latexmk,*.out,*.run.xml,*.blg,*.fls,*.log,*.toc
 set wildmode=longest:full,full
 set wildcharm=<C-z>
+set indentkeys+=0.
 " }}}
 " Proper Line Return {{{
 augroup line_return
@@ -247,7 +248,6 @@ if has('autocmd')
     " expands plain node to explicitly labelled node.
     autocmd FileType dot                 nnoremap <buffer> <localleader>el viwyA<Space>[label=""]<Esc>F"P$
   augroup END
-
 endif
 let g:angular_cli_debug = 1
 
