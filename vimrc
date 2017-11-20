@@ -184,6 +184,12 @@ nnoremap <leader>d :edit ~/dash.rst<CR>
 nnoremap <leader>v :edit $MYVIMRC<cr>
 nnoremap <Leader>f :find<Space>
 nnoremap <Leader>b :ls<CR>:b<Space>
+
+
+nnoremap <Leader>an :ALENextWrap<CR>
+nnoremap <Leader>ap :ALEPreviousWrap<CR>
+nnoremap <Leader>ad :ALEDetail<CR>
+nnoremap <Leader>af :ALEFix<CR>
 "}}}
 " Section: Text Objects {{{
 " Pipe tables
@@ -348,6 +354,7 @@ nnoremap <leader>gm :Gmerge<CR>
 " }}}
 " {{{ misc
 let g:SimpylFold_docstring_preview = 1
+let g:instant_markdown_autostart = 0
 " }}}
 " }}}
 " Section: The Packs {{{ "
@@ -375,17 +382,15 @@ syntax enable
 set t_Co=256
 if has('termguicolors')
   " this should only be used if outside tmux
-  let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
-  let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
-  set notermguicolors
+  set termguicolors
 endif
 set bg=dark
-silent! colo gruvbox
+silent! colo vividchalk
 " }}}
 " {{{ Operating System and local vimrc
 
 
-function MyDiff()
+function! MyDiff()
   " Windows compatible :diff
   let opt = '-a --binary '
   if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
