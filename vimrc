@@ -75,10 +75,6 @@ endif
 " }}}
 " Defaults (may be changed on ft) {{{
 set commentstring=#\ %s
-" set formatoptions=rqn1j
-" Provides :Man
-runtime! ftplugin/man.vim
-set keywordprg=:Man
 " }}}
 " Completion {{{
 set dictionary+=/usr/share/dict/words
@@ -423,6 +419,10 @@ if has('win32')
   behave mswin
   source $VIMRUNTIME/mswin.vim
   set diffexpr=MyDiff()
+else
+  " Provides :Man
+  runtime! ftplugin/man.vim
+  set keywordprg=:Man
 endif
 if filereadable(expand("~/.vimrc.local"))
   source ~/.vimrc.local
