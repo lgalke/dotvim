@@ -358,6 +358,7 @@ nnoremap <leader>gm :Gmerge<CR>
 " }}}
 " {{{ misc
 let g:SimpylFold_docstring_preview = 1
+let g:instant_markdown_autostart = 0
 " }}}
 " }}}
 " Section: The Packs {{{ "
