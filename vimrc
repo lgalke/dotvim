@@ -188,6 +188,12 @@ nnoremap <leader>d :edit ~/dash.rst<CR>
 nnoremap <leader>v :edit $MYVIMRC<cr>
 nnoremap <Leader>f :find<Space>
 nnoremap <Leader>b :ls<CR>:b<Space>
+
+
+nnoremap <Leader>an :ALENextWrap<CR>
+nnoremap <Leader>ap :ALEPreviousWrap<CR>
+nnoremap <Leader>ad :ALEDetail<CR>
+nnoremap <Leader>af :ALEFix<CR>
 "}}}
 " Section: Text Objects {{{
 " Pipe tables
@@ -387,7 +393,7 @@ silent! colo vividchalk
 " {{{ Operating System and local vimrc
 
 
-function MyDiff()
+function! MyDiff()
   " Windows compatible :diff
   let opt = '-a --binary '
   if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
