@@ -190,6 +190,8 @@ nnoremap <Leader>an :ALENextWrap<CR>
 nnoremap <Leader>ap :ALEPreviousWrap<CR>
 nnoremap <Leader>ad :ALEDetail<CR>
 nnoremap <Leader>af :ALEFix<CR>
+
+nnoremap <leader>t :Tabularize<CR>
 "}}}
 " Section: Text Objects {{{
 " Pipe tables
@@ -387,7 +389,7 @@ endif
 set bg=dark
 silent! colo vividchalk
 " }}}
-" {{{ Operating System and local vimrc
+" {{{ Section: Operating System and local vimrc
 
 
 function! MyDiff()
