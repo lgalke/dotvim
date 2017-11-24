@@ -257,6 +257,10 @@ let g:angular_cli_debug = 1
 
 " }}}
 " Section: Plugins {{{
+" Plugin Map {{{
+map <C-j> <Plug>(edgemotion-j)
+map <C-k> <Plug>(edgemotion-k)
+" }}}
 " Small adjustments {{{
 
 let g:markdown_fenced_languages           = ['html', 'python', 'sh']
