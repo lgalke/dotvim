@@ -75,10 +75,6 @@ endif
 " }}}
 " Defaults (may be changed on ft) {{{
 set commentstring=#\ %s
-" set formatoptions=rqn1j
-" Provides :Man
-runtime! ftplugin/man.vim
-set keywordprg=:Man
 " }}}
 " Completion {{{
 set dictionary+=/usr/share/dict/words
@@ -188,6 +184,14 @@ nnoremap <leader>d :edit ~/dash.rst<CR>
 nnoremap <leader>v :edit $MYVIMRC<cr>
 nnoremap <Leader>f :find<Space>
 nnoremap <Leader>b :ls<CR>:b<Space>
+
+
+nnoremap <Leader>an :ALENextWrap<CR>
+nnoremap <Leader>ap :ALEPreviousWrap<CR>
+nnoremap <Leader>ad :ALEDetail<CR>
+nnoremap <Leader>af :ALEFix<CR>
+
+nnoremap <leader>t :Tabularize<CR>
 "}}}
 " Section: Text Objects {{{
 " Pipe tables
@@ -253,6 +257,10 @@ let g:angular_cli_debug = 1
 
 " }}}
 " Section: Plugins {{{
+" Plugin Map {{{
+map <C-j> <Plug>(edgemotion-j)
+map <C-k> <Plug>(edgemotion-k)
+" }}}
 " Small adjustments {{{
 
 let g:markdown_fenced_languages           = ['html', 'python', 'sh']
@@ -387,10 +395,10 @@ let g:alduin_Shout_Fire_Breath = 1
 let g:alduin_Contract_Vampirism = 1
 silent! colo alduin
 " }}}
-" {{{ Operating System and local vimrc
+" {{{ Section: Operating System and local vimrc
 
 
-function MyDiff()
+function! MyDiff()
   " Windows compatible :diff
   let opt = '-a --binary '
   if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
@@ -424,6 +432,10 @@ if has('win32')
   behave mswin
   source $VIMRUNTIME/mswin.vim
   set diffexpr=MyDiff()
+else
+  " Provides :Man
+  runtime! ftplugin/man.vim
+  set keywordprg=:Man
 endif
 if filereadable(expand("~/.vimrc.local"))
   source ~/.vimrc.local
