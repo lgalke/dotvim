@@ -383,7 +383,9 @@ if has('termguicolors')
   set termguicolors
 endif
 set bg=dark
-silent! colo vividchalk
+let g:alduin_Shout_Fire_Breath = 1
+let g:alduin_Contract_Vampirism = 1
+silent! colo alduin
 " }}}
 " {{{ Operating System and local vimrc
 
